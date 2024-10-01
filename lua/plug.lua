@@ -39,16 +39,22 @@ vim.call('plug#begin')
 
 --	git implementation i guess
 --	Plug('neogitorg/neogit', { ['tag'] = 'v0.0.1'})
-	Plug('sindrets/diffview.nvim')
+	Plug('lewis6991/gitsigns.nvim')
 	Plug('tpope/vim-fugitive')
 	Plug('rafamadriz/neon', { ['as'] = 'neon' })
-
---	git diff in file
-	Plug('lewis6991/gitsigns.nvim')
 
 --	trying to fix C# lsp		# was required just to build in linux the project lmao
 	Plug('oranget/vim-csharp')
 	Plug('Decodetalkers/csharpls-extended-lsp.nvim')
+
+--	copilot
+--	if you use github copilot uncomment
+--	Plug('zbirenbaum/copilot.lua')
+--	Plug('zbirenbaum/copilot-cmp')
+
+--	chatgpt plugins
+	Plug('muniftanjim/nui.nvim')
+	Plug('jackmort/chatgpt.nvim')
 
 vim.call('plug#end')
 
