@@ -1,4 +1,15 @@
 {
+	"azione_in_italiano": {
+			"type": "chat",
+			"opts": {
+					"template": "scrivi un haiku in italiano sulla natura",
+					"strategy": "display",
+					"params": {
+							"model": "gpt-4o-mini",
+							"temperature": 0.5,
+					},
+			},
+	},
   "complete_code": {
     "type": "chat",
     "opts": {

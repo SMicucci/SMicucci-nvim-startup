@@ -5,14 +5,16 @@
 --	##	general
 vim.keymap.set('i','<Leader>q','<ESC>')
 vim.keymap.set('i','<M-Q>',vim.cmd.Esc)
-vim.keymap.set('n','<leader>gd',vim.cmd.Ex)
-vim.keymap.set('n','<leader>*',vim.cmd.nohlsearch)
+vim.keymap.set('n','<leader>d',':Ex<CR>', {silent=true})
+vim.keymap.set('n', '<leader>*', ':let @/ = ""<CR>', {silent= true})
 vim.keymap.set('n','<M-v>','<C-v>')		-- thank you windows :3
 vim.keymap.set('n','<C-h>',function() vim.lsp.buf.code_action() end)
-vim.keymap.set('n','<M-c>n',':cnext<Enter> zz')		-- thank you windows :3
-vim.keymap.set('n','<M-c>p',':cprev<Enter> zz')		-- thank you windows :3
+vim.keymap.set('n','<M-c>n',':cnext<Enter> zz', {silent= true})		-- thank you windows :3
+vim.keymap.set('n','<M-c>p',':cprev<Enter> zz', {silent= true})		-- thank you windows :3
 vim.keymap.set('n','n','nzz')
 vim.keymap.set('n','N','Nzz')
+vim.keymap.set('n','<Leader>w',':w<CR>', {silent=true})
+vim.keymap.set('n','<Leader>s',':so%<CR>', {silent=true})
 
 --	##	connect clipboard
 if (vim.fn.has("unix") == 1) then
@@ -72,8 +74,8 @@ end
 
 --	##	nerdtree
 if (vim.g.plugs["nerdtree"] ~= nil) then
-	vim.keymap.set('n','<C-n>',':NERDTree<CR>')
-	vim.keymap.set('n','<C-h>',':NERDTreeToggle<CR>')
+	vim.keymap.set('n','<C-n>',':NERDTree<CR>', {silent= true})
+	vim.keymap.set('n','<C-h>',':NERDTreeToggle<CR>', {silent= true})
 end
 
 --	##	telescope
@@ -100,6 +102,12 @@ if (vim.g.plugs["gitsigns.nvim"] ~= nil) then
 	vim.keymap.set('n','<Leader>glb',gitsigns.toggle_current_line_blame)
 	vim.keymap.set('n','<Leader>gb',gitsigns.toggle_current_line_blame)
 	vim.keymap.set('n','<Leader>gd',gitsigns.toggle_deleted)
+end
+
+--	##	chatGPT integration
+if (vim.g.plugs["chatgpt.nvim"] ~= nil) then
+	vim.keymap.set('n','<Leader>cc',':ChatGPT<CR>', {silent=true})	-- copilot chat (gpt-4o-mini)
+	vim.keymap.set({'n', 'v'},'<Leader>c',':ChatGPTEditWithIstruction<CR>', {silent=true})	-- copilot chat (gpt-4o-mini)
 end
 
 
