@@ -1,5 +1,5 @@
 local init_msg = [[
-                                                                 <C-h> per un aiuto
+                                                                             <C-h> per altre info
 	"Se ni' mondo esistesse un po' di bene
 	e ognun si considerasse suo fratello
 	ci sarebbero meno pensieri e meno pene
@@ -14,6 +14,11 @@ print('lua/plugin/chatgpt.com => ' .. custom_action_path)
 if vim.g.plugs["chatgpt.nvim"] ~= nil then
 	require('chatgpt').setup({
 		chat = {
+			sessions_window = {
+				active_sign = " 󰄯  ",
+				inactive_sign = " 󰄰  ",
+				current_line_sign = "",
+			},
 			welcome_message = init_msg,
 			loading_text = "Caricamento, attendi ...",
 		},

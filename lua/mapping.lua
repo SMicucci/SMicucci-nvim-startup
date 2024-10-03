@@ -13,6 +13,7 @@ vim.keymap.set('n','<M-c>n',':cnext<Enter> zz', {silent= true})		-- thank you wi
 vim.keymap.set('n','<M-c>p',':cprev<Enter> zz', {silent= true})		-- thank you windows :3
 vim.keymap.set('n','n','nzz')
 vim.keymap.set('n','N','Nzz')
+vim.keymap.set('n','<Leader>q',':q<CR>', {silent=true})
 vim.keymap.set('n','<Leader>w',':w<CR>', {silent=true})
 vim.keymap.set('n','<Leader>s',':so%<CR>', {silent=true})
 
@@ -106,7 +107,7 @@ end
 
 --	##	chatGPT integration
 if (vim.g.plugs["chatgpt.nvim"] ~= nil) then
-	vim.keymap.set('n','<Leader>cc',':ChatGPT<CR>', {silent=true})	-- copilot chat (gpt-4o-mini)
+	vim.keymap.set('n','<Leader>cc',':ChatGPT<CR><Esc>', {silent=true})	-- copilot chat (gpt-4o-mini)
 	vim.keymap.set({'n', 'v'},'<Leader>c',':ChatGPTEditWithIstruction<CR>', {silent=true})	-- copilot chat (gpt-4o-mini)
 end
 
