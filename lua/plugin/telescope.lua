@@ -1,6 +1,8 @@
 if (vim.g.plugs["telescope.nvim"] ~= nil) then
 	local map = { i = {
-		['<esc>'] = "close",						--	totally avoid normal mode :3
+		['<Esc>'] = "close",						--	totally avoid normal mode :3
+		['<C-c>'] = "close",						--	totally avoid normal mode :3
+		['<leader>q']= "close",						--	totally avoid normal mode :3
 		['<M-v>'] = "select_vertical",
 		['<M-s>'] = "select_horizontal",
 		['<M-t>'] = "select_tab",
@@ -38,6 +40,7 @@ if (vim.g.plugs["telescope.nvim"] ~= nil) then
 		},
 		pickers = {
 			find_files = { mappings = map },
+			buffers = { mappings = map },
 			oldfiles = { mappings = map },
 			git_files = { mappings = map },
 			live_grep = { mappings = map },

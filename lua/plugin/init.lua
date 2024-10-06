@@ -2,6 +2,7 @@
 --		CALL PLUGIN SETUP
 --	#########################
 
+require('plugin.alpha')
 require('plugin.telescope')
 require('plugin.treesitter')
 require('plugin.lsp-config')

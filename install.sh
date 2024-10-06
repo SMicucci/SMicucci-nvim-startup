@@ -5,4 +5,4 @@ if [ $(id -u) -ne 0 ]; then
     exit 1
 fi
 
-apt install ripgrep -y
+apt install ripgrep universal-ctags -y

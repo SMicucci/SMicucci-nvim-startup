@@ -9,6 +9,9 @@ vim.call('plug#begin')
 --	colorschemes collection
 	Plug('rafi/awesome-vim-colorschemes')
 
+--	initial screen
+	Plug('goolord/alpha-nvim')
+
 --	transparent
 	Plug('xiyaowong/transparent.nvim')
 

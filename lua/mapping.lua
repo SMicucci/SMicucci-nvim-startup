@@ -47,33 +47,38 @@ if (vim.fn.has("wsl") == 1) then
 	}
 end
 
---	##	user command
-vim.api.nvim_create_user_command('Tags','!ctags -R',{})
-
---vim.keymap.set('i','{}','{\n.\n}<Esc>Vkk<C-=>jcc')	--	schatchy implementation of a snippet lol
-
---	##	harpoon? nope
-vim.keymap.set('n','tl',function() vim.cmd('tabnext') end)
-vim.keymap.set('n','th',function() vim.cmd('tabprev') end)
-vim.keymap.set('n','<C-k>',function() vim.cmd('tabnext') end)
-vim.keymap.set('n','<C-j>',function() vim.cmd('tabprev') end)
-vim.keymap.set('n','tk',function() vim.cmd('tabnext') end)
-vim.keymap.set('n','tj',function() vim.cmd('tabprev') end)
-vim.keymap.set('n','tn',function() vim.cmd('tabnew') end)
-vim.keymap.set('n','tq',function() vim.cmd('tabclose') end)
-vim.keymap.set('n','<Leader>tl',function() vim.cmd('tabmove +1') end)
-vim.keymap.set('n','<Leader>th',function() vim.cmd('tabmove -1') end)
-vim.keymap.set('n','<M-0>',function() vim.cmd('tablast') end)
-for i = 1, 9 do
-	vim.keymap.set('n','<M-' .. i ..'>',function() vim.cmd('tabnext ' .. i) end)
+--	##	harpoon? ~nope~ _maybe?_
+if (vim.g.plugs["harpoon"] == nil) then
+	--	##	tabs managment
+	vim.keymap.set('n','tl',function() vim.cmd('tabnext') end)
+	vim.keymap.set('n','th',function() vim.cmd('tabprev') end)
+	vim.keymap.set('n','<C-k>',function() vim.cmd('tabnext') end)
+	vim.keymap.set('n','<C-j>',function() vim.cmd('tabprev') end)
+	vim.keymap.set('n','tk',function() vim.cmd('tabnext') end)
+	vim.keymap.set('n','tj',function() vim.cmd('tabprev') end)
+	vim.keymap.set('n','tn',function() vim.cmd('tabnew') end)
+	vim.keymap.set('n','tq',function() vim.cmd('tabclose') end)
+	vim.keymap.set('n','<Leader>tl',function() vim.cmd('tabmove +1') end)
+	vim.keymap.set('n','<Leader>th',function() vim.cmd('tabmove -1') end)
+	vim.keymap.set('n','<M-0>',function() vim.cmd('tablast') end)
+	for i = 1, 9 do
+		vim.keymap.set('n','<M-' .. i ..'>',function() vim.cmd('tabnext ' .. i) end)
+	end
+	--	##	buffers managment
+	if (vim.g.plugs["telescope.nvim"] ~= nil) then
+		vim.keymap.set('n', '<leader>bb','<cmd>buffers<CR>')
+	end
+	vim.keymap.set('n', '<leader>bn','<cmd>bnext<CR>', {silent= true})
+	vim.keymap.set('n', '<leader>bp','<cmd>bprev<CR>', {silent= true})
+	vim.keymap.set('n', '<leader>bd','<cmd>split<CR><cmd>bn<CR><C-W><C-W><cmd>bd<CR>', {silent= true})	--	split, bn, switch window, delete prev buffer
 end
 
 --	##	transparent.nvim
 if (vim.g.plugs["transparent.nvim"] ~= nil) then
-	vim.keymap.set('n','<Leader>tt',':TransparentToggle<CR>')
+	vim.keymap.set('n','<Leader>tt',':TransparentToggle<CR>', {silent= true})
 end
 
---	##	nerdtree
+--	##	nerdtree		## removed
 if (vim.g.plugs["nerdtree"] ~= nil) then
 	vim.keymap.set('n','<C-n>',':NERDTree<CR>', {silent= true})
 	vim.keymap.set('n','<C-h>',':NERDTreeToggle<CR>', {silent= true})
@@ -84,7 +89,7 @@ if (vim.g.plugs["telescope.nvim"] ~= nil) then
 	local builtin = require('telescope.builtin')
 	local actions = require('telescope.actions')
 	vim.keymap.set('n','<Leader>ff',builtin.find_files, {})
-	vim.keymap.set('n','<Leader>fb',builtin.buffers, {})
+	vim.keymap.set('n','<Leader>bb',builtin.buffers, {})
 	vim.keymap.set('n','<Leader>fo',function() builtin.oldfiles({only_cwd = true}) end, {})
 	vim.keymap.set('n','<Leader>fg',builtin.git_files, {})
 	vim.keymap.set('n','<Leader>fd',builtin.lsp_references, {})
@@ -95,6 +100,11 @@ if (vim.g.plugs["telescope.nvim"] ~= nil) then
 	vim.keymap.set('i','<M-v>', function() actions.select_vertical() end)
 	vim.keymap.set('i','<M-s>', function() actions.select_horizontal() end)
 	--]]
+end
+
+--	##	vim fugitive
+if (vim.g.plugs["vim-fugitive"] ~= nil) then
+	vim.keymap.set('n','<Leader>gf','<cmd>Git<CR><C-W>o', {silent= true})
 end
 
 --	##	gitsigns
@@ -108,7 +118,7 @@ end
 --	##	chatGPT integration
 if (vim.g.plugs["chatgpt.nvim"] ~= nil) then
 	vim.keymap.set('n','<Leader>cc',':ChatGPT<CR><Esc>', {silent=true})	-- copilot chat (gpt-4o-mini)
-	vim.keymap.set({'n', 'v'},'<Leader>c',':ChatGPTEditWithIstruction<CR>', {silent=true})	-- copilot chat (gpt-4o-mini)
+	vim.keymap.set('v','<Leader>c',':ChatGPTEditWithIstruction<CR>', {silent=true})	-- copilot chat (gpt-4o-mini)
 end
 
 

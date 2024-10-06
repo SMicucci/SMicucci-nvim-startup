@@ -5,7 +5,7 @@
 vim.o.mousehide = true
 vim.o.expandtab = false
 vim.o.number = true
-vim.o.relativenumber = false
+vim.o.relativenumber = true
 vim.o.showtabline = 2
 vim.o.syntax = 'on'
 vim.o.termguicolors = true
@@ -20,6 +20,13 @@ vim.o.wildmode = 'full'
 -- tabstop => #5 always <Tab>
 vim.o.expandtab = false
 vim.api.nvim_create_autocmd('FileType', {
+	pattern = '*',
+	callback = function()
+		vim.o.tabstop = 4
+		vim.o.shiftwidth = 4
+	end,
+})
+vim.api.nvim_create_autocmd('FileType', {
 	pattern = 'html',
 	callback = function()
 		vim.o.tabstop = 2
@@ -31,13 +38,6 @@ vim.api.nvim_create_autocmd('FileType', {
 	callback = function()
 		vim.o.tabstop = 8
 		vim.o.shiftwidth = 8
-	end,
-})
-vim.api.nvim_create_autocmd('FileType', {
-	pattern = '*',
-	callback = function()
-		vim.o.tabstop = 4
-		vim.o.shiftwidth = 4
 	end,
 })
 
