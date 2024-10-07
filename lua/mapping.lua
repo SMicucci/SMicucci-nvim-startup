@@ -114,10 +114,16 @@ end
 --	##	gitsigns
 if (vim.g.plugs["gitsigns.nvim"] ~= nil) then
 	local gitsigns = require('gitsigns')
-	vim.keymap.set('n','<Leader>glb',gitsigns.toggle_current_line_blame)
-	vim.keymap.set('n','<Leader>gb',gitsigns.toggle_current_line_blame)
-	vim.keymap.set('n','<Leader>gd',gitsigns.toggle_deleted)
+	vim.keymap.set('n','<Leader>gb',function()
+		gitsigns.toggle_current_line_blame()
+		gitsigns.toggle_deleted()
+		gitsigns.toggle_linehl()
+	end)
+	vim.keymap.set('n','<Leader>gd',function()
+		gitsigns.diffthis(nil, {vertical = true})
+	end)
 end
+
 
 --	##	chatGPT integration
 if (vim.g.plugs["chatgpt.nvim"] ~= nil) then
