@@ -90,8 +90,7 @@ if (vim.g.plugs["telescope.nvim"] ~= nil) then
 	local actions = require('telescope.actions')
 	vim.keymap.set('n','<Leader>ff',builtin.find_files, {})
 	vim.keymap.set('n','<Leader>bb',builtin.buffers, {})
-	vim.keymap.set('n','<Leader>fo',function() builtin.oldfiles({only_cwd = true}) end, {})
-	vim.keymap.set('n','<Leader>fg',builtin.git_files, {})
+	--vim.keymap.set('n','<Leader>fg',builtin.git_files, {})
 	vim.keymap.set('n','<Leader>fd',builtin.lsp_references, {})
 	vim.keymap.set('n','<Leader>fr',builtin.live_grep, {})
 	vim.keymap.set('n','<Leader>fh',builtin.lsp_definitions, {})
@@ -100,6 +99,11 @@ if (vim.g.plugs["telescope.nvim"] ~= nil) then
 	vim.keymap.set('i','<M-v>', function() actions.select_vertical() end)
 	vim.keymap.set('i','<M-s>', function() actions.select_horizontal() end)
 	--]]
+end
+
+if ( vim.g.plugs["auto-session"] ~= nil ) then
+	vim.keymap.set('n','<Leader>fs','<cmd>SessionSearch<CR>', { silent= true })
+	vim.keymap.set('n','<Leader>ss',':SessionSave ')
 end
 
 --	##	vim fugitive

@@ -16,7 +16,7 @@ vim.api.nvim_create_autocmd('FileType', {
 
 --	#	set small tabs
 vim.api.nvim_create_autocmd('FileType', {
-	pattern = {"*.html", "*.htm"},
+	pattern = {"*.lua", "*.html", "*.htm", "*.py", "*.rb"},
 	callback = function()
 		vim.o.tabstop = 2
 		vim.o.shiftwidth = 2

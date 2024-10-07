@@ -42,7 +42,7 @@ require('setting')
 --	###############
 --		COMMAND
 --	###############
---require('command')
+require('command')
 
 --	###############
 --		MAPPING

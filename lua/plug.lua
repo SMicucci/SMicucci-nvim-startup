@@ -25,6 +25,9 @@ vim.call('plug#begin')
 	Plug('nvim-tree/nvim-web-devicons')
 	Plug('nvim-telescope/telescope.nvim', { ['branch'] = '0.1.x'})
 
+--	session manager, telescope integration
+	Plug('rmagatti/auto-session')
+
 --	mason-lspconfig.nvim
 	Plug('williamboman/mason.nvim')
 	Plug('neovim/nvim-lspconfig')

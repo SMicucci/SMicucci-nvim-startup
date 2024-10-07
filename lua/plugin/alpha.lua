@@ -20,12 +20,13 @@ local logo = {
 
 	dashboard.section.buttons.val = {
 		dashboard.button("\\ff",	"󰮗  " .. "Fuzzy Finder",			"<cmd> Telescope find_files<CR>"),
-		dashboard.button("\\fr",	"󱎸  " .. "Text Finder",			"<cmd> Telescope live_grep<CR>"),
-		dashboard.button("\\bb",	"  " .. "File Buffer",			"<cmd> Telescope buffers<CR>"),
+		dashboard.button("\\fr",	"󱎸  " .. "Text Finder",				"<cmd> Telescope live_grep<CR>"),
+		dashboard.button("\\bb",	"  " .. "File Buffer",				"<cmd> Telescope buffers<CR>"),
 		dashboard.button("\\gf",	"  " .. "Git Fugitive",			"<cmd> Git<CR><C-w>o"),
 		dashboard.button("\\d",		"  " .. "File Explorer",			"<cmd> Explore<CR>"),
 		dashboard.button("\\cc",	"  " .. "ChatGPT prompt",			"<cmd> ChatGPT<CR>"),
-		dashboard.button("\\tt",	"󱞟  " .. "Toggle Transparence",	"<cmd> TransparentToggle<CR>"),
+		dashboard.button("\\tt",	"󱞟  " .. "Toggle Transparence",		"<cmd> TransparentToggle<CR>"),
+		dashboard.button("\\fs",	"  " .. "Session Loader",			"<cmd> SessionSearch<CR>"),
 	}
 	for _, button in ipairs(dashboard.section.buttons.val) do
 		button.opts.hl = "String"
@@ -34,8 +35,8 @@ local logo = {
 
 	dashboard.section.footer.val = {
 		[[]],
-		[[󱐋   Blazingly fast   󱐋]],
-		[[ Knoledge is power  ]],
+		[[󱐋   Blazingly fast    󱐋]],
+		[[  Knoledge is power  ]],
 		[[      SMicucci]],
 	}
 
