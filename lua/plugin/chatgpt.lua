@@ -7,27 +7,58 @@ local init_msg = [[
 									P. Pacciani
 ]]
 
-local custom_action_path = os.getenv('HOME') .. '/.config/nvim/gpt-actions.json'
-
-print('lua/plugin/chatgpt.com => ' .. custom_action_path)
-
 if vim.g.plugs["chatgpt.nvim"] ~= nil then
+	--	##	set link to actions		--i didn't like the 3.5 function, too expensive
+	local src = vim.fs.normalize('~/.config/nvim/actions.json')
+	local dest = vim.fs.normalize('~/.local/share/nvim/plugged/chatgpt.nvim/lua/chatgpt/flows/actions/actions.json')
+	if (vim.uv.fs_stat(dest) == nil) then
+		vim.uv.fs_link(src,dest)
+	elseif (vim.uv.fs_stat(src).ino ~= vim.uv.fs_stat(dest).ino) then
+		vim.uv.fs_unlink(dest)
+		vim.uv.fs_link(src,dest)
+	end
+
+	--	##	setup
 	require('chatgpt').setup({
+		edit_with_instructions = {
+			keymaps = {
+				close = {"<C-c>", "<Leader>q"},
+			},
+		},
 		chat = {
+			welcome_message = init_msg,
+			loading_text = "Caricamento, attendi ...",
 			sessions_window = {
 				active_sign = " 󰄯  ",
 				inactive_sign = " 󰄰  ",
 				current_line_sign = "",
 			},
-			welcome_message = init_msg,
-			loading_text = "Caricamento, attendi ...",
+			keymaps = {
+				close = {"<C-c>", "<Leader>q"},
+			},
+		},
+		popup_layout = {
+			default = "center",
+			center = {
+				width = "90%",
+				height = "90%",
+			},
+			right = {
+				width = "40%",
+				width_settings_open = "50%",
+			},
 		},
 		openai_params = {
 			model = 'gpt-4o-mini',
+			max_tokens = 500,
 		},
 		openai_edit_params = {
 			model = 'gpt-4o-mini',
 		},
-		actions_path = custom_action_path,
+		--predefined_chat_gpt_prompts = "https://raw.githubusercontent.com/smicucci/smicucci-nvim-startup/main/prompts.csv",
+		highlights = {
+			params_value = "Character",
+			active_session = "Conditional",
+		},
 	})
 end

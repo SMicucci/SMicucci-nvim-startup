@@ -1,15 +1,4 @@
 {
-	"azione_in_italiano": {
-			"type": "chat",
-			"opts": {
-					"template": "scrivi un haiku in italiano sulla natura",
-					"strategy": "display",
-					"params": {
-							"model": "gpt-4o-mini",
-							"temperature": 0.5,
-					},
-			},
-	},
   "complete_code": {
     "type": "chat",
     "opts": {
@@ -20,41 +9,6 @@
         "stop": [
           "```"
         ]
-      }
-    }
-  },
-  "grammar_correction": {
-    "type": "chat",
-    "opts": {
-      "template": "Correct this to standard {{lang}}:\n\n{{input}}",
-      "strategy": "replace",
-      "params": {
-        "model": "gpt-4o-mini"
-      }
-    },
-    "args": {
-      "lang": {
-        "type": "string",
-        "optional": "true",
-        "default": "english"
-      }
-    }
-  },
-  "translate": {
-    "type": "chat",
-    "opts": {
-      "template": "Translate this into {{lang}}:\n\n{{input}}",
-      "strategy": "replace",
-      "params": {
-        "model": "gpt-4o-mini",
-        "temperature": 0.3
-      }
-    },
-    "args": {
-      "lang": {
-        "type": "string",
-        "optional": "true",
-        "default": "english"
       }
     }
   },

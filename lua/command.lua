@@ -6,29 +6,42 @@ vim.api.nvim_create_user_command('Tags','!ctags -R',{})
 --	###################
 --		AutoCommand
 --	###################
---	#	set default tabs
-vim.api.nvim_create_autocmd('FileType', {
-	callback = function()
-		vim.o.tabstop = 4
-		vim.o.shiftwidth = 4
-	end,
-})
 
---	#	set small tabs
+--	#	set tabs
 vim.api.nvim_create_autocmd('FileType', {
-	pattern = {"*.lua", "*.html", "*.htm", "*.py", "*.rb"},
 	callback = function()
-		vim.o.tabstop = 2
-		vim.o.shiftwidth = 2
-	end,
-})
+		--	readable test function
+		local check = function(fileTable)
+			--	check input
+			if (type(fileTable) ~= 'table') then
+				return false
+			end
+			--	typefile
+			local type = vim.filetype.match({ buf = 0 })
+			--	foreach on input
+			local res = table.foreach(fileTable,function(i)
+				--	check current type wt element of the table
+				if (type == fileTable[i]) then
+					return 0	-- not nil return break foreach
+				end
+			end)
+			--	return if foreach return is not null (so there is a match)
+			return res ~= nil
+		end
 
---	#	set large tabs
-vim.api.nvim_create_autocmd('FileType', {
-	pattern = {"*.c", "*.h", "*.cpp", "*.hh", "*.css"},
-	callback = function()
-		vim.o.tabstop = 8
-		vim.o.shiftwidth = 8
+		--	default value
+		local tablen = 4
+
+		if (check({'cs','cshtml','dockerfile','html','java','javascript','json','lua','python','ruby','vim','xml','yaml'})) then
+			tablen = 2
+		end
+
+		if (check({'asm','bash','c','cmake','cpp','make','markdown','sh','sql','tex'})) then
+			tablen = 8
+		end
+		
+		vim.o.tabstop = tablen
+		vim.o.shiftwidth = tablen
 	end,
 })
 
@@ -70,12 +83,3 @@ vim.api.nvim_create_autocmd('InsertCharPre',{
 		end
 	end
 })
-
---[[
-
-....
-....
-....
-
---]]
---	vim.api.nvim_create_autocmd({''},{pattern = {''}, command = {''}, callback = {''}})

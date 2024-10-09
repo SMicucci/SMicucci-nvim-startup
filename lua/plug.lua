@@ -6,28 +6,6 @@ local Plug = vim.fn['plug#']
 --	plugin routine
 vim.call('plug#begin')
 
---	colorschemes collection
-	Plug('rafi/awesome-vim-colorschemes')
-
---	initial screen
-	Plug('goolord/alpha-nvim')
-
---	transparent
-	Plug('xiyaowong/transparent.nvim')
-
---	nerdtree, mess around with default Explorer, could be intresting though
---	Plug('preservim/nerdtree')
-
---	telescope plugin and dependencies
-	Plug('nvim-lua/plenary.nvim')
-	Plug('nvim-treesitter/nvim-treesitter')
-	Plug('nvim-treesitter/playground')
-	Plug('nvim-tree/nvim-web-devicons')
-	Plug('nvim-telescope/telescope.nvim', { ['branch'] = '0.1.x'})
-
---	session manager, telescope integration
-	Plug('rmagatti/auto-session')
-
 --	mason-lspconfig.nvim
 	Plug('williamboman/mason.nvim')
 	Plug('neovim/nvim-lspconfig')
@@ -48,11 +26,35 @@ vim.call('plug#begin')
 	Plug('hrsh7th/vim-vsnip-integ')
 	Plug('rafamadriz/friendly-snippets')
 
+--	telescope plugin and dependencies
+	Plug('nvim-lua/plenary.nvim')
+	Plug('nvim-treesitter/nvim-treesitter')
+	Plug('nvim-treesitter/playground')
+	Plug('nvim-tree/nvim-web-devicons')
+	Plug('nvim-telescope/telescope.nvim', { ['branch'] = '0.1.x'})
+
+--	session manager, telescope integration
+	Plug('rmagatti/auto-session')
+
 --	git implementation
---	Plug('neogitorg/neogit', { ['tag'] = 'v0.0.1'})	--	little to none complex implementation, use fugitive instead
 	Plug('lewis6991/gitsigns.nvim')
 	Plug('tpope/vim-fugitive')
 	Plug('rafamadriz/neon', { ['as'] = 'neon' })
+
+--	colorschemes collection
+	Plug('rafi/awesome-vim-colorschemes')
+
+--	initial screen
+	Plug('goolord/alpha-nvim')
+
+--	support CSV
+	Plug('mechatroner/rainbow_csv')
+
+--	transparent
+	Plug('xiyaowong/transparent.nvim')
+
+--	nerdtree, mess around with default Explorer, could be intresting though
+--	Plug('preservim/nerdtree')
 
 --	trying to fix C# lsp		# was required just to build in linux the project lmao
 	Plug('oranget/vim-csharp')
@@ -64,6 +66,7 @@ vim.call('plug#begin')
 
 --	chatgpt plugins and dependencies, alternative to copilot for now
 	Plug('muniftanjim/nui.nvim')
+	Plug('folke/trouble.nvim')
 	Plug('jackmort/chatgpt.nvim')
 
 vim.call('plug#end')

@@ -124,24 +124,9 @@ if (vim.g.plugs["gitsigns.nvim"] ~= nil) then
 	end)
 end
 
-
 --	##	chatGPT integration
 if (vim.g.plugs["chatgpt.nvim"] ~= nil) then
-	vim.keymap.set('n','<Leader>cc',':ChatGPT<CR><Esc>', {silent=true})	-- copilot chat (gpt-4o-mini)
-	vim.keymap.set('v','<Leader>c',':ChatGPTEditWithIstruction<CR>', {silent=true})	-- copilot chat (gpt-4o-mini)
+	vim.keymap.set('n','<Leader>cc',':ChatGPT<CR><Esc>', {silent=true})		-- gpt chat
+	vim.keymap.set('v','<Leader>c',':ChatGPTEditWithIstruction<CR>', {silent=true})		-- gpt with prompt
+	vim.keymap.set('n','<Leader>cr',':ChatGPTRun', {silent=true})		-- gpt precise action
 end
-
-
---	##	mason-lspconfig
---		this mapping is located on lua/plugin/lsp-config.lua
-
---		functions for keymaps
---	#########
---		vim.keymap.set({mode},{trigger-sequence},{output-sequence})
---		vim.keymap.del({mode},{trigger-sequence})
---	#########
-
---	#############
---		DEBUG
---	#############
---print(vim.inspect(vim.g.plugs))
