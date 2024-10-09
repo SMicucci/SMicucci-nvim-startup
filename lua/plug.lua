@@ -48,7 +48,7 @@ vim.call('plug#begin')
 	Plug('goolord/alpha-nvim')
 
 --	support CSV
-	Plug('mechatroner/rainbow_csv')
+--	Plug('mechatroner/rainbow_csv')	-- doesn't work F
 
 --	transparent
 	Plug('xiyaowong/transparent.nvim')
