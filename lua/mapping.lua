@@ -78,6 +78,11 @@ if (vim.g.plugs["transparent.nvim"] ~= nil) then
 	vim.keymap.set('n','<Leader>tt',':TransparentToggle<CR>', {silent= true})
 end
 
+--	##	alpha-nvim
+if (vim.g.plugs["alpha-nvim"] ~= nil) then
+	vim.keymap.set('n','<Leader>a',':Alpha<CR>', {silent= true})
+end
+
 --	##	nerdtree		## removed
 if (vim.g.plugs["nerdtree"] ~= nil) then
 	vim.keymap.set('n','<C-n>',':NERDTree<CR>', {silent= true})

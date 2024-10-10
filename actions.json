@@ -1,39 +1,51 @@
 {
-	"complete_code": {
+	"completa_codice": {
 		"type": "chat",
 		"opts": {
-			"template": "Complete the following code written in {{lang}} by pasting the existing code and continuing it.\n\nExisting code:\n```{{filetype}}\n{{input}}\n```\n\n```{{filetype}}\n",
+			"template": "{{filetype}}\n{{input}}\n```",
 			"strategy": "replace",
 			"params": {
 				"model": "gpt-4o-mini",
-				"stop": [
-					"```"
+				"temperature": 0.1,
+				"stop": ["```"],
+				"messages": [
+					{"role": "system", "content": "Comportati come una programma che emula un programmatore esperto ad un input:\n<linguaggio>\n<codice input>\n---\n\nrielabora e completa il codice producendo questo output:\n<codice input>\n<continuazione codice>\n---"},
+					{"role": "user", "content": "c\nint main()\n---"},
+					{"role": "assistant", "content": "int main()\n{\n\tprintf(\"Hello world!\");\n\treturn 0;\n}\n---"},
+					{"role": "user", "content": "javascript\n//json post\nawait fetch('/api/temp',\n---"},
+					{"role": "assistant", "content": "//json post\nawait fetch('/api/temp', {\n\tmethod: 'POST',\n\theaders: {\n\t\t'Content-Type': 'application/json'\n\t},\n\tbody: JSON.stringify(data)\n});\n---"}
 				]
 			}
 		}
 	},
-	"keywords": {
+	"crea_commento": {
 		"type": "chat",
 		"opts": {
-			"template": "Extract the main keywords from the following text.\n\n{{input}}",
-			"strategy": "replace",
+			"template": "{{filetype}}\n{{input}}",
+			"strategy": "prepend",
 			"params": {
 				"model": "gpt-4o-mini",
-				"temperature": 0.5,
-				"frequency_penalty": 0.8
+				"temperature": 0.1,
+				"stop": ["---"],
+				"messages": [
+					{"role": "system", "content": "Comportati come un generatore minimale di commenti doxygen.\nIl programma prende in input:\n<linguaggio>\n<function>\n\nrestituisce in output:\n<commento doxygen>\n---"},
+					{"role": "user", "content": "c\nvoid swap(int* a, int* b)\n{\n\nint temp = *a;\n\t*a = *b;\n\t*b = temp;\n}"},
+					{"role": "assistant", "content": "/// @brief Scambia i valori di due interi.\n/// @param a Puntatore al primo intero.\n/// @param b Puntatore al secondo intero.\n---"},
+					{"role": "user", "content": "javascript\nfunction async postJson(dest, data)\n{\n\tawait fetch(dest, {\n\t\tmethod: 'POST',\n\t\theaders: {\n\t\t\t'Content-Type': 'application/json'\n\t\t},\n\t\tbody: JSON.stringify(data)\n\t});\n}"},
+					{"role": "assistant", "content": "/// @brief Invia una richiesta POST con dati JSON a un'API.\n/// @param dest L'URL di destinazione per la richiesta.\n/// @param data I dati da inviare, che verranno convertiti in formato JSON.\n---"}
+				]
 			}
 		}
 	},
-	"docstring": {
+	"riassumi": {
 		"type": "chat",
 		"opts": {
-			"template": "# An elaborate, high quality docstring for the above function:\n# Writing a good docstring\n\nThis is an example of writing a really good docstring that follows a best practice for the given language. Attention is paid to detailing things like\n* parameter and return types (if applicable)\n* any errors that might be raised or returned, depending on the language\n\nI received the following code:\n\n```{{filetype}}\n{{input}}\n```\n\nThe code with a really good docstring added is below:\n\n```{{filetype}}",
-			"strategy": "edit",
+			"title": " Riassunto Codice",
+			"template": "Spiega il seguente codice:\n{{input}}\n\nDai una descrizione breve e concisa di cosa fa il codice utilizzando una formattazione markdown\n",
+			"strategy": "display",
 			"params": {
 				"model": "gpt-4o-mini",
-				"stop": [
-					"```"
-				]
+				"stop": [ "---" ]
 			}
 		}
 	},
@@ -50,29 +62,6 @@
 			}
 		}
 	},
-	"optimize_code": {
-		"type": "chat",
-		"opts": {
-			"template": "Optimize the following code.\n\nCode:\n```{{filetype}}\n{{input}}\n```\n\nOptimized version:\n```{{filetype}}",
-			"strategy": "edit",
-			"params": {
-				"model": "gpt-4o-mini",
-				"stop": [
-					"```"
-				]
-			}
-		}
-	},
-	"summarize": {
-		"type": "chat",
-		"opts": {
-			"template": "Summarize the following text.\n\nText:\n\"\"\"\n{{input}}\n\"\"\"\n\nSummary:",
-			"strategy": "edit",
-			"params": {
-				"model": "gpt-4o-mini"
-			}
-		}
-	},
 	"fix_bugs": {
 		"type": "chat",
 		"opts": {
@@ -85,72 +74,5 @@
 				]
 			}
 		}
-	},
-	"explain_code": {
-		"type": "chat",
-		"opts": {
-			"title": " Explain Code",
-			"template": "Explain the following code:\n\nCode:\n```{{filetype}}\n{{input}}\n```\n\nUse markdown format.\nHere's what the above code is doing:\n```",
-			"strategy": "display",
-			"params": {
-				"model": "gpt-4o-mini",
-				"stop": [
-					"```"
-				]
-			}
-		}
-	},
-	"roxygen_edit": {
-		"type": "chat",
-		"opts": {
-			"template": "Insert a roxygen skeleton to document this R function:\n\n```{{filetype}}\n[insert]\n\n{{input}}\n\n```",
-			"strategy": "prepend",
-			"params": {
-				"model": "gpt-4o-mini",
-				"temperature": 0.5,
-				"max_tokens": 1024
-			}
-		}
-	},
-	"code_readability_analysis": {
-		"type": "chat",
-		"opts": {
-			"strategy": "quick_fix",
-			"template": "{{input}}",
-			"params": {
-				"model": "gpt-4o-mini",
-				"max_tokens": 2048,
-				"messages": [
-					{
-						"role": "system",
-						"content": "\nYou must identify any readability issues in the code snippet.\nSome readability issues to consider:\n- Unclear naming\n- Unclear purpose\n- Redundant or obvious comments\n- Lack of comments\n- Long or complex one liners\n- Too much nesting\n- Long variable names\n- Inconsistent naming and code style.\n- Code repetition\nYou may identify additional problems. The user submits a small section of code from a larger file.\nOnly list lines with readability issues, in the format <line_num>|<issue and proposed solution>\nYour commentary must fit on a single line\nDo not use the range of lines but just single line number\nIf there's no issues with code respond with only: <OK>\n"
-					},
-					{
-						"role": "user",
-						"content": "\n0 public class Logic {\n1      public static void main(String[] args) {\n2         Scanner sc = new Scanner(System.in);\n3         int n = sc.nextInt();\n4         int[] arr = new int[n];\n5         for (int i = 0; i < n; i++) {\n6             arr[i] = sc.nextInt();\n7         }\n8         int[] dp = new int[n];\n9         dp[0] = arr[0];\n10         dp[1] = Math.max(arr[0], arr[1]);\n11         for (int i = 2; i < n; i++) {\n12             dp[i] = Math.max(dp[i - 1], dp[i - 2] + arr[i]);\n13         }\n14         System.out.println(dp[n - 1]);\n15     }\n16 }"
-					},
-					{
-						"role": "assistant",
-						"content": "\n0: The class name 'Logic' is too generic. A more meaningful name could be 'DynamicProgramming'\n2: The variable name 'sc' is unclear. A more meaningful name could be 'scanner'.\n3: The variable name 'n' is unclear. A more meaningful name could be 'arraySize' or 'numElements'.\n4: The variable name 'arr' unclear. A more descriptive name could be 'inputArray' or 'elementValues'.\n8: The variable name 'dp' is unclear. A more informative name could be 'maxSum' or 'optimalSolution'.\n9: There are no comments explaining the meaning of the 'dp' array values and how they relate to the problem statement.\n11: There are no comments explaining the logic and purpose of the for loop"
-					},
-					{
-						"role": "user",
-						"content": "\n0    for (let i: number = 0; i < l; i++) {\n1       let notAddr: boolean = false;\n2       // non standard input\n3       if (items[i].scriptSig && !items[i].addr) {\n4         items[i].addr = 'Unparsed address [' + u++ + ']';\n5         items[i].notAddr = true;\n6         notAddr = true;\n7       }\n8 \n9       // non standard output\n10       if (items[i].scriptPubKey && !items[i].scriptPubKey.addresses) {\n11         items[i].scriptPubKey.addresses = ['Unparsed address [' + u++ + ']'];"
-						},
-						{
-							"role": "assistant",
-							"content": "\n0: The variable name 'i' and 'l' are unclear and easily confused with other characters like '1'. More meaningful names could be 'index' and 'length' respectively.\n1: The variable name 'notAddr' is unclear and a double negative. An alternative could be 'hasUnparsedAddress'.\n3: The comment \"non standard input\" is not very informative. It could be more descriptive, e.g., \"Check for non standard input address\"\n9: The comment \"non standard output\" is not very informative. It could be more descriptive, e.g., \"Check for non standard output address\"\n10: The variable name 'items' might be more informative if changed to 'transactions' or 'txItems'.\n11: The array element 'Unparsed address [' + u++ + ']' could use a more descriptive comment, e.g., \"Assign a unique identifier to non standard output addresses\"\n11: The variable name 'u' is unclear. A more meaningful name could be 'unparsedAddressCount' or 'unparsedAddressId'."
-						},
-						{
-							"role": "user",
-							"content": "\n0 function BaseAction:init(opts)\n1   self.opts = opts\n2 end"
-						},
-						{
-							"role": "assistant",
-							"content": "<OK>"
-						}
-				]
-						}
-					}
-			}
-		}
+	}
+}

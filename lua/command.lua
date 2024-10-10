@@ -46,6 +46,7 @@ vim.api.nvim_create_autocmd('FileType', {
 })
 
 --	##	expand parentesis and string delimeter
+--[[
 vim.api.nvim_create_autocmd('InsertCharPre',{
 	desc = "expand parentesis when writing buffer",
 	callback = function ()
@@ -83,3 +84,4 @@ vim.api.nvim_create_autocmd('InsertCharPre',{
 		end
 	end
 })
+--]]
