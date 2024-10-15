@@ -108,7 +108,7 @@ end
 
 if ( vim.g.plugs["auto-session"] ~= nil ) then
 	vim.keymap.set('n','<Leader>fs','<cmd>SessionSearch<CR>', { silent= true })
-	vim.keymap.set('n','<Leader>ss',':SessionSave ')
+	vim.keymap.set('n','<Leader>ss','<cmd>SessionSave<CR>', { silent= true })
 end
 
 --	##	vim fugitive
