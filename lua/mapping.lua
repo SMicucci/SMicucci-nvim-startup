@@ -5,17 +5,17 @@
 --	##	general
 vim.keymap.set('i','<Leader>q','<ESC>')
 vim.keymap.set('i','<M-Q>',vim.cmd.Esc)
-vim.keymap.set('n','<leader>d',':Ex<CR>', {silent=true})
-vim.keymap.set('n', '<leader>*', ':let @/ = ""<CR>', {silent= true})
+vim.keymap.set('n','<leader>d','<cmd>Ex<CR>', {silent=true})
+vim.keymap.set('n', '<leader>*', '<cmd>let @/ = ""<CR>', {silent= true})
 vim.keymap.set('n','<M-v>','<C-v>')		-- thank you windows :3
 vim.keymap.set('n','<C-h>',function() vim.lsp.buf.code_action() end)
-vim.keymap.set('n','<M-c>n',':cnext<Enter> zz', {silent= true})		-- thank you windows :3
-vim.keymap.set('n','<M-c>p',':cprev<Enter> zz', {silent= true})		-- thank you windows :3
+vim.keymap.set('n','<M-c>n','<cmd>cnext<Enter> zz', {silent= true})		-- thank you windows :3
+vim.keymap.set('n','<M-c>p','<cmd>cprev<Enter> zz', {silent= true})		-- thank you windows :3
 vim.keymap.set('n','n','nzz')
 vim.keymap.set('n','N','Nzz')
-vim.keymap.set('n','<Leader>q',':q<CR>', {silent=true})
-vim.keymap.set('n','<Leader>w',':w<CR>', {silent=true})
-vim.keymap.set('n','<Leader>s',':so%<CR>', {silent=true})
+vim.keymap.set('n','<Leader>q','<cmd>q<CR>', {silent=true})
+vim.keymap.set('n','<Leader>w','<cmd>w<CR>', {silent=true})
+vim.keymap.set('n','<Leader>s','<cmd>so%<CR>', {silent=true})
 
 --	##	connect clipboard
 if (vim.fn.has("unix") == 1) then
@@ -75,18 +75,18 @@ end
 
 --	##	transparent.nvim
 if (vim.g.plugs["transparent.nvim"] ~= nil) then
-	vim.keymap.set('n','<Leader>tt',':TransparentToggle<CR>', {silent= true})
+	vim.keymap.set('n','<Leader>tt','<cmd>TransparentToggle<CR>', {silent= true})
 end
 
 --	##	alpha-nvim
 if (vim.g.plugs["alpha-nvim"] ~= nil) then
-	vim.keymap.set('n','<Leader>a',':Alpha<CR>', {silent= true})
+	vim.keymap.set('n','<Leader>a','<cmd>Alpha<CR>', {silent= true})
 end
 
 --	##	nerdtree		## removed
 if (vim.g.plugs["nerdtree"] ~= nil) then
-	vim.keymap.set('n','<C-n>',':NERDTree<CR>', {silent= true})
-	vim.keymap.set('n','<C-h>',':NERDTreeToggle<CR>', {silent= true})
+	vim.keymap.set('n','<C-n>','<cmd>NERDTree<CR>', {silent= true})
+	vim.keymap.set('n','<C-h>','<cmd>NERDTreeToggle<CR>', {silent= true})
 end
 
 --	##	telescope
@@ -131,7 +131,7 @@ end
 
 --	##	chatGPT integration
 if (vim.g.plugs["chatgpt.nvim"] ~= nil) then
-	vim.keymap.set('n','<Leader>cc',':ChatGPT<CR><Esc>', {silent=true})		-- gpt chat
-	vim.keymap.set('v','<Leader>c',':ChatGPTEditWithIstruction<CR>', {silent=true})		-- gpt with prompt
-	vim.keymap.set('n','<Leader>cr',':ChatGPTRun', {silent=true})		-- gpt precise action
+	vim.keymap.set('n','<Leader>cc','<cmd>ChatGPT<CR><Esc>', {silent=true})		-- gpt chat
+	vim.keymap.set('v','<Leader>c','<cmd>ChatGPTEditWithIstruction<CR>', {silent=true})		-- gpt with prompt
+	vim.keymap.set('n','<Leader>cr','<cmd>ChatGPTRun', {silent=true})		-- gpt precise action
 end

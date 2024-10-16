@@ -8,17 +8,6 @@ local init_msg = [[
 ]]
 
 if vim.g.plugs["chatgpt.nvim"] ~= nil then
-	--	##	set link to actions		--i didn't like the 3.5 function, too expensive
---[[
-	local src = vim.fs.normalize('~/.config/nvim/actions.json')
-	local dest = vim.fs.normalize('~/.local/share/nvim/plugged/chatgpt.nvim/lua/chatgpt/flows/actions/actions.json')
-	if (vim.uv.fs_stat(dest) == nil) then
-		vim.uv.fs_link(src,dest)
-	elseif (vim.uv.fs_stat(src).ino ~= vim.uv.fs_stat(dest).ino) then
-		vim.uv.fs_unlink(dest)
-		vim.uv.fs_link(src,dest)
-	end
---]]
 	--	##	setup
 	require('chatgpt').setup({
 		edit_with_instructions = {
