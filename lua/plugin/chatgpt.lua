@@ -45,7 +45,7 @@ if vim.g.plugs["chatgpt.nvim"] ~= nil then
 		openai_edit_params = {
 			model = "gpt-4o-mini",
 		},
-		predefined_chat_gpt_prompts = "https://raw.githubusercontent.com/SMicucci/SMicucci-nvim-startup/refs/heads/master/prompts.csv",
+		predefined_chat_gpt_prompts = "https://raw.githubusercontent.com/SMicucci/SMicucci-nvim-startup/refs/heads/prompts/prompts.csv",
 		highlights = {
 			params_value = "Character",
 			active_session = "Conditional",
