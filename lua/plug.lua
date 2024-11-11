@@ -11,6 +11,12 @@ vim.call('plug#begin')
 	Plug('neovim/nvim-lspconfig')
 	Plug('williamboman/mason.lspconfig.nvim')
 
+--	DAP
+	Plug('mfussenegger/nvim-dap')
+	Plug('nvim-neotest/nvim-nio')
+	Plug('rcarriga/nvim-dap-ui')
+	Plug('jay-babu/mason-nvim-dap.nvim')
+
 --	nvim-cmp
 	Plug('hrsh7th/nvim-cmp')
 	Plug('hrsh7th/cmp-nvim-lsp')
@@ -19,6 +25,9 @@ vim.call('plug#begin')
 	Plug('hrsh7th/cmp-cmdline')
 	Plug('ray-x/cmp-treesitter')
 	Plug('jezda1337/nvim-html-css')
+
+--	autopairs
+	Plug('windwp/nvim-autopairs')
 
 --	vs snip for cmp (wip)
 	Plug('hrsh7th/cmp-vsnip')
@@ -46,9 +55,6 @@ vim.call('plug#begin')
 
 --	initial screen
 	Plug('goolord/alpha-nvim')
-
---	support CSV
---	Plug('mechatroner/rainbow_csv')	-- doesn't work F
 
 --	transparent
 	Plug('xiyaowong/transparent.nvim')

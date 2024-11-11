@@ -15,14 +15,15 @@ if (vim.g.plugs["telescope.nvim"] ~= nil) then
 		}
 	}
 
+	--	use this string as vimregex
 	local ignore_patterns = {
 				'node_modules',
 				'obj',
 				'bin',
-				'.git',
-				'.vs',
+				'%.git',
+				'%.vs',
 				'tags',
-				'.vim',
+				'%.vim',
 			}
 
 	require('telescope').setup {

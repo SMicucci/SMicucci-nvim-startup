@@ -107,4 +107,59 @@ if (vim.g.plugs["nvim-cmp"] ~= nil) then
 		matching = { disallow_symbol_nonprefix_matching = false },
 		experimental = { ghost_text = true },
 	})
+
+	--	check if autopairs is installed and initialize
+	if (vim.g.plugs["nvim-autopairs"] ~= nil and vim.g.plugs["nvim-treesitter"] ~= nil) then
+		--	setting plugin
+		require("nvim-autopairs").setup({
+			check_ts = true,
+			ts_config = {
+				lua = {'string'},
+				javascipt = {'template_string'},
+				java = false,
+			}
+		})
+
+		--	add same rule for '<>'
+		require("nvim-autopairs").add_rule(require("nvim-autopairs.rule")('<', '>', {
+			'-html',
+			'-javascriptreact',
+			'-typescriptreact',
+		}):with_pair(
+			require("nvim-autopairs.conds").before_regex('%a+:?:?$', 3)
+		):with_move(function(opts)
+			return opts.char =='>'
+		end))
+
+		--	inserting in autocompletion (?)
+		local npairs = require("nvim-autopairs.completion.cmp")
+		local ts_utils = require("nvim-treesitter.ts_utils")
+
+		local ts_node_func_parens_disabled = {
+			-- ecma
+			named_imports = true,
+			-- rust
+			use_declaration = true,
+		}
+
+		local default_handler = npairs.filetypes["*"]["("].handler
+		npairs.filetypes["*"]["("].handler = function(char, item, bufnr, rules, commit_character)
+			local node_type = ts_utils.get_node_at_cursor():type()
+			if ts_node_func_parens_disabled[node_type] then
+				if item.data then
+					item.data.funcParensDisabled = true
+				else
+					char = ""
+				end
+			end
+			default_handler(char, item, bufnr, rules, commit_character)
+		end
+
+		cmp.event:on(
+		"confirm_done",
+		npairs.on_confirm_done({
+			sh = false,
+		})
+		)
+	end
 end

@@ -31,7 +31,50 @@ require('mason').setup()
 
 
 -- mason-lspconfig install servers
-require('mason-lspconfig').setup()
+require('mason-lspconfig').setup({
+	ensure_installed = {
+		--	#	asm lsp
+		--'asm_lsp',
+		--	#	bash lsp
+		'bashls',
+		--	#	C# lsp
+		'csharp_ls',
+		--	#	C/C++ lsp
+		'clangd',
+		--	#	CSS lsp
+		'cssls',
+		--	#	Docker lsp
+		'dockerls',
+		--	#	GO lsp
+		--'gopls',
+		--	#	HTML lsp
+		'html',
+		--	#	javsacript lsp
+		'ts_ls',
+		--	#	JSON lsp
+		'jsonls',
+		--	#	LaTex lsp
+		--'texlab',
+		--	#	Lua lsp
+		'lua_ls',
+		--	#	Markdown lsp
+		--'remark_ls',
+		--	#	Python lsp
+		--'pyright',
+		--	# Ruby lsp
+		--'ruby_lsp',
+		--	#	Rust lsp
+		--'rust_analyzer',
+		--	#	SQL lsp
+		'sqlls',
+		--	#	tailwindCss lsp
+		'tailwindcss',
+		--	#	XML lsp
+		'lemminx',
+		--	#	YAML lsp
+		'yamlls',
+	}
+})
 
 --	mason-lspconfig handler
 require('mason-lspconfig').setup_handlers({

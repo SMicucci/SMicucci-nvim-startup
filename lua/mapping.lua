@@ -70,7 +70,7 @@ if (vim.g.plugs["harpoon"] == nil) then
 	end
 	vim.keymap.set('n', '<leader>bn','<cmd>bnext<CR>', {silent= true})
 	vim.keymap.set('n', '<leader>bp','<cmd>bprev<CR>', {silent= true})
-	vim.keymap.set('n', '<leader>bd','<cmd>split<CR><cmd>bn<CR><C-W><C-W><cmd>bd<CR>', {silent= true})	--	split, bn, switch window, delete prev buffer
+	vim.keymap.set('n', '<leader>bd','<cmd>split<CR><cmd>bp<CR><C-W><C-W><cmd>bd<CR>', {silent= true})	--	split, bn, switch window, delete prev buffer
 end
 
 --	##	transparent.nvim
@@ -95,7 +95,6 @@ if (vim.g.plugs["telescope.nvim"] ~= nil) then
 	local actions = require('telescope.actions')
 	vim.keymap.set('n','<Leader>ff',builtin.find_files, {})
 	vim.keymap.set('n','<Leader>bb',builtin.buffers, {})
-	--vim.keymap.set('n','<Leader>fg',builtin.git_files, {})
 	vim.keymap.set('n','<Leader>fd',builtin.lsp_references, {})
 	vim.keymap.set('n','<Leader>fr',builtin.live_grep, {})
 	vim.keymap.set('n','<Leader>fh',builtin.lsp_definitions, {})
@@ -106,6 +105,7 @@ if (vim.g.plugs["telescope.nvim"] ~= nil) then
 	--]]
 end
 
+--	##	autosession
 if ( vim.g.plugs["auto-session"] ~= nil ) then
 	vim.keymap.set('n','<Leader>fs','<cmd>SessionSearch<CR>', { silent= true })
 	vim.keymap.set('n','<Leader>ss','<cmd>SessionSave<CR>', { silent= true })
@@ -127,6 +127,29 @@ if (vim.g.plugs["gitsigns.nvim"] ~= nil) then
 	vim.keymap.set('n','<Leader>gd',function()
 		gitsigns.diffthis(nil, {vertical = true})
 	end)
+end
+
+--	##	dap
+if (vim.g.plugs["nvim-dap"] ~= nil and vim.g.plugs["nvim-dap"] ~= nil) then
+	local dap = require("dap")
+	local dapui = require("dapui")
+	vim.keymap.set('n', '<Leader>db', dap.toggle_breakpoint, { desc = 'add breakpoint' })
+	vim.keymap.set('n', '<Leader>dd', dapui.toggle, { desc = 'toggle debugger UI' })
+	vim.keymap.set('n', '<Leader>de', dap.repl.open, { desc = 'open repl(?)' })
+	vim.keymap.set('n', '<Leader>dc',  dap.continue, { desc = 'debugger continue/run' })
+	vim.keymap.set('n', '<Leader>dn', dap.step_over, { desc = 'debugger next instruction' })
+	vim.keymap.set('n', '<Leader>di', dap.step_into, { desc = 'debugger enter instruction' })
+	vim.keymap.set('n', '<Leader>do', dap.step_out, { desc = 'debugger exit instruction' })
+	vim.keymap.set('n', '<Leader>de', dap.run_last, { desc = 'debugger exit instruction' })
+	--	##	not leader keymap equivalent
+	vim.keymap.set('n', '<space>b', dap.toggle_breakpoint, { desc = 'add breakpoint' })
+	vim.keymap.set('n', '<space>B', dap.toggle_breakpoint, { desc = 'add breakpoint' })
+	vim.keymap.set('n', '<F5>',  dap.continue, { desc = 'debugger continue/run' })
+	vim.keymap.set('n', '<space>n', dap.step_over, { desc = 'debugger next instruction' })
+	vim.keymap.set('n', '<space>i', dap.step_into, { desc = 'debugger enter instruction' })
+	vim.keymap.set('n', '<space>o', dap.step_out, { desc = 'debugger exit instruction' })
+	vim.keymap.set('n', '<space>e', dap.run_last, { desc = 'debugger exit instruction' })
+	--	##	not leader keymap equivalent
 end
 
 --	##	chatGPT integration
