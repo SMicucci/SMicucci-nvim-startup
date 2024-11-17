@@ -26,6 +26,9 @@ vim.call('plug#begin')
 	Plug('ray-x/cmp-treesitter')
 	Plug('jezda1337/nvim-html-css')
 
+--	comment doc-like
+	Plug('danymat/neogen')
+
 --	autopairs
 	Plug('windwp/nvim-autopairs')
 
