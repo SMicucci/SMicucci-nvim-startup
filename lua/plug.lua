@@ -66,6 +66,7 @@ vim.call('plug#begin')
 --	Plug('preservim/nerdtree')
 
 --	trying to fix C# lsp		# was required just to build in linux the project lmao
+	Plug('Hoffs/omnisharp-extended-lsp.nvim')
 	Plug('oranget/vim-csharp')
 	Plug('Decodetalkers/csharpls-extended-lsp.nvim')
 

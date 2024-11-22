@@ -1,20 +1,24 @@
 -- setup lspconfig on_attach var
 local on_attach = function(client, buf)
 	local nmap = function(keys, func, desc)
+		if func == nil then
+			vim.notify('lsp mapping skipped => ' .. keys .. '(func is nil)',vim.log.levels.WARN);
+		end
 		vim.keymap.set('n', keys, func, { buffer = buf, desc = 'LSP: ' .. desc })
 	end
 
 	if vim.g.plugs["omnisharp-extended-lsp.nvim"] ~= nil and client.name == 'omnisharp' then
-		nmap('gd', require('omnisharp_extended').telescope_lsp_definition, '[G]oto [D]efinition')
+		nmap('gd', function() require('omnisharp_extended').telescope_lsp_definitions({ jump_type = "vsplit" }) end, '[G]oto [D]efinition')
 		nmap('gr', require('omnisharp_extended').telescope_lsp_references, '[G]oto [R]eference')
 		nmap('<Leader>D', require('omnisharp_extended').telescope_lsp_type_definitions, 'Type [D]efinition')
 	else
 		if vim.g.plugs["telescope.nvim"] ~= nil then
-			nmap('gd', require('telescope.builtin').lsp_definition, '[G]oto [D]efinition')
+			nmap('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
 			nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eference')
 			nmap('<Leader>D', require('telescope.builtin').lsp_type_definitions, 'Type [D]efinition')
 		end
 	end
+	
 	if vim.g.plugs["telescope.nvim"] ~= nil then
 		nmap('<Leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
 	end
@@ -38,7 +42,7 @@ require('mason-lspconfig').setup({
 		--	#	bash lsp
 		'bashls',
 		--	#	C# lsp
-		'csharp_ls',
+		'omnisharp',
 		--	#	C/C++ lsp
 		'clangd',
 		--	#	CSS lsp
@@ -120,5 +124,5 @@ require('mason-lspconfig').setup_handlers({
 				},
 			},
 		}
-	end
+	end,
 })
