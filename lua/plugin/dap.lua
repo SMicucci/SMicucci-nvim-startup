@@ -27,12 +27,12 @@ if vim.g.plugs["nvim-dap"] ~= nil then
 	--		language adapter
 	--	####################
 
-	local mason_path = vim.fn.stdpath("data") .. '/mason/packages/'
+	local mason_path = vim.fn.stdpath("data") .. '/mason/bin/'
 
 	--	##	Bash
 	dap.adapters.bashdb = {
 		type = 'executable';
-		command = mason_path .. 'bash-debug-adapter/bash-debug-adapter';
+		command = mason_path .. 'bash-debug-adapter';
 		name = 'bashdb';
 	}
 	dap.configurations.sh = {
@@ -41,8 +41,8 @@ if vim.g.plugs["nvim-dap"] ~= nil then
 			request = 'launch';
 			name = "Launch file";
 			showDebugOutput = true;
-			pathBashdb = mason_path .. 'bash-debug-adapter/extension/bashdb_dir/bashdb';
-			pathBashdbLib = mason_path .. 'bash-debug-adapter/extension/bashdb_dir';
+			pathBashdb = mason_path .. 'bashdb';
+			pathBashdbLib = mason_path .. '..';
 			trace = true;
 			file = "${file}";
 			program = "${file}";
@@ -57,13 +57,12 @@ if vim.g.plugs["nvim-dap"] ~= nil then
 		}
 	}
 
-
 	--	##	C/C++/Rust/Zig
 	dap.adapters.codelldb = {
 		type = 'server',
 		port = "${port}",
 		executable = {
-			command = mason_path .. 'codelldb/extension/adapter/codelldb',
+			command = mason_path .. 'codelldb',
 			args = {"--port", "${port}"},
 			--detached = false,	-- On windows you may have to uncomment this
 		}
@@ -87,7 +86,7 @@ if vim.g.plugs["nvim-dap"] ~= nil then
 	--	##	C#, F#
 	dap.adapters.coreclr = {
 		type = 'executable',
-		command = mason_path .. 'netcoredbg/netcoredbg',
+		command = mason_path .. 'netcoredbg',
 		args = {'--interpreter=vscode'}
 	}
 	dap.configurations.cs = {
@@ -102,6 +101,7 @@ if vim.g.plugs["nvim-dap"] ~= nil then
 	}
 
 	--	##	Go
+	--{{
 	dap.adapters.delve = function(callback, config)
 		if config.mode == 'remote' and config.request == 'attach' then
 			callback({
@@ -145,25 +145,30 @@ if vim.g.plugs["nvim-dap"] ~= nil then
 			program = "./${relativeFileDirname}"
 		} 
 	}
-
+	--}}
 
 	--	##	javascript
-	dap.adapters.node2 = {
-		type = 'executable',
-		command = 'node',
-		args = {mason_path .. 'node-debug2-adapter/out/src/nodeDebug.js'},
+	--	##	typescript
+	dap.adapters.node = {
+		type = "executable",
+		command = "bash",
+		args = { mason_path .. 'node-debug2-adapter' }
 	}
-	dap.configurations.javascript = {
+	dap.configurations.typescript = {
 		{
-			name = 'Launch',
-			type = 'node2',
-			request = 'launch',
-			program = '${file}',
-			cwd = vim.fn.getcwd(),
-			sourceMaps = true,
-			protocol = 'inspector',
-			console = 'integratedTerminal',
-		}
+			name = "Launch node",
+			type = "node",
+			request = "launch",
+			runtimeArgs = { "--inspect", "-r", "ts-node/register" },
+			runtimeExecutable = "node",
+			args = { "${file}" },
+			--port = 9229,
+			cwd = "${workspaceFolder}",
+			skipFiles = { "node_modules/**" },
+			console = "integratedTerminal",
+		},
 	}
+
+	dap.set_log_level('DEBUG')
 
 end
