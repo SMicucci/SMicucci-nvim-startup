@@ -30,9 +30,9 @@ M.nmap('<leader>s','<cmd>w<CR>', '[s]ave')
 M.nmap('<leader>e','<cmd>Ex<CR>', '[e]xplore current directory')
 M.nmap('<leader>x','<cmd>so %<CR>', 'e[x]ecute current buffer')
 M.nmap('<leader>h',':vertical botright help ', 'trigger [h]elp', false)
-M.nmap('n','nz<CR>3<C-y>$', 'title next match')
-M.nmap('N','Nz<CR>3<C-y>_', 'title prev match')
-M.nmap('#','z<CR>3<C-y>', 'select and title it')
+M.nmap('n','nz<CR>2<C-y>$', 'title next match')
+M.nmap('N','Nz<CR>2<C-y>_', 'title prev match')
+M.nmap('#','z<CR>2<C-y>', 'select and title it')
 M.nmap('<leader>*','<cmd>let @/=""<CR>', 'Reset search register')
 
 -- buffer mapping

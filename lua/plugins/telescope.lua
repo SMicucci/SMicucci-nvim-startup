@@ -1,13 +1,14 @@
 return {
   "nvim-telescope/telescope.nvim",
   branch = '0.1.x',
-  lazy = true,
-  event = 'VeryLazy',
+  lazy = false,
+  -- event = 'VeryLazy',
   dependencies = {
     {"nvim-lua/plenary.nvim" },
     {"muniftanjim/nui.nvim" },
   },
   config = function()
+
     -- delete action made for some picker
     local delete_action = function (bufnr)
       local builtin = require'telescope.builtin'
@@ -36,6 +37,7 @@ return {
         end)
       end
     end
+
     -- git picker with fallback
     local custom_file_picker = function ()
       local builtin = require'telescope.builtin'
@@ -46,6 +48,7 @@ return {
         builtin.find_files()
       end
     end
+
     -- setup custom mapping
     local map = {
       i = {
@@ -65,6 +68,7 @@ return {
         ['<C-Down>'] = "cycle_history_next",
       }
     }
+
     --	use this string as vimregex
     local ignore_patterns = {
       'node_modules',
@@ -76,6 +80,7 @@ return {
       '%.vim',
     }
 
+    -- setup telescope
     require('telescope').setup {
       defaults = {
         path_display = "truncate",
@@ -85,7 +90,6 @@ return {
         selection_caret = ' ',
       },
       pickers = {
-        find_files = { file_ignore_patterns = ignore_patterns },
         git_files = { file_ignore_patterns = ignore_patterns },
         live_grep = { file_ignore_patterns = ignore_patterns },
       }
@@ -104,7 +108,6 @@ return {
     k.nmap('<leader>fm',builtin.marks, '[f]ind [m]arks')
     k.nmap('<leader>fh',builtin.help_tags, '[f]ind [h]elp')
     k.nmap('gd',builtin.lsp_definitions,'[g]oto [d]efinition')
-    -- k.nmap('gD',builtin.lsp_implementations,'[g]oto [D]eclaration')
     k.nmap('gR',builtin.lsp_references,'[g]oto [R]eference')
 
   end,
