@@ -2,26 +2,32 @@
 
 -- functions table
 local M = {}
-M.nmap = function(keys, command, desc, sil)
-  if sil == nil then sil = true end
-  if vim.fn.maparg(keys,'n') ~= "" then
+M.nmap = function(keys, command, desc, opts)
+  opts = opts or {}
+  if vim.fn.maparg(keys,'n') ~= "" and not opts.buffer then
     vim.keymap.del('n', keys)
   end
-  vim.keymap.set('n', keys, command, { desc = desc, silent = sil })
+  assert(not opts.desc, 'keymap desc must be assigned on argument')
+  opts.desc= desc
+  vim.keymap.set('n', keys, command, opts)
 end
-M.vmap = function(keys, command, desc, sil)
-  if sil == nil then sil = true end
-  if vim.fn.maparg(keys,'v') ~= "" then
+M.vmap = function(keys, command, desc, opts)
+  opts = opts or {}
+  if vim.fn.maparg(keys,'v') ~= "" and not opts.buffer then
     vim.keymap.del('v', keys)
   end
-  vim.keymap.set('v', keys, command, { desc = desc, silent = true })
+  assert(not opts.desc, 'keymap desc must be assigned on argument')
+  opts.desc= desc
+  vim.keymap.set('v', keys, command, opts)
 end
-M.imap = function(keys, command, desc, sil)
-  if sil == nil then sil = true end
-  if vim.fn.maparg(keys,'i') ~= "" then
+M.imap = function(keys, command, desc, opts)
+  opts = opts or {}
+  if vim.fn.maparg(keys,'i') ~= "" and not opts.buffer then
     vim.keymap.del('i', keys)
   end
-  vim.keymap.set('i', keys, command, { desc = desc, silent = true })
+  assert(not opts.desc, 'keymap desc must be assigned on argument')
+  opts.desc= desc
+  vim.keymap.set('i', keys, command, opts)
 end
 
 -- default behaviour
@@ -29,11 +35,12 @@ M.nmap('<leader>q','<cmd>q<CR>', '[q]uit')
 M.nmap('<leader>s','<cmd>w<CR>', '[s]ave')
 M.nmap('<leader>e','<cmd>Ex<CR>', '[e]xplore current directory')
 M.nmap('<leader>x','<cmd>so %<CR>', 'e[x]ecute current buffer')
-M.nmap('<leader>h',':vertical botright help ', 'trigger [h]elp', false)
+M.nmap('<leader>h',':vertical botright help ', 'trigger [h]elp', { silent = false})
 M.nmap('n','nz<CR>2<C-y>$', 'title next match')
 M.nmap('N','Nz<CR>2<C-y>_', 'title prev match')
 M.nmap('#','z<CR>2<C-y>', 'select and title it')
 M.nmap('<leader>*','<cmd>let @/=""<CR>', 'Reset search register')
+M.nmap('<leader>\'',function() vim.opt.wrap = not vim.opt.wrap:get() end,'switch wrap setting')
 
 -- buffer mapping
 M.nmap('<leader>bb','<cmd>buffers<CR>','[b]uffers list')

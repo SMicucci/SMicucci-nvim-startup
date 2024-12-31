@@ -47,10 +47,10 @@ return {
         config = {
           header = dashboard_custom_header,
           center = {
-            shortcut('L','Lazy config','󰒲 ','Lazy'),
             shortcut('ff','Find Files',' ','Telescope find_files'),
             shortcut('fr','Grep Files','󰦨 ','Telescope live_grep'),
             shortcut('gf','Git Fugitive','󰊢 ','Git'),
+            shortcut('L','Lazy config','󰒲 ','Lazy'),
           },
           -- footer = {},
           layout_config = {

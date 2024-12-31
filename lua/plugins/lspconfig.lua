@@ -2,18 +2,7 @@ return {
   {
     "neovim/nvim-lspconfig",
     lazy = true,
-    ft = {
-      "bash",
-      "c",
-      "cpp",
-      "docker",
-      "go",
-      "html",
-      "javascript",
-      "json",
-      "lua",
-      "typescript"
-    },
+    event = 'VeryLazy',
     dependencies = {
       {
         "folke/lazydev.nvim",

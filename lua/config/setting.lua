@@ -14,3 +14,9 @@ set.expandtab = true
 set.shiftwidth = 4
 set.tabstop = 4
 vim.cmd '%retab!'
+
+--[[
+copied text stay in register '+'
+selected text (linux) stay in register '*'
+(yes, isn't required <C-c> if selected to yank it on nvim)
+--]]
