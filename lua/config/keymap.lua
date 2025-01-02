@@ -29,6 +29,15 @@ M.imap = function(keys, command, desc, opts)
   opts.desc= desc
   vim.keymap.set('i', keys, command, opts)
 end
+M.tmap = function(keys, command, desc, opts)
+  opts = opts or {}
+  if vim.fn.maparg(keys,'t') ~= "" and not opts.buffer then
+    vim.keymap.del('t', keys)
+  end
+  assert(not opts.desc, 'keymap desc must be assigned on argument')
+  opts.desc= desc
+  vim.keymap.set('t', keys, command, opts)
+end
 
 -- default behaviour
 M.nmap('<leader>q','<cmd>q<CR>', '[q]uit')
@@ -36,8 +45,8 @@ M.nmap('<leader>s','<cmd>w<CR>', '[s]ave')
 M.nmap('<leader>e','<cmd>Ex<CR>', '[e]xplore current directory')
 M.nmap('<leader>x','<cmd>so %<CR>', 'e[x]ecute current buffer')
 M.nmap('<leader>h',':vertical botright help ', 'trigger [h]elp', { silent = false})
-M.nmap('n','nz<CR>2<C-y>$', 'title next match')
-M.nmap('N','Nz<CR>2<C-y>_', 'title prev match')
+M.nmap('n','nzz', 'center next match')
+M.nmap('N','Nzz', 'center prev match')
 M.nmap('#','z<CR>2<C-y>', 'select and title it')
 M.nmap('<leader>*','<cmd>let @/=""<CR>', 'Reset search register')
 M.nmap('<leader>\'',function() vim.opt.wrap = not vim.opt.wrap:get() end,'switch wrap setting')
@@ -64,6 +73,8 @@ M.nmap('gh',function() vim.lsp.buf.code_action() end,'[g]et [h]elp')
 M.nmap('gd',function() vim.lsp.buf.definition() end,'[g]oto [d]efinition')
 M.nmap('gD',function() vim.lsp.buf.declaration() end,'[g]oto [D]eclaration')
 M.nmap('gR',function() vim.lsp.buf.references() end,'[g]oto [R]eference')
+
+M.tmap('<Esc>','<C-\\><C-n>','exit from terminal')
 
 -- export functions
 return M

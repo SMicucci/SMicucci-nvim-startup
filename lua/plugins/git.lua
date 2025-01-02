@@ -6,6 +6,7 @@ return {
     config = function ()
       local k = require('config.keymap')
       k.nmap('<leader>gf','<cmd>Git<CR><C-W>T','open [G]it [F]ugitive')
+      k.nmap('<leader>gd','<cmd>Gvdiffsplit<CR>','open [G]it [D]iff')
     end,
   },
   {
@@ -31,13 +32,6 @@ return {
           gs.toggle_linehl()
         end,
         'trigger [G]it [B]lame view'
-      )
-      k.nmap(
-        '<leader>gd',
-        function ()
-          gs.diffthis(nil, {vertical = true})
-        end,
-        'trigger [G]it(signs) [D]iff'
       )
     end
   }
