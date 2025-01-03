@@ -204,7 +204,6 @@ return {
       }
       --}}
 
-      --	##	javascript
       --	##	typescript
       dap.adapters.node = {
         type = "executable",

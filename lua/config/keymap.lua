@@ -74,6 +74,7 @@ M.nmap('gd',function() vim.lsp.buf.definition() end,'[g]oto [d]efinition')
 M.nmap('gD',function() vim.lsp.buf.declaration() end,'[g]oto [D]eclaration')
 M.nmap('gR',function() vim.lsp.buf.references() end,'[g]oto [R]eference')
 
+-- terminal mapping
 M.tmap('<Esc>','<C-\\><C-n>','exit from terminal')
 
 -- export functions
