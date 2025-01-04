@@ -210,6 +210,7 @@ return {
         ['<C-k>'] = { 'scroll_documentation_up', 'fallback' },
         ['<M-Tab>'] = { 'snippet_backward', 'fallback' },
         ['<S-Tab>'] = {},
+        ['<C-h>'] = { 'show_documentation', 'hide_documentation' },
       },
       appearance = {
         use_nvim_cmp_as_default = true,

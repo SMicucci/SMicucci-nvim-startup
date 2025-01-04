@@ -77,5 +77,14 @@ M.nmap('gR',function() vim.lsp.buf.references() end,'[g]oto [R]eference')
 -- terminal mapping
 M.tmap('<Esc>','<C-\\><C-n>','exit from terminal')
 
+-- quickfix integrated
+M.nmap('<leader>c','<cmd>cwindow 8<CR>','open qflist')
+M.nmap('<leader>cn','<cmd>cnext<CR>','qflist next entry')
+M.nmap('<leader>cj','<cmd>cnext<CR>','qflist next entry')
+M.nmap('<leader>cp','<cmd>cNext<CR>','qflist prev entry')
+M.nmap('<leader>ck','<cmd>cNext<CR>','qflist prev entry')
+M.nmap('<leader>cm','<cmd>make<CR><cmd>cwindow 8<CR>','open qflist')
+-- M.nmap('<leader>c','<cmd>cwindow 8<CR>','open qflist')
+
 -- export functions
 return M
