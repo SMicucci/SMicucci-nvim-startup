@@ -109,7 +109,7 @@ return {
     k.nmap('<leader>fh',builtin.help_tags, '[f]ind [h]elp')
     k.nmap('<leader>fc',builtin.quickfix, '[f]ind qui[c]kfix')
     k.nmap('gd',builtin.lsp_definitions,'[g]oto [d]efinition')
-    k.nmap('gR',builtin.lsp_references,'[g]oto [R]eference')
+    k.nmap('gr',builtin.lsp_references,'[g]oto [R]eference')
 
   end,
 }

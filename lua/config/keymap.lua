@@ -72,7 +72,9 @@ M.nmap('<leader>tn','<cmd>tabnew<CR>', 'create new [t]ab')
 M.nmap('gh',function() vim.lsp.buf.code_action() end,'[g]et [h]elp')
 M.nmap('gd',function() vim.lsp.buf.definition() end,'[g]oto [d]efinition')
 M.nmap('gD',function() vim.lsp.buf.declaration() end,'[g]oto [D]eclaration')
-M.nmap('gR',function() vim.lsp.buf.references() end,'[g]oto [R]eference')
+M.nmap('gr',function() vim.lsp.buf.references() end,'[g]oto [R]eference')
+M.nmap('gR',function() vim.lsp.buf.rename() end,'[g]oto [R]ename')
+M.imap('<C-r>',function() vim.lsp.buf.rename() end,'[g]oto [R]ename')
 
 -- terminal mapping
 M.tmap('<Esc>','<C-\\><C-n>','exit from terminal')

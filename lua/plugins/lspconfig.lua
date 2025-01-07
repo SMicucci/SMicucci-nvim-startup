@@ -17,34 +17,54 @@ return {
       },
       {
         "williamboman/mason.nvim",
-        opts = {}
-      },
-      {
-        "williamboman/mason-lspconfig.nvim",
         opts = {
-          ensure_installed = { 'lua_ls', 'clangd', 'omnisharp' },
-          automatic_installed = true,
+          registries = {
+            "github:mason-org/mason-registry",
+            "github:Crashdummyy/mason-registry"
+          }
         }
       },
+        "williamboman/mason-lspconfig.nvim",
       {
         "Hoffs/omnisharp-extended-lsp.nvim",
         ft = { 'cs', 'html.cshtml' },
       },
     },
     config = function()
-      local mason = require"mason-lspconfig"
-      local lspconf = require"lspconfig"
-      local capabilities = require"blink.cmp".get_lsp_capabilities()
+      local masonlsp = require "mason-lspconfig"
+      local lspconfig = require "lspconfig"
+      local capabilities = require "blink.cmp".get_lsp_capabilities()
 
-      mason.setup_handlers {
+      -- list of ensure_installed plugins
+      local masonconfig = require "plugins.settings.mason"
+      local required = {
+        'clangd',
+        'css-lsp',
+        'html-lsp',
+        'json-lsp',
+        'lua-language-server',
+        'roslyn',
+        'rzls',
+        'tailwindcss-language-server',
+        'typescript-language-server',
+      }
+      masonconfig.default_install(required)
+      masonconfig.auto_update = true
+      local default_setup = {
+        capabilities = capabilities,
+      }
+      local setups = {},
+      -- setups['roslyn'] = {}
+
+      masonlsp.setup_handlers {
         -- default lsp config
         function(server_name)
-          lspconf[server_name].setup {
+          lspconfig[server_name].setup {
             capabilities = capabilities,
           }
         end,
         -- lua_ls neovim config
-        lspconf.lua_ls.setup {
+        lspconfig.lua_ls.setup {
           on_init = function(client)
             if client.workspace_folders then
               local path = client.workspace_folders[1].name
@@ -75,7 +95,7 @@ return {
           },
         },
         -- omnisharp neovim config
-        lspconf.omnisharp.setup {
+        lspconfig.omnisharp.setup {
           capabilities = capabilities,
           cmd = { vim.fn.expand('~/.local/share/nvim/mason/bin/omnisharp') }
         },
