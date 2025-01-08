@@ -28,6 +28,10 @@ end
 
 -- # setup lsp from config
 
+---substitute mason-lspconfig setup_handler
+---get default behaviour and override if required on it custom behaviour
+---@param default_setup table? default behaviour like capabilities or other (overridable from custom)
+---@param custom_setup_table table? contiain table or function of custmo behaviour for each lsp entry (mason or lspconfig name)
 M.setup_lsp_server = function (default_setup, custom_setup_table)
   -- args are optional
   default_setup = default_setup or {}
@@ -41,10 +45,18 @@ M.setup_lsp_server = function (default_setup, custom_setup_table)
     if pkg.spec.categories[1] == "LSP" then
       -- override custom to default
       local name = translate.m2l(pkg.name)
-      vim.notify(vim.inspect(pkg.name)..' => '..vim.inspect(name),vim.log.levels.WARN)
       if name then
+        custom_setup_table[name] = custom_setup_table[name] or {}
+        assert(type(custom_setup_table[name]) == 'table', string.format('custom setup ["%s"] is not a table',name))
         local override_setup = vim.tbl_deep_extend('force',default_setup,custom_setup_table[name] or {})
         lspconfig[name].setup(override_setup)
+      else
+        name = pkg.name
+        custom_setup_table[name] = custom_setup_table[name] or function() end
+        assert(type(custom_setup_table[name]) == 'function', string.format('["%s"] require a function, not supported by _lspconfig_',name))
+        -- vim.notify('eseguento la funzione per l\'LSP custom\n',vim.log.levels.INFO)
+        pcall(custom_setup_table[name])
+        -- vim.notify('funzione eseguita\n',vim.log.levels.INFO)
       end
     end
   end

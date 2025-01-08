@@ -74,7 +74,7 @@ M.nmap('gd',function() vim.lsp.buf.definition() end,'[g]oto [d]efinition')
 M.nmap('gD',function() vim.lsp.buf.declaration() end,'[g]oto [D]eclaration')
 M.nmap('gr',function() vim.lsp.buf.references() end,'[g]oto [R]eference')
 M.nmap('gR',function() vim.lsp.buf.rename() end,'[g]oto [R]ename')
-M.imap('<C-r>',function() vim.lsp.buf.rename() end,'[g]oto [R]ename')
+M.imap('<C-R>',function() vim.lsp.buf.rename() end,'[g]oto [R]ename')
 
 -- terminal mapping
 M.tmap('<Esc>','<C-\\><C-n>','exit from terminal')
@@ -89,8 +89,8 @@ M.nmap('<leader>cm','<cmd>make<CR><cmd>cwindow 8<CR>','open qflist')
 -- M.nmap('<leader>c','<cmd>cwindow 8<CR>','open qflist')
 
 -- fold custom integration
-M.imap('<C-o>','<cmd>FoldToggle<CR>','trigger f[O]ldtoggle command')
 M.nmap('<C-o>','<cmd>FoldToggle<CR>','trigger f[O]ldtoggle command')
+M.imap('<C-o>','<cmd>FoldToggle<CR>','trigger f[O]ldtoggle command')
 
 -- export functions
 return M
