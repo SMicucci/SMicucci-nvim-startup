@@ -49,7 +49,7 @@ return {
           center = {
             shortcut('ff','Find Files',' ','Telescope find_files'),
             shortcut('fr','Grep Files','󰦨 ','Telescope live_grep'),
-            shortcut('gf','Git Fugitive','󰊢 ','Git'),
+            shortcut('gf','Git Fugitive','󰊢 ','tabnew | Git | only'),
             shortcut('L','Lazy config','󰒲 ','Lazy'),
           },
           -- footer = {},

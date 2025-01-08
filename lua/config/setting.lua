@@ -9,6 +9,11 @@ set.termguicolors = true
 set.wildmenu = true
 set.wildoptions = 'pum'
 set.wildmode = 'full'
+-- folding
+set.foldmethod = 'marker'
+set.foldmarker = '{{{,}}}' -- default
+set.foldclose = 'all'
+set.foldenable = true
 -- tabs in vim => #3
 set.expandtab = true
 set.shiftwidth = 4

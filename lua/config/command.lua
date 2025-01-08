@@ -1,8 +1,11 @@
-local au = vim.api.nvim_create_autocmd
-local cmd = vim.api.nvim_create_user_command
+local M = {}
+M.au = vim.api.nvim_create_autocmd
+M.aug = vim.api.nvim_create_augroup
+M.cmd = vim.api.nvim_create_user_command
 
--- terminal configuration made by autocommand
-au('termopen', {
+local terminal = M.aug('terminal',{clear = true, })
+M.au('termopen', {
+  group = terminal,
   callback = function ()
       vim.opt_local.number = false
       vim.opt_local.relativenumber = false
@@ -10,8 +13,23 @@ au('termopen', {
   desc = 'configure options for terminal'
 })
 
+M.cmd('FoldToggle',function ()
+  if vim.fn.foldclosed('.') ~= -1 then
+    vim.cmd('normal! zo')
+  else
+    vim.cmd('normal! zc')
+    if vim.fn.foldclosed('.') == vim.fn.line('.') then
+      vim.cmd('normal! j')
+    end
+  end
+end,{
+    desc = 'toggle fold element'
+  }
+)
+
 -- wrapper for :grep with 'rg' or cascade to 'grep' or 'vimgrep'
-cmd('Find', function (opts)
+-- TODO: end this command
+M.cmd('Find', function (opts)
   -- grep can't search nothing
   if #opts.fargs == 0 then
     vim.notify('Find require at least one word to grep into work directory',vim.log.levels.WARN)
@@ -28,4 +46,10 @@ cmd('Find', function (opts)
     end
   end
   print(regex)
-end, { nargs = '*', desc = 'wrapper for :grep with \'rg\' or cascade to \'grep\' or \'vimgrep\'' })
+end, {
+    nargs = '*',
+    desc = 'wrapper for :grep with \'rg\' or cascade to \'grep\' or \'vimgrep\''
+  }
+)
+
+return M

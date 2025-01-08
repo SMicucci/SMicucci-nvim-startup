@@ -88,5 +88,9 @@ M.nmap('<leader>ck','<cmd>cNext<CR>','qflist prev entry')
 M.nmap('<leader>cm','<cmd>make<CR><cmd>cwindow 8<CR>','open qflist')
 -- M.nmap('<leader>c','<cmd>cwindow 8<CR>','open qflist')
 
+-- fold custom integration
+M.imap('<C-o>','<cmd>FoldToggle<CR>','trigger f[O]ldtoggle command')
+M.nmap('<C-o>','<cmd>FoldToggle<CR>','trigger f[O]ldtoggle command')
+
 -- export functions
 return M
