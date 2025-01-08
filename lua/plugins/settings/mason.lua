@@ -1,6 +1,6 @@
 local lspconfig = require "lspconfig"
 local registry = require "mason-registry"
-local translate = require "plugins.settings.mason-mapping"
+local translate = require "plugins.settings.mason-maps"
 
 local M = {}
 

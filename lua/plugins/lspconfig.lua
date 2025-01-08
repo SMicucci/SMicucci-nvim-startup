@@ -6,6 +6,7 @@ return {
     lazy = true,
     event = 'VeryLazy',
     dependencies = {
+      -- {{{
       {
         "folke/lazydev.nvim",
         ft = {'lua'},
@@ -40,10 +41,12 @@ return {
         "tris203/rzls.nvim",
         enabled = not use_omnisharp,
       }
+      -- }}}
     },
     config = function()
-      local masonlsp = require "mason-lspconfig"
-      local lspconfig = require "lspconfig"
+      -- local masonlsp = require "mason-lspconfig"
+      -- local lspconfig = require "lspconfig"
+      local auto = require 'config.command'
       local capabilities = require "blink.cmp".get_lsp_capabilities()
 
       -- list of ensure_installed plugins
@@ -54,12 +57,18 @@ return {
         'html-lsp',
         'json-lsp',
         'lua-language-server',
-        -- 'omnisharp',
-        'roslyn',
-        'rzls',
         'tailwindcss-language-server',
         'typescript-language-server',
       }
+      if use_omnisharp then
+        table.insert(required,'omnisharp')
+      else
+        table.insert(required,'roslyn')
+        table.insert(required,'rzls')
+      end
+
+      local lsp_group = auto.aug('lspconfig', { clear = true, })
+
       masonconfig.default_install(required)
       masonconfig.auto_update = true
       local default_setup = { capabilities = capabilities, }
@@ -95,60 +104,72 @@ return {
         },
       }
       setups["omnisharp"] = {
-        cmd = { vim.fs.joinpath(vim.fn.stdpath('data'), 'mason/bin/omnisharp') },
+        cmd = { vim.fs.joinpath( vim.fn.stdpath('data') --[[@as string]],
+          'mason/bin/omnisharp'
+        )},
         capabilities = capabilities,
       }
       setups["roslyn"] = function ()
-        local lazy_roslyn = require 'lazy.core.config'.spec.plugins["roslyn.nvim"]
-        local lazy_rzls = require 'lazy.core.config'.spec.plugins["rzls.nvim"]
-        if lazy_roslyn and lazy_roslyn._.loaded  then
-          -- setup option table
-          local opts = {
-            exe = {
-              'dotnet',
-              vim.fs.joinpath(
-                vim.fn.stdpath'data'--[[@as string]],
-                'mason/packages',
-                'roslyn/libexec',
-                'Microsoft.CodeAnalysis.LanguageServer.dll'
-              )
-            },
-            args = {
-              '--logLevel=Information',
-              '--extensionLogDirectory=' .. vim.fs.dirname(vim.lsp.get_log_path())
-            }
-          }
+      --{{{
+        auto.au('BufEnter', {
+          pattern = { '*.cs', '*.cshtml', '*.razor', '*.vb' },
+          callback = function ()
+            local lazy_roslyn = require 'lazy.core.config'.spec.plugins["roslyn.nvim"]
+            local lazy_rzls = require 'lazy.core.config'.spec.plugins["rzls.nvim"]
+            if lazy_roslyn and lazy_roslyn._.loaded  then
+              -- setup option table
+              local opts = {
+                exe = {
+                  'dotnet',
+                  vim.fs.joinpath(
+                    vim.fn.stdpath'data'--[[@as string]],
+                    'mason/packages',
+                    'roslyn/libexec',
+                    'Microsoft.CodeAnalysis.LanguageServer.dll'
+                  )
+                },
+                args = {
+                  '--logLevel=Information',
+                  '--extensionLogDirectory=' .. vim.fs.dirname(vim.lsp.get_log_path())
+                }
+              }
 
-          if lazy_rzls and lazy_rzls._.loaded then
-            table.insert(opts.args, 
-              '--razorSourceGenerator=' .. vim.fs.joinpath(
-                vim.fn.stdpath'data' --[[@as string]],
-                'mason/packages/',
-                'roslyn/libexec',
-                'Microsoft.CodeAnalysis.Razor.Compiler.dll'
-              )
-            )
-            table.insert(opts.args, 
-              '--razorDesignTimePath=' .. vim.fs.joinpath(
-                vim.fn.stdpath'data' --[[@as string]],
-                'mason/packages/',
-                'rzls/libexec/Targets',
-                'Microsoft.NET.Sdk.Razor.DesignTime.targets'
-              )
-            )
-          end
+              if lazy_rzls and lazy_rzls._.loaded then
+                table.insert(opts.args, 
+                  '--razorSourceGenerator=' .. vim.fs.joinpath(
+                    vim.fn.stdpath'data' --[[@as string]],
+                    'mason/packages/',
+                    'roslyn/libexec',
+                    'Microsoft.CodeAnalysis.Razor.Compiler.dll'
+                  )
+                )
+                table.insert(opts.args, 
+                  '--razorDesignTimePath=' .. vim.fs.joinpath(
+                    vim.fn.stdpath'data' --[[@as string]],
+                    'mason/packages/',
+                    'rzls/libexec/Targets',
+                    'Microsoft.NET.Sdk.Razor.DesignTime.targets'
+                  )
+                )
+              end
 
-          -- vim.notify(vim.inspect(opts)..'\n',vim.log.levels.WARN)
-          require'roslyn'.setup(opts)
+              -- vim.notify(vim.inspect(opts)..'\n',vim.log.levels.WARN)
+              require'roslyn'.setup(opts)
 
-          local setup = {}
-          setup = vim.tbl_deep_extend('force',default_setup, setup)
-          require "roslyn".setup(setup)
-        end
+              local setup = {}
+              setup = vim.tbl_deep_extend('force',default_setup, setup)
+              require "roslyn".setup(setup)
+            end
+          end,
+          once = true,
+          desc = 'roslyn lsp, start only if roslyn is installed'
+        })
+      --}}}
       end
+
       masonconfig.setup_lsp_server( default_setup, setups )
 
-    --{{{
+    --{{{ mason-lspconfig old setup_handlers
       --[[
       masonlsp.setup_handlers {
         -- default lsp config
@@ -201,27 +222,34 @@ return {
       --]]
     --}}}
 
-      local k = require 'config.keymap'
-      local builtin = require 'telescope.builtin'
-      local telescope = require 'lazy.core.config'.spec.plugins["telescope.nvim"]
-      local omni = require 'lazy.core.config'.spec.plugins["omnisharp-extended-lsp.nvim"]
-      if telescope and telescope._.loaded and omni and omni._.loaded then
-        local omni_extend = require 'omnisharp_extended'
-        k.nmap('gd', function ()
-          if vim.opt.filetype:get() == 'cs' or vim.opt.filetype:get() == 'html.cshtml' then
-            omni_extend.telescope_lsp_definition()
-          else
-            builtin.lsp_definitions()
+      auto.au('BufEnter', {
+        pattern = { '*.cs', '*.cshtml', '*.razor', '*.vb' },
+        callback = function ()
+          local telescope = require 'lazy.core.config'.spec.plugins["telescope.nvim"]
+          local omni = require 'lazy.core.config'.spec.plugins["omnisharp-extended-lsp.nvim"]
+          if telescope and telescope._.loaded and omni and omni._.loaded then
+            local k = require 'config.keymap'
+            local builtin = require 'telescope.builtin'
+            local omni_extend = require 'omnisharp_extended'
+            k.nmap('gd', function ()
+              if vim.opt.filetype:get() == 'cs' or vim.opt.filetype:get() == 'html.cshtml' then
+                omni_extend.telescope_lsp_definition()
+              else
+                builtin.lsp_definitions()
+              end
+            end,'[g]oto [d]efinition (support omnisharp)')
+            k.nmap('gr',function ()
+              if vim.opt.filetype:get() == 'cs' or vim.opt.filetype:get() == 'html.cshtml' then
+                omni_extend.telescope_lsp_references()
+              else
+                builtin.lsp_references()
+              end
+            end,'[g]oto [R]eference (support omnisharp)')
           end
-        end,'[g]oto [d]efinition (support C#)')
-        k.nmap('gr',function ()
-          if vim.opt.filetype:get() == 'cs' or vim.opt.filetype:get() == 'html.cshtml' then
-            omni_extend.telescope_lsp_references()
-          else
-            builtin.lsp_references()
-          end
-        end,'[g]oto [R]eference')
-      end
+        end,
+        once = true,
+        desc = 'omnisharp-extended-lsp rewrite on lsp telescope functions'
+      })
 
     end,
   },
