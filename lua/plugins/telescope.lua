@@ -6,6 +6,7 @@ return {
   dependencies = {
     {"nvim-lua/plenary.nvim" },
     {"muniftanjim/nui.nvim" },
+    {"nvim-telescope/telescope-dap.nvim" },
   },
   config = function()
 
@@ -83,7 +84,7 @@ return {
     -- setup telescope
     require('telescope').setup {
       defaults = {
-        path_display = "truncate",
+        path_display = { 'truncate' },
         mappings = map,
         sorting_strategy = 'ascending',
         prompt_prefix = ' ', -- 
@@ -94,6 +95,9 @@ return {
         live_grep = { file_ignore_patterns = ignore_patterns },
       }
     }
+
+    -- require extension
+    require('telescope').load_extension('dap')
 
     -- color selection of blue
     vim.api.nvim_set_hl(0, 'TelescopeSelectionCaret', { fg = '#00BFFF'})

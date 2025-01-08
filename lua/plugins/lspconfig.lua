@@ -27,7 +27,7 @@ return {
         "williamboman/mason-lspconfig.nvim",
       {
         "Hoffs/omnisharp-extended-lsp.nvim",
-        ft = { 'cs', 'html.cshtml' },
+        ft = { 'cs', 'cshtml.html' , 'html.cshtml' },
       },
     },
     config = function()
@@ -43,17 +43,16 @@ return {
         'html-lsp',
         'json-lsp',
         'lua-language-server',
-        'roslyn',
-        'rzls',
+        'omnisharp',
+        -- 'roslyn',
+        -- 'rzls',
         'tailwindcss-language-server',
         'typescript-language-server',
       }
       masonconfig.default_install(required)
       masonconfig.auto_update = true
-      local default_setup = {
-        capabilities = capabilities,
-      }
-      local setups = {},
+      -- local default_setup = { capabilities = capabilities, }
+      -- local setups = {}
       -- setups['roslyn'] = {}
 
       masonlsp.setup_handlers {
@@ -64,41 +63,45 @@ return {
           }
         end,
         -- lua_ls neovim config
-        lspconfig.lua_ls.setup {
-          on_init = function(client)
-            if client.workspace_folders then
-              local path = client.workspace_folders[1].name
-              if vim.loop.fs_stat(path..'/.luarc.json') or vim.loop.fs_stat(path..'/.luarc.jsonc') then
-                return
+        ["lua_ls"] = function ()
+          lspconfig.lua_ls.setup {
+            on_init = function(client)
+              if client.workspace_folders then
+                local path = client.workspace_folders[1].name
+                if vim.loop.fs_stat(path..'/.luarc.json') or vim.loop.fs_stat(path..'/.luarc.jsonc') then
+                  return
+                end
               end
-            end
 
-            client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
-              runtime = {
-                version = 'LuaJIT'
-              },
-              -- Make the server aware of Neovim runtime files
-              workspace = {
-                checkThirdParty = false,
-                library = {
-                  vim.env.VIMRUNTIME,
-                  -- Depending on the usage, you might want to add additional paths here.
-                  "${3rd}/luv/library",
-                  "${3rd}/busted/library",
+              client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
+                runtime = {
+                  version = 'LuaJIT'
+                },
+                -- Make the server aware of Neovim runtime files
+                workspace = {
+                  checkThirdParty = false,
+                  library = {
+                    vim.env.VIMRUNTIME,
+                    -- Depending on the usage, you might want to add additional paths here.
+                    "${3rd}/luv/library",
+                    "${3rd}/busted/library",
+                  }
                 }
-              }
-            })
-          end,
-          capabilities = capabilities,
-          settings = {
-            Lua = {}
-          },
-        },
+              })
+            end,
+            capabilities = capabilities,
+            settings = {
+              Lua = {}
+            },
+          }
+        end,
         -- omnisharp neovim config
-        lspconfig.omnisharp.setup {
-          capabilities = capabilities,
-          cmd = { vim.fn.expand('~/.local/share/nvim/mason/bin/omnisharp') }
-        },
+        ["omnisharp"] = function ()
+          lspconfig.omnisharp.setup {
+            cmd = { vim.fs.joinpath(vim.fn.stdpath('data'), 'mason/bin/omnisharp') },
+            capabilities = capabilities,
+          }
+        end,
       }
 
 
@@ -114,7 +117,7 @@ return {
             builtin.lsp_definitions()
           end
         end,'[g]oto [d]efinition (support C#)')
-        k.nmap('gR',function ()
+        k.nmap('gr',function ()
           if vim.opt.filetype:get() == 'cs' or vim.opt.filetype:get() == 'html.cshtml' then
             omni_extend.telescope_lsp_references()
           else
