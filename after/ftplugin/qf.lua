@@ -10,5 +10,3 @@ k.nmap('N','<cmd>cprev<CR><C-w>j','goto [P]rev element in quickfix list', { buff
 k.nmap('j','jzz','center cursor in quickfix list', { buffer = 0 })
 k.nmap('k','kzz','center cursor in quickfix list', { buffer = 0 })
 -- k.nmap('<CR>','<CR>z<CR>2<C-y><C-w>j','title selection of quickfix list', { buffer = 0 })
-
-require 'after.ftplugin.test'

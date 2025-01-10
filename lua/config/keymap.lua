@@ -2,6 +2,7 @@
 
 -- functions table
 local M = {}
+--{{{
 M.nmap = function(keys, command, desc, opts)
   opts = opts or {}
   if vim.fn.maparg(keys,'n') ~= "" and not opts.buffer then
@@ -38,6 +39,7 @@ M.tmap = function(keys, command, desc, opts)
   opts.desc= desc
   vim.keymap.set('t', keys, command, opts)
 end
+--}}}
 
 -- default behaviour
 M.nmap('<leader>q','<cmd>q<CR>', '[q]uit')
@@ -80,12 +82,14 @@ M.imap('<C-R>',function() vim.lsp.buf.rename() end,'[g]oto [R]ename')
 M.tmap('<Esc>','<C-\\><C-n>','exit from terminal')
 
 -- quickfix integrated
-M.nmap('<leader>c','<cmd>cwindow 8<CR>','open qflist')
+M.nmap('<leader>c','<cmd>cwindow 12<CR>','open qflist')
 M.nmap('<leader>cn','<cmd>cnext<CR>','qflist next entry')
 M.nmap('<leader>cj','<cmd>cnext<CR>','qflist next entry')
 M.nmap('<leader>cp','<cmd>cNext<CR>','qflist prev entry')
 M.nmap('<leader>ck','<cmd>cNext<CR>','qflist prev entry')
-M.nmap('<leader>cm','<cmd>make<CR><cmd>cwindow 8<CR>','open qflist')
+M.nmap('<leader>cf','<cmd>cfirst<CR>','qflist first entry')
+M.nmap('<leader>cl','<cmd>clast<CR>','qflist last entry')
+M.nmap('<leader>cm','<cmd>make<CR><cmd>cwindow 12<CR>','open qflist')
 -- M.nmap('<leader>c','<cmd>cwindow 8<CR>','open qflist')
 
 -- fold custom integration

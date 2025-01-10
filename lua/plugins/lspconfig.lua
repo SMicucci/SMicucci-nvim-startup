@@ -27,7 +27,7 @@ return {
           }
         }
       },
-        "williamboman/mason-lspconfig.nvim",
+      "williamboman/mason-lspconfig.nvim",
       {
         "Hoffs/omnisharp-extended-lsp.nvim",
         ft = { 'cs', 'cshtml.html' , 'html.cshtml' },
@@ -73,6 +73,7 @@ return {
       masonconfig.auto_update = true
       local default_setup = { capabilities = capabilities, }
       local setups = {}
+      ---{{{ lua_ls setup
       setups['lua_ls'] = {
         on_init = function(client)
           if client.workspace_folders then
@@ -103,73 +104,70 @@ return {
           Lua = {}
         },
       }
+      ---}}}
+      ---{{{ omnisharp setup
       setups["omnisharp"] = {
         cmd = { vim.fs.joinpath( vim.fn.stdpath('data') --[[@as string]],
           'mason/bin/omnisharp'
         )},
         capabilities = capabilities,
       }
+      ---}}}
+      --{{{ roslyn setup
       setups["roslyn"] = function ()
-      --{{{
-        auto.au('BufEnter', {
-          pattern = { '*.cs', '*.cshtml', '*.razor', '*.vb' },
-          callback = function ()
-            local lazy_roslyn = require 'lazy.core.config'.spec.plugins["roslyn.nvim"]
-            local lazy_rzls = require 'lazy.core.config'.spec.plugins["rzls.nvim"]
-            if lazy_roslyn and lazy_roslyn._.loaded  then
-              -- setup option table
-              local opts = {
-                exe = {
-                  'dotnet',
-                  vim.fs.joinpath(
-                    vim.fn.stdpath'data'--[[@as string]],
-                    'mason/packages',
-                    'roslyn/libexec',
-                    'Microsoft.CodeAnalysis.LanguageServer.dll'
-                  )
-                },
-                args = {
-                  '--logLevel=Information',
-                  '--extensionLogDirectory=' .. vim.fs.dirname(vim.lsp.get_log_path())
-                }
-              }
+        local lazy_roslyn = require 'lazy.core.config'.spec.plugins["roslyn.nvim"]
+        local lazy_rzls = require 'lazy.core.config'.spec.plugins["rzls.nvim"]
+        if lazy_roslyn and lazy_roslyn._.loaded  then
+          -- setup option table
+          local opts = {
+            exe = {
+              'dotnet',
+              vim.fs.joinpath(
+                vim.fn.stdpath'data'--[[@as string]],
+                'mason/packages',
+                'roslyn/libexec',
+                'Microsoft.CodeAnalysis.LanguageServer.dll'
+              )
+            },
+            args = {
+              '--logLevel=Information',
+              '--extensionLogDirectory=' .. vim.fs.dirname(vim.lsp.get_log_path())
+            }
+          }
+          opts = vim.tbl_deep_extend('keep', opts, { config = default_setup })
 
-              if lazy_rzls and lazy_rzls._.loaded then
-                table.insert(opts.args, 
-                  '--razorSourceGenerator=' .. vim.fs.joinpath(
-                    vim.fn.stdpath'data' --[[@as string]],
-                    'mason/packages/',
-                    'roslyn/libexec',
-                    'Microsoft.CodeAnalysis.Razor.Compiler.dll'
-                  )
-                )
-                table.insert(opts.args, 
-                  '--razorDesignTimePath=' .. vim.fs.joinpath(
-                    vim.fn.stdpath'data' --[[@as string]],
-                    'mason/packages/',
-                    'rzls/libexec/Targets',
-                    'Microsoft.NET.Sdk.Razor.DesignTime.targets'
-                  )
-                )
-              end
+          if lazy_rzls and lazy_rzls._.loaded then
+            table.insert(opts.args, 
+              '--razorSourceGenerator=' .. vim.fs.joinpath(
+                vim.fn.stdpath'data' --[[@as string]],
+                'mason/packages/',
+                'roslyn/libexec',
+                'Microsoft.CodeAnalysis.Razor.Compiler.dll'
+              )
+            )
+            table.insert(opts.args,
+              '--razorDesignTimePath=' .. vim.fs.joinpath(
+                vim.fn.stdpath'data' --[[@as string]],
+                'mason/packages/',
+                'rzls/libexec/Targets',
+                'Microsoft.NET.Sdk.Razor.DesignTime.targets'
+              )
+            )
+            opts.config.handlers = require 'rzls.roslyn_handlers'
+          end
+          -- vim.notify(vim.inspect(opts)..'\n',vim.log.levels.WARN)
+          require'roslyn'.setup(opts)
 
-              -- vim.notify(vim.inspect(opts)..'\n',vim.log.levels.WARN)
-              require'roslyn'.setup(opts)
-
-              local setup = {}
-              setup = vim.tbl_deep_extend('force',default_setup, setup)
-              require "roslyn".setup(setup)
-            end
-          end,
-          once = true,
-          desc = 'roslyn lsp, start only if roslyn is installed'
-        })
-      --}}}
+          -- local setup = {}
+          -- setup = vim.tbl_deep_extend('force',default_setup, setup)
+          -- require "roslyn".setup(setup)
+        end
       end
+      --}}}
 
       masonconfig.setup_lsp_server( default_setup, setups )
 
-    --{{{ mason-lspconfig old setup_handlers
+      --{{{ mason-lspconfig old setup_handlers
       --[[
       masonlsp.setup_handlers {
         -- default lsp config
@@ -220,7 +218,7 @@ return {
         end,
       }
       --]]
-    --}}}
+      --}}}
 
       auto.au('BufEnter', {
         pattern = { '*.cs', '*.cshtml', '*.razor', '*.vb' },
