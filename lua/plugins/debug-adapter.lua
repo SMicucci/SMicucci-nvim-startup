@@ -16,6 +16,8 @@ return {
       local dap = require('dap')
       local dapui = require('dapui')
 
+      ---{{{  dapui setup
+      ---@diagnostic disable-next-line: missing-fields
       dapui.setup({
         layouts = {
           {
@@ -25,10 +27,6 @@ return {
                 size = 0.15,
               },
               {
-                id = "scopes",
-                size = 0.5,
-              },
-              {
                 id = "repl",
                 size = 0.35,
               },
@@ -36,12 +34,25 @@ return {
             position = "left",
             size = 40,
           },
+          {
+            elements = {
+              {
+                id = "scopes",
+                size = 1,
+              },
+            },
+            position = "bottom",
+            size = 12,
+          },
         },
+        ---@diagnostic disable-next-line: missing-fields
         floating = {
           border = "rounded",
         }
       })
-      -- UI triggered by dap
+      ---}}}
+
+      ---{{{  attach ui to standard dap
       dap.listeners.before.attach.dapui_config = function()
         dapui.open()
       end
@@ -54,13 +65,14 @@ return {
       dap.listeners.before.event_exited.dapui_config = function()
         dapui.close()
       end
+      ---}}}
 
       --	##	setup symbol and colors
       vim.fn.sign_define('DapBreakpoint', { text='', texthl='DiffDelete', linehl='Visual', numhl='DiffDelete'})
       vim.fn.sign_define('DapBreakpointCondition', { text='', texthl='IncSearch', linehl='Visual', numhl='IncSearch'})
       vim.fn.sign_define('DapStopped', { text='', texthl='DiffAdd', linehl='TabLineSel', numhl='DiffAdd'})
 
-      -- keymap setting
+      ---{{{ keymap setting
       local k = require('config.keymap')
       k.nmap('<space>c',dap.continue, 'start or [C]ontinue debug')
       k.nmap('<space>n',dap.step_over, 'run [N]ext instruction')
@@ -79,12 +91,17 @@ return {
       k.nmap('<leader>db',dap.toggle_breakpoint, 'toggle [B]reakpoint (debug)')
       k.nmap('<leader>dB',dap.clear_breakpoints, 'clear [B]reakpoint (debug)')
       k.nmap('<leader>dd',dapui.toggle, '[D]ap UI toggle')
+      ---}}}
 
       --	####################
       --		language adapter
       --	####################
 
+      local is_win = vim.fn.has('win32')
       local mason_path = vim.fn.stdpath("data") .. '/mason/bin/'
+      if is_win then
+        mason_path = vim.fn.stdpath("data") .. '\\mason\\bin\\'
+      end
 
       --	##	Bash
       dap.adapters.bashdb = {
@@ -143,7 +160,13 @@ return {
       --	##	C#, F#
       dap.adapters.coreclr = {
         type = 'executable',
-        command = mason_path .. 'netcoredbg',
+        command = function()
+          if is_win then
+            return mason_path .. 'netcoredbg.cmd'
+          else
+            return mason_path .. 'netcoredbg'
+          end
+        end,
         args = {'--interpreter=vscode'}
       }
       dap.configurations.cs = {
