@@ -1,5 +1,6 @@
 local use_blink = true
 return {
+  ---{{{ nvim-cmp
   {
     "hrsh7th/nvim-cmp",
     lazy = true,
@@ -160,6 +161,7 @@ return {
 
     end
   },
+  ---}}}
 
   {
     "Saghen/blink.cmp",
@@ -182,7 +184,6 @@ return {
               java = false,
             }
           }
-          
           -- # autopairs setup
           --	add same rule for '<>'
           require("nvim-autopairs").add_rule(
@@ -199,8 +200,10 @@ return {
         end
       },
     },
-    version = "*",
+    -- version = "*",
+    tag = 'v0.9.2',
     opts = {
+
       keymap = {
         preset = 'default',
         ['<Enter>'] = { 'select_and_accept', 'fallback' },
