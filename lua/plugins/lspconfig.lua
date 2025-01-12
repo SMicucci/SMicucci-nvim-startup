@@ -5,8 +5,9 @@ return {
     "neovim/nvim-lspconfig",
     lazy = true,
     event = 'VeryLazy',
+    --{{{dependencies
     dependencies = {
-      -- {{{
+      -- "williamboman/mason-lspconfig.nvim",
       {
         "folke/lazydev.nvim",
         ft = {'lua'},
@@ -27,7 +28,6 @@ return {
           }
         }
       },
-      "williamboman/mason-lspconfig.nvim",
       {
         "Hoffs/omnisharp-extended-lsp.nvim",
         ft = { 'cs', 'cshtml.html' , 'html.cshtml' },
@@ -41,16 +41,18 @@ return {
         "tris203/rzls.nvim",
         enabled = not use_omnisharp,
       }
-      -- }}}
     },
+    --}}}
     config = function()
-      -- local masonlsp = require "mason-lspconfig"
-      -- local lspconfig = require "lspconfig"
+
       local auto = require 'config.command'
+      local autogroup = auto.aug('lspconfig', { clear = true })
+
       local capabilities = require "blink.cmp".get_lsp_capabilities()
 
-      -- list of ensure_installed plugins
-      local masonconfig = require "plugins.settings.mason"
+      --{{{ # my lsp "trampoline"
+      local lsp_manager = require "plugins.settings.mason"
+      --{{{ ## required lsp
       local required = {
         'clangd',
         'css-lsp',
@@ -66,14 +68,13 @@ return {
         table.insert(required,'roslyn')
         table.insert(required,'rzls')
       end
+      --}}}
 
-      local lsp_group = auto.aug('lspconfig', { clear = true, })
-
-      masonconfig.default_install(required)
-      masonconfig.auto_update = true
+      lsp_manager.default_install(required)
+      lsp_manager.auto_update = true
       local default_setup = { capabilities = capabilities, }
       local setups = {}
-      ---{{{ lua_ls setup
+      --{{{ ## lua_ls setup
       setups['lua_ls'] = {
         on_init = function(client)
           if client.workspace_folders then
@@ -104,16 +105,16 @@ return {
           Lua = {}
         },
       }
-      ---}}}
-      ---{{{ omnisharp setup
+      --}}}
+      --{{{ ## omnisharp setup
       setups["omnisharp"] = {
         cmd = { vim.fs.joinpath( vim.fn.stdpath('data') --[[@as string]],
           'mason/bin/omnisharp'
         )},
         capabilities = capabilities,
       }
-      ---}}}
-      --{{{ roslyn setup
+      --}}}
+      --{{{ ## roslyn setup
       setups["roslyn"] = function ()
         local lazy_roslyn = require 'lazy.core.config'.spec.plugins["roslyn.nvim"]
         local lazy_rzls = require 'lazy.core.config'.spec.plugins["rzls.nvim"]
@@ -165,7 +166,9 @@ return {
       end
       --}}}
 
-      masonconfig.setup_lsp_server( default_setup, setups )
+      -- start the setup
+      lsp_manager.setup_lsp_server( default_setup, setups )
+      --}}}
 
       --{{{ mason-lspconfig old setup_handlers
       --[[
@@ -220,8 +223,10 @@ return {
       --]]
       --}}}
 
+      --{{{ # omnisharp-extended-lsp implementation (autocmd)
       auto.au('BufEnter', {
         pattern = { '*.cs', '*.cshtml', '*.razor', '*.vb' },
+        group = autogroup,
         callback = function ()
           local telescope = require 'lazy.core.config'.spec.plugins["telescope.nvim"]
           local omni = require 'lazy.core.config'.spec.plugins["omnisharp-extended-lsp.nvim"]
@@ -248,6 +253,16 @@ return {
         once = true,
         desc = 'omnisharp-extended-lsp rewrite on lsp telescope functions'
       })
+      --}}}
+
+      --{{{ # codelens trigger
+      auto.au({ 'BufEnter', 'CursorHold', 'InsertLeave' }, {
+        group = autogroup,
+        callback = function ()
+          vim.lsp.codelens.refresh({ bufnr = 0 })
+        end
+      })
+      --}}}
 
     end,
   },

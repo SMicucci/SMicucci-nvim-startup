@@ -16,7 +16,7 @@ return {
       local dap = require('dap')
       local dapui = require('dapui')
 
-      ---{{{  dapui setup
+      --{{{  dapui setup
       ---@diagnostic disable-next-line: missing-fields
       dapui.setup({
         layouts = {
@@ -50,9 +50,9 @@ return {
           border = "rounded",
         }
       })
-      ---}}}
+      --}}}
 
-      ---{{{  attach ui to standard dap
+      --{{{  attach ui to standard dap
       dap.listeners.before.attach.dapui_config = function()
         dapui.open()
       end
@@ -65,14 +65,14 @@ return {
       dap.listeners.before.event_exited.dapui_config = function()
         dapui.close()
       end
-      ---}}}
+      --}}}
 
       --	##	setup symbol and colors
       vim.fn.sign_define('DapBreakpoint', { text='', texthl='DiffDelete', linehl='Visual', numhl='DiffDelete'})
       vim.fn.sign_define('DapBreakpointCondition', { text='', texthl='IncSearch', linehl='Visual', numhl='IncSearch'})
-      vim.fn.sign_define('DapStopped', { text='', texthl='DiffAdd', linehl='TabLineSel', numhl='DiffAdd'})
+      vim.fn.sign_define('DapStopped', { text='', texthl='DiffText', linehl='DiffChange', numhl='DiffText'})
 
-      ---{{{ keymap setting
+      --{{{ keymap setting
       local k = require('config.keymap')
       k.nmap('<space>c',dap.continue, 'start or [C]ontinue debug')
       k.nmap('<space>n',dap.step_over, 'run [N]ext instruction')
@@ -91,19 +91,21 @@ return {
       k.nmap('<leader>db',dap.toggle_breakpoint, 'toggle [B]reakpoint (debug)')
       k.nmap('<leader>dB',dap.clear_breakpoints, 'clear [B]reakpoint (debug)')
       k.nmap('<leader>dd',dapui.toggle, '[D]ap UI toggle')
-      ---}}}
+      --}}}
 
-      --	####################
-      --		language adapter
-      --	####################
+--	####################
+--		language adapter
+--	####################
 
+      --{{{# check on win32
       local is_win = vim.fn.has('win32')
       local mason_path = vim.fn.stdpath("data") .. '/mason/bin/'
       if is_win then
         mason_path = vim.fn.stdpath("data") .. '\\mason\\bin\\'
       end
+      --}}}
 
-      --	##	Bash
+      --{{{## Bash
       dap.adapters.bashdb = {
         type = 'executable';
         command = mason_path .. 'bash-debug-adapter';
@@ -130,8 +132,9 @@ return {
           terminalKind = "integrated";
         }
       }
+      --}}}
 
-      --	##	C/C++/Rust/Zig
+      --{{{##	C/C++/Rust/Zig
       dap.adapters.codelldb = {
         type = 'server',
         port = "${port}",
@@ -156,8 +159,13 @@ return {
       dap.configurations.cpp = dap.configurations.c
       dap.configurations.rust = dap.configurations.c
       dap.configurations.zig = dap.configurations.c
+      --}}}
 
-      --	##	C#, F#
+      --{{{##	C#, F#
+      local coreclr = mason_path .. 'netcoredbg'
+      if is_win then
+        coreclr = coreclr .. '.cmd'
+      end
       dap.adapters.coreclr = {
         type = 'executable',
         command = function()
@@ -179,9 +187,9 @@ return {
           end,
         },
       }
+      --}}}
 
-      --	##	Go
-      --{{
+      --{{{## Go
       dap.adapters.delve = function(callback, config)
         if config.mode == 'remote' and config.request == 'attach' then
           callback({
@@ -225,9 +233,9 @@ return {
           program = "./${relativeFileDirname}"
         } 
       }
-      --}}
+      --}}}
 
-      --	##	typescript
+      --{{{##	Typescript
       dap.adapters.node = {
         type = "executable",
         command = "bash",
@@ -247,6 +255,8 @@ return {
           console = "integratedTerminal",
         },
       }
+      --}}}
+
     end,
   }
 }
