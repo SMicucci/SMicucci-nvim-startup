@@ -3,6 +3,7 @@ return {
     "Saghen/blink.cmp",
     dependencies = {
       'rafamadriz/friendly-snippets',
+      --{{{ ## luasnip
       {
         "l3mon4d3/luasnip",
         version = "v2.*",
@@ -20,10 +21,11 @@ return {
           keymap.imap('<C-k>', ls.expand, 'luasnip jump to [N]ext entry')
         end,
       },
+      --}}}
+      --{{{ ## nvim-autopairs
       {
         "windwp/nvim-autopairs",
         opts = function ()
-          --{{{
           require'nvim-autopairs'.setup{
             check_ts = true,
             ts_config = {
@@ -45,9 +47,9 @@ return {
               :with_move(function(opts)
               return opts.char =='>'
             end))
-          --}}}
         end
       },
+      --}}}
     },
     version = "*",
     -- tag = 'v0.9.2',
@@ -62,6 +64,7 @@ return {
         ['<C-k>'] = { 'scroll_documentation_up', 'fallback' },
         ['<M-Tab>'] = { 'snippet_backward', 'fallback' },
         ['<S-Tab>'] = {},
+        ['<Tab>'] = {},
         ['<C-h>'] = { 'show_documentation', 'hide_documentation' },
       },
       appearance = {
