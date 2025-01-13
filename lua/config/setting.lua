@@ -39,27 +39,28 @@ vim.cmd '%retab!'
 
 --{{{ # global variable settings
 if vim.fn.executable('rg') then
-    local ignore_dir = {
-        "bin",
-        "build",
-        "dist",
-        "\\.git",
-        "node_modules",
-        "obj",
-        "vendor",
-    }
-    vim.g.grepprg = { 'rg', '--vimgrep', '--smart-case', '--hidden' }
-    for _, dir in ipairs(ignore_dir) do
-        if vim.fn.has('win32') then
-            table.insert(vim.g.grepprg, string.format('--glob=\'!**\\%s\\*\'', dir))
-        else
-            table.insert(vim.g.grepprg, string.format('--glob=\'!**/%s/*\'', dir))
-        end
+  local ignore_dir = {
+    "bin",
+    "build",
+    "dist",
+    ".git",
+    "node_modules",
+    "obj",
+    "vendor",
+    ".vs",
+  }
+  vim.g.grepprg = { 'rg', '--vimgrep', '--smart-case', '--hidden', }
+  for _, dir in ipairs(ignore_dir) do
+    if vim.fn.has('win32') then
+      table.insert(vim.g.grepprg, string.format('--glob=\'!**\\%s\\*\'', dir))
+    else
+      table.insert(vim.g.grepprg, string.format('--glob=\'!**/%s/*\'', dir))
     end
-    table.insert(vim.g.grepprg, '--')
+  end
+  table.insert(vim.g.grepprg, '--')
 else
-    vim.notify('󰀦 ripgrep not installed (recommended)\n',vim.log.levels.WARN)
-    vim.g.grepprg = 'internal'
+  vim.notify('󰀦 ripgrep not installed (recommended)\n',vim.log.levels.WARN)
+  vim.g.grepprg = 'internal'
 end
 --}}}
 
@@ -71,10 +72,10 @@ auto.au({'BufEnter', 'BufNewFile'}, {
     ---@diagnostic disable-next-line: undefined-field
     if set.shiftwidth:get() == 2 then
       set.listchars = "tab: ,multispace: ,extends:,precedes:,nbsp:"
-    ---@diagnostic disable-next-line: undefined-field
+      ---@diagnostic disable-next-line: undefined-field
     elseif set.shiftwidth:get() == 4 then
       set.listchars = "tab: ,multispace:   ,extends:,precedes:,nbsp:"
-    ---@diagnostic disable-next-line: undefined-field
+      ---@diagnostic disable-next-line: undefined-field
     elseif set.shiftwidth:get() == 8 then
       set.listchars = "tab: ,multispace:       ,extends:,precedes:,nbsp:"
     end

@@ -10,6 +10,16 @@ return {
         build = "make install_jsregexp",
         opts = function ()
           require 'luasnip.loaders.from_vscode'.lazy_load()
+          require 'luasnip.loaders.from_snipmate'.lazy_load()
+          require 'luasnip.loaders.from_lua'.lazy_load()
+
+          local fe = require('luasnip').filetype_extend
+          fe('cs', { 'csharpdoc' })
+          fe('lua', { 'luadoc' })
+          fe('javascript', { 'jsdoc' })
+          fe('typescript', { 'tsdoc' })
+
+          require 'plugins.settings.luasnip'
 
           local keymap = require 'config.keymap'
           local ls = require 'luasnip'
@@ -52,7 +62,7 @@ return {
       --}}}
     },
     version = "*",
-    -- tag = 'v0.9.2',
+    -- tag = 'v0.10.*',
     opts = {
 
       keymap = {
