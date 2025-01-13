@@ -29,6 +29,15 @@ M.imap = function(keys, command, desc, opts)
   opts.desc= desc
   vim.keymap.set('i', keys, command, opts)
 end
+M.smap = function(keys, command, desc, opts)
+  opts = opts or {}
+  if vim.fn.maparg(keys,'s') ~= "" and not opts.buffer then
+    vim.keymap.del('s', keys)
+  end
+  assert(not opts.desc, 'keymap desc must be assigned on argument')
+  opts.desc= desc
+  vim.keymap.set('s', keys, command, opts)
+end
 M.tmap = function(keys, command, desc, opts)
   opts = opts or {}
   if vim.fn.maparg(keys,'t') ~= "" and not opts.buffer then
@@ -49,9 +58,27 @@ M.nmap('<leader>h',':vertical botright help ', 'trigger [h]elp', { silent = fals
 M.nmap('n','nzt3<C-y>', 'center next match')
 M.nmap('N','Nzt3<C-y>', 'center prev match')
 M.nmap('#','zt2<C-y>', 'select and title it')
-M.nmap('<leader>*',function () vim.fn.setreg('/', '\\%$\\%^') end, 'Reset search register')
----@diagnostic disable-next-line: undefined-field
-M.nmap('<leader>\'',function() vim.opt.wrap = not vim.opt.wrap:get() end,'switch wrap setting')
+M.nmap('<leader>*', function() vim.fn.setreg('/', '\\%$\\%^') end, 'Reset search register')
+M.nmap('<leader>\'', function()
+  ---@diagnostic disable-next-line: undefined-field
+  vim.opt.wrap = not vim.opt.wrap:get()
+end, 'switch wrap setting')
+M.nmap('<leader>l', function()
+  ---@diagnostic disable-next-line: undefined-field
+  vim.opt.list = not vim.opt.list:get()
+end, 'switch wrap setting')
+M.nmap('<leader>z', function()
+  ---@diagnostic disable-next-line: undefined-field
+  if vim.opt.foldmethod:get() == 'marker' then
+    vim.opt.foldmethod = 'manual'
+    vim.cmd('normal! zX zR')
+    vim.notify('manual fold method (see fold.txt)')
+  else
+    vim.opt.foldmethod = 'marker'
+    vim.cmd('normal! zX zM')
+    vim.notify('marker fold method [{{{,}}}] (see fold.txt)')
+  end
+end, 'switch wrap setting')
 --}}}
 
 --{{{ # buffer mapping
@@ -99,7 +126,7 @@ M.nmap('<leader>cm','<cmd>make<CR><cmd>cwindow 12<CR>','open qflist')
 --}}}
 
 --{{{ # fold custom integration
-M.nmap('<C-o>','<cmd>FoldToggle<CR>','trigger f[O]ldtoggle command')
+-- M.nmap('<C-o>','<cmd>FoldToggle<CR>','trigger f[O]ldtoggle command')
 M.imap('<C-o>','<cmd>FoldToggle<CR>','trigger f[O]ldtoggle command')
 --}}}
 
