@@ -255,12 +255,14 @@ return {
       })
       --}}}
 
-      --{{{ # codelens trigger
+      --{{{ # inlay_hint trigger
       auto.au({ 'BufEnter', 'CursorHold', 'InsertLeave' }, {
         group = autogroup,
+        pattern = '*',
         callback = function ()
-          vim.lsp.codelens.refresh({ bufnr = 0 })
-        end
+          vim.lsp.inlay_hint.enable()
+        end,
+        desc = 'trigger inlay hint by default'
       })
       --}}}
 
