@@ -79,7 +79,6 @@ auto.au({'BufEnter', 'BufNewFile'}, {
       set.listchars = "tab: ,multispace:       ,extends:,precedes:,nbsp:"
     end
   end,
-  buffer = 0,
   desc = 'list settings autocmd',
 })
 --}}}
