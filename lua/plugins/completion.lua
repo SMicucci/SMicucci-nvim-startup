@@ -19,7 +19,7 @@ return {
           fe('javascript', { 'jsdoc' })
           fe('typescript', { 'tsdoc' })
 
-          require 'plugins.settings.luasnip'
+          -- require 'plugins.settings.luasnip'
 
           local keymap = require 'config.keymap'
           local ls = require 'luasnip'
@@ -75,7 +75,7 @@ return {
         ['<M-Tab>'] = { 'snippet_backward', 'fallback' },
         ['<S-Tab>'] = {},
         ['<Tab>'] = {},
-        ['<C-h>'] = { 'show_documentation', 'hide_documentation' },
+        -- ['<C-h>'] = { 'show_documentation', 'hide_documentation' },
       },
       appearance = {
         use_nvim_cmp_as_default = true,

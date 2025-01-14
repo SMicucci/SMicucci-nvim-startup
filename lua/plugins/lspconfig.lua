@@ -158,10 +158,6 @@ return {
           end
           -- vim.notify(vim.inspect(opts)..'\n',vim.log.levels.WARN)
           require'roslyn'.setup(opts)
-
-          -- local setup = {}
-          -- setup = vim.tbl_deep_extend('force',default_setup, setup)
-          -- require "roslyn".setup(setup)
         end
       end
       --}}}

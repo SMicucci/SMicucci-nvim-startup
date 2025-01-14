@@ -102,12 +102,14 @@ M.nmap('<leader>tn','<cmd>tabnew<CR>', 'create new [t]ab')
 --}}}
 
 --{{{ # lsp integrated shortcut
-M.nmap('gh',function() vim.lsp.buf.code_action() end,'[g]et [h]elp')
-M.nmap('gd',function() vim.lsp.buf.definition() end,'[g]oto [d]efinition')
-M.nmap('gD',function() vim.lsp.buf.declaration() end,'[g]oto [D]eclaration')
-M.nmap('gr',function() vim.lsp.buf.references() end,'[g]oto [R]eference')
-M.nmap('gR',function() vim.lsp.buf.rename() end,'[g]oto [R]ename')
-M.imap('<C-R>',function() vim.lsp.buf.rename() end,'[g]oto [R]ename')
+local lsp = vim.lsp.buf
+M.nmap('gh',lsp.code_action,'[g]et [h]elp')
+M.nmap('gd',lsp.definition,'[g]oto [d]efinition')
+M.nmap('gD',lsp.declaration,'[g]oto [D]eclaration')
+M.nmap('gr',lsp.references,'[g]oto [R]eference')
+M.nmap('gR',lsp.rename,'[g]oto [R]ename')
+M.imap('<C-r>',lsp.rename,'trigger [R]ename')
+M.imap('<C-h>',lsp.hover,'trigger [H]over')
 --}}}
 
 --{{{ # terminal mapping

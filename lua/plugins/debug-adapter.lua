@@ -12,9 +12,11 @@ return {
       "<space>b",
       "<leader>db",
     },
-    config = function ()
+    config = function()
       local dap = require('dap')
       local dapui = require('dapui')
+
+      dap.set_log_level('DEBUG')
 
       --{{{  dapui setup
       ---@diagnostic disable-next-line: missing-fields
@@ -68,34 +70,35 @@ return {
       --}}}
 
       --	##	setup symbol and colors
-      vim.fn.sign_define('DapBreakpoint', { text='', texthl='DiffDelete', linehl='Visual', numhl='DiffDelete'})
-      vim.fn.sign_define('DapBreakpointCondition', { text='', texthl='IncSearch', linehl='Visual', numhl='IncSearch'})
-      vim.fn.sign_define('DapStopped', { text='', texthl='DiffText', linehl='DiffChange', numhl='DiffText'})
+      vim.fn.sign_define('DapBreakpoint', { text = '', texthl = 'DiffDelete', linehl = 'Visual', numhl = 'DiffDelete' })
+      vim.fn.sign_define('DapBreakpointCondition', { text = '', texthl = 'IncSearch', linehl = 'Visual', numhl =
+      'IncSearch' })
+      vim.fn.sign_define('DapStopped', { text = '', texthl = 'DiffText', linehl = 'DiffChange', numhl = 'DiffText' })
 
       --{{{ keymap setting
       local k = require('config.keymap')
-      k.nmap('<space>c',dap.continue, 'start or [C]ontinue debug')
-      k.nmap('<space>n',dap.step_over, 'run [N]ext instruction')
-      k.nmap('<space>i',dap.step_into, 'run [I]nto (debug)')
-      k.nmap('<space>o',dap.step_out, 'run [O]utro (debug)')
-      k.nmap('<space>e',dap.terminate, '[T]erminate debug')
-      k.nmap('<space>b',dap.toggle_breakpoint, 'toggle [B]reakpoint (debug)')
-      k.nmap('<space>B',dap.clear_breakpoints, 'clear [B]reakpoint (debug)')
-      k.nmap('<space>d',dapui.toggle, '[D]ap UI toggle')
+      k.nmap('<space>c', dap.continue, 'start or [C]ontinue debug')
+      k.nmap('<space>n', dap.step_over, 'run [N]ext instruction')
+      k.nmap('<space>i', dap.step_into, 'run [I]nto (debug)')
+      k.nmap('<space>o', dap.step_out, 'run [O]utro (debug)')
+      k.nmap('<space>e', dap.terminate, '[T]erminate debug')
+      k.nmap('<space>b', dap.toggle_breakpoint, 'toggle [B]reakpoint (debug)')
+      k.nmap('<space>B', dap.clear_breakpoints, 'clear [B]reakpoint (debug)')
+      k.nmap('<space>d', dapui.toggle, '[D]ap UI toggle')
       -- duplicate for <leader>d to avoid confusion
-      k.nmap('<leader>dc',dap.continue, 'start or [C]ontinue debug')
-      k.nmap('<leader>dn',dap.step_over, 'run [N]ext instruction')
-      k.nmap('<leader>di',dap.step_into, 'run [I]nto (debug)')
-      k.nmap('<leader>do',dap.step_out, 'run [O]utro (debug)')
-      k.nmap('<leader>de',dap.terminate, '[T]erminate debug')
-      k.nmap('<leader>db',dap.toggle_breakpoint, 'toggle [B]reakpoint (debug)')
-      k.nmap('<leader>dB',dap.clear_breakpoints, 'clear [B]reakpoint (debug)')
-      k.nmap('<leader>dd',dapui.toggle, '[D]ap UI toggle')
+      k.nmap('<leader>dc', dap.continue, 'start or [C]ontinue debug')
+      k.nmap('<leader>dn', dap.step_over, 'run [N]ext instruction')
+      k.nmap('<leader>di', dap.step_into, 'run [I]nto (debug)')
+      k.nmap('<leader>do', dap.step_out, 'run [O]utro (debug)')
+      k.nmap('<leader>de', dap.terminate, '[T]erminate debug')
+      k.nmap('<leader>db', dap.toggle_breakpoint, 'toggle [B]reakpoint (debug)')
+      k.nmap('<leader>dB', dap.clear_breakpoints, 'clear [B]reakpoint (debug)')
+      k.nmap('<leader>dd', dapui.toggle, '[D]ap UI toggle')
       --}}}
 
---	####################
---		language adapter
---	####################
+      --	####################
+      --		language adapter
+      --	####################
 
       --{{{# check on win32
       local is_win = vim.fn.has('win32')
@@ -107,29 +110,29 @@ return {
 
       --{{{## Bash
       dap.adapters.bashdb = {
-        type = 'executable';
-        command = mason_path .. 'bash-debug-adapter';
-        name = 'bashdb';
+        type = 'executable',
+        command = mason_path .. 'bash-debug-adapter',
+        name = 'bashdb',
       }
       dap.configurations.sh = {
         {
-          type = 'bashdb';
-          request = 'launch';
-          name = "Launch file";
-          showDebugOutput = true;
-          pathBashdb = mason_path .. 'bashdb';
-          pathBashdbLib = mason_path .. '..';
-          trace = true;
-          file = "${file}";
-          program = "${file}";
-          cwd = '${workspaceFolder}';
-          pathCat = "cat";
-          pathBash = "/bin/bash";
-          pathMkfifo = "mkfifo";
-          pathPkill = "pkill";
-          args = {};
-          env = {};
-          terminalKind = "integrated";
+          type = 'bashdb',
+          request = 'launch',
+          name = "Launch file",
+          showDebugOutput = true,
+          pathBashdb = mason_path .. 'bashdb',
+          pathBashdbLib = mason_path .. '..',
+          trace = true,
+          file = "${file}",
+          program = "${file}",
+          cwd = '${workspaceFolder}',
+          pathCat = "cat",
+          pathBash = "/bin/bash",
+          pathMkfifo = "mkfifo",
+          pathPkill = "pkill",
+          args = {},
+          env = {},
+          terminalKind = "integrated",
         }
       }
       --}}}
@@ -140,7 +143,7 @@ return {
         port = "${port}",
         executable = {
           command = mason_path .. 'codelldb',
-          args = {"--port", "${port}"},
+          args = { "--port", "${port}" },
           --detached = false,	-- On windows you may have to uncomment this
         }
       }
@@ -163,19 +166,11 @@ return {
 
       --{{{##	C#, F#
       local coreclr = mason_path .. 'netcoredbg'
-      if is_win then
-        coreclr = coreclr .. '.cmd'
-      end
+      if is_win then coreclr = coreclr .. '.cmd' end
       dap.adapters.coreclr = {
         type = 'executable',
-        command = function()
-          if is_win then
-            return mason_path .. 'netcoredbg.cmd'
-          else
-            return mason_path .. 'netcoredbg'
-          end
-        end,
-        args = {'--interpreter=vscode'}
+        command = coreclr,
+        args = { '--interpreter=mi', '--server=44305' }
       }
       dap.configurations.cs = {
         {
@@ -183,7 +178,64 @@ return {
           name = "launch - netcoredbg",
           request = "launch",
           program = function()
-            return vim.fn.input('Path to dll', vim.fn.getcwd() .. '/bin/Debug/', 'file')
+            local lazy_roslyn = require 'lazy.core.config'.spec.plugins['roslyn.nvim']
+            if lazy_roslyn and lazy_roslyn._.loaded then
+            -- if false then
+              local sln_api = require 'roslyn.sln.api'
+              local sln_utils = require 'roslyn.sln.utils'
+              local _, sln = sln_utils.predict_target(sln_utils.root(0))
+
+              assert(type(sln) == 'string')
+              local projs = sln_api.projects(sln)
+              local proj
+
+              --{{{ ### select on multiproject
+              if #projs > 1 then
+                -- prompt create
+                local proj_prompt = ''
+                for i, val in ipairs(projs) do
+                  local p_name = string.match(val, '([^/\\]+)%.csproj$')
+                  proj_prompt = proj_prompt .. '[' .. i .. '] ' .. p_name .. '\n'
+                end
+                proj_prompt = proj_prompt .. '\nChose the project to run (1 to ' .. #projs .. '): '
+
+                -- project selection
+                local p_num = vim.fn.input(proj_prompt)
+                proj = projs[tonumber(p_num)]
+              else
+                proj = projs[1]
+              end
+              --}}}
+
+              local p_name = string.match(proj, '([^\\/]+)%.csproj$')
+
+              local bins = {}
+              local rg_str = vim.fn.system(string.format('rg -u --files | rg -e %s.bin.Debug.*%s.dll', p_name, p_name))
+              for p in string.gmatch(rg_str, '([^\n]+)\n') do
+                table.insert(bins, p)
+              end
+
+              local bin
+
+              --{{{ ### select on multiversion
+              if #bins > 1 then
+                local bin_prompt = ''
+                for i, val in ipairs(bins) do
+                  bin_prompt = bin_prompt .. '[' .. i .. '] ' .. val .. '\n'
+                end
+                bin_prompt = bin_prompt .. '\nChose the library to run (1 to ' .. #bins .. '): '
+                local b_num = vim.fn.input(bin_prompt)
+                bin = bins[tonumber(b_num)]
+              else
+                bin = bins[1]
+              end
+              --}}}
+
+              return vim.fn.fnamemodify(bin, ':p')
+            else
+              local type = vim.fn.input('Path to dll', vim.fn.getcwd() .. '/bin/Debug/', 'file')
+              return type
+            end
           end,
         },
       }
@@ -224,14 +276,14 @@ return {
           mode = "test",
           program = "${file}"
         },
-        -- works with go.mod packages and sub packages 
+        -- works with go.mod packages and sub packages
         {
           type = "delve",
           name = "Debug test (go.mod)",
           request = "launch",
           mode = "test",
           program = "./${relativeFileDirname}"
-        } 
+        }
       }
       --}}}
 
@@ -256,7 +308,6 @@ return {
         },
       }
       --}}}
-
     end,
   }
 }
