@@ -38,6 +38,10 @@ vim.cmd '%retab!'
 --}}}
 
 --{{{ # global variable settings
+vim.g.system = vim.loop.os_uname().sysname
+vim.g.is_win = vim.g.system == 'Windows_NT'
+vim.g.is_linux = vim.g.system == 'Linux'
+
 if vim.fn.executable('rg') then
   local ignore_dir = {
     "bin",
@@ -49,18 +53,19 @@ if vim.fn.executable('rg') then
     "vendor",
     ".vs",
   }
-  vim.g.grepprg = { 'rg', '--vimgrep', '--smart-case', '--hidden', }
+  local gp = { 'rg', '--vimgrep', '--smart-case', '--hidden', }
   for _, dir in ipairs(ignore_dir) do
     if vim.fn.has('win32') then
-      table.insert(vim.g.grepprg, string.format('--glob=\'!**\\%s\\*\'', dir))
+      table.insert(gp, string.format('--glob=!**\\%s\\*', dir))
     else
-      table.insert(vim.g.grepprg, string.format('--glob=\'!**/%s/*\'', dir))
+      table.insert(gp, string.format('--glob=!**/%s/*', dir))
     end
   end
-  table.insert(vim.g.grepprg, '--')
+  table.insert(gp, '--')
+    set.grepprg = table.concat(gp, ' ')
 else
   vim.notify('󰀦 ripgrep not installed (recommended)\n',vim.log.levels.WARN)
-  vim.g.grepprg = 'internal'
+  set.grepprg = 'internal'
 end
 --}}}
 

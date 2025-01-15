@@ -101,9 +101,8 @@ return {
       --	####################
 
       --{{{# check on win32
-      local is_win = vim.fn.has('win32')
       local mason_path = vim.fn.stdpath("data") .. '/mason/bin/'
-      if is_win then
+      if vim.g.is_win then
         mason_path = vim.fn.stdpath("data") .. '\\mason\\bin\\'
       end
       --}}}
@@ -166,11 +165,11 @@ return {
 
       --{{{##	C#, F#
       local coreclr = mason_path .. 'netcoredbg'
-      if is_win then coreclr = coreclr .. '.cmd' end
+      if vim.g.is_win then coreclr = coreclr .. '.cmd' end
       dap.adapters.coreclr = {
         type = 'executable',
         command = coreclr,
-        args = { '--interpreter=mi', '--server=44305' }
+        args = { '--interpreter=vscode', '--server=44305' }
       }
       dap.configurations.cs = {
         {

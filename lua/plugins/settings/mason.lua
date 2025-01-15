@@ -9,21 +9,25 @@ local M = {}
 ---install via mason all the package `required`
 ---TODO: aliases not supported yet
 ---@param required table require string names of the packages
-M.default_install = function (required)
+M.default_install = function(required)
   assert(type(required) == 'table', 'installer require a table as argument')
-  for _, pkg_name in ipairs(required) do
-    -- check package exist
-    if not registry.has_package(pkg_name) then
-      vim.notify('Package \'' .. pkg_name .. '\' not found on Mason registries\n', vim.log.levels.ERROR)
-    else
-      -- get package and install
-      local pkg = registry.get_package(pkg_name)
-      if not pkg:is_installed() then
-        pkg:install()
-        vim.notify('Installing "' .. pkg_name .. '" via Mason...\n', vim.log.levels.INFO)
+  vim.schedule(
+    function()
+      for _, pkg_name in ipairs(required) do
+        -- check package exist
+        if not registry.has_package(pkg_name) then
+          vim.notify('Package \'' .. pkg_name .. '\' not found on Mason registries\n', vim.log.levels.ERROR)
+        else
+          -- get package and install
+          local pkg = registry.get_package(pkg_name)
+          if not pkg:is_installed() then
+            pkg:install()
+            vim.notify('Installing "' .. pkg_name .. '" via Mason...\n', vim.log.levels.INFO)
+          end
+        end
       end
     end
-  end
+  )
 end
 
 -- # setup lsp from config
