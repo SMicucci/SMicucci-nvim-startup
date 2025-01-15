@@ -1,7 +1,6 @@
--- setting of [Q]uick[F]ix list
-vim.opt.wrap = false
+local set = vim.opt_local
+set.wrap = false
 
--- local set = vim.opt_local
 local k = require('config.keymap')
 
 k.nmap('<leader>q','<cmd>cclose<CR>','[Q]uit quickfix list', { buffer = 0 })
