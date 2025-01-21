@@ -96,8 +96,8 @@ M.nmap('<leader>wt','<C-W>T', '[w]indow in new [T]ab')
 --}}}
 
 --{{{ # tabs mapping
-M.nmap('<leader>tl','<cmd>tabn<CR>', 'remap \'gt\'')
-M.nmap('<leader>th','<cmd>tabp<CR>', 'remap \'gT\'')
+M.nmap('<leader>tl','<cmd>+tabn<CR>', 'remap \'gt\'')
+M.nmap('<leader>th','<cmd>-tabp<CR>', 'remap \'gT\'')
 M.nmap('<leader>tn','<cmd>tabnew<CR>', 'create new [t]ab')
 --}}}
 
@@ -108,7 +108,7 @@ M.nmap('gd',lsp.definition,'[g]oto [d]efinition')
 M.nmap('gD',lsp.declaration,'[g]oto [D]eclaration')
 M.nmap('gr',lsp.references,'[g]oto [R]eference')
 M.nmap('gR',lsp.rename,'[g]oto [R]ename')
-M.imap('<C-r>',lsp.rename,'trigger [R]ename')
+M.imap('<C-g><C-r>',lsp.rename,'trigger [g]oto [R]ename')
 M.imap('<C-h>',lsp.hover,'trigger [H]over')
 --}}}
 

@@ -14,6 +14,7 @@ return {
           require 'luasnip.loaders.from_lua'.lazy_load()
 
           local fe = require('luasnip').filetype_extend
+          fe('c', { 'cdoc' })
           fe('cs', { 'csharpdoc' })
           fe('lua', { 'luadoc' })
           fe('javascript', { 'jsdoc' })

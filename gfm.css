@@ -1,0 +1,108 @@
+/* basics */
+body {
+    background-color: #08000f;
+    color: #fff;
+}
+
+/* texts */
+p, span, em, strong, code { font-size: 1rem; }
+code {
+    background-color: #0009;
+    border: 1px solid #999;
+    border-radius: 0.5rem;
+    padding: 0 0.5rem;
+}
+
+/* titles */
+h1, h2, h3 {
+    margin: 1.25rem 0;
+}
+h4, h5, h6 {
+    margin: 0.75rem 0;
+}
+h1 { font-size: 2.75rem; }
+h2 { font-size: 2.25rem; }
+h3 { font-size: 1.75rem; }
+h4 { font-size: 1.25rem; }
+h5 { font-size: 1rem; }
+h6 { font-size: 0.75rem; }
+
+/* links */
+a, a:visited, a:hover, a:active, a:focus {
+    color: #6d8;
+    text-decoration: none;
+}
+a:hover, a:focus {
+    outline: 0;
+    filter: drop-shadow(0 0 0.75rem #9fb);
+}
+
+/* tables */
+table {
+    border: 0.125rem solid #fff;
+    border-spacing: 0;
+    border-radius: 2rem;
+    margin-left: 5rem;
+    background-color: #202;
+}
+th {
+    padding: 0.25rem 0 0.25rem 0;
+    border-bottom: 0.25rem double #ccc;
+}
+td {
+    padding: 0.25rem 0.75rem;
+}
+td:first-child {
+    padding-left: 2rem;
+}
+td:last-child {
+    padding-right: 2rem;
+}
+tbody tr:nth-child(odd) {
+    background-color: #313;
+}
+tbody tr:last-child > td {
+    padding-bottom: 0.75rem;
+}
+
+/* code blocks */
+pre code {
+    background-color: #0000;
+    border: 0;
+    padding: 0;
+}
+div.sourceCode {
+    padding: 1.5rem;
+    padding-bottom: 0.25rem;
+    border: 0.25rem solid #bbb;
+    border-radius: 1rem;
+    background-color: #000;
+}
+span.co { color: #666; }
+span.op { color: #999; }
+span.dt { color: #6cf; }
+span.dv { color: #fc6; }
+span.fl { color: #fc6; }
+span.kw { color: #d9f; }
+span.cf { color: #d9f; }
+span.pp { color: #65d; }
+span.st { color: #f57; }
+span.sc { color: #f57; }
+span.im { color: #7f5; }
+pre.sourceCode {
+    position: relative;
+}
+pre.sourceCode::before {
+    position: absolute;
+    top: -1.25rem;
+    left: -1.25rem;
+    border-radius: 0.75rem;
+    padding: 0.125rem 0.25rem;
+    padding-left: 0.5rem;
+    color: #000;
+    font-weight: 700;
+}
+pre.sourceCode.c::before {
+    content: "C code:";
+    background-color: #f66;
+}

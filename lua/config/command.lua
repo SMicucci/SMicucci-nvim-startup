@@ -5,6 +5,7 @@ M.cmd = vim.api.nvim_create_user_command
 
 -- autogroups
 local terminal = M.aug('terminal',{clear = true, })
+local utils = M.aug('utils',{clear = true, })
 
 --{{{Terminal congifuration (autocmd)
 M.au('termopen', {
@@ -14,6 +15,18 @@ M.au('termopen', {
       vim.opt_local.relativenumber = false
   end,
   desc = 'configure options for terminal'
+})
+--}}}
+
+--{{{ Highlight yanked text utils (autocmd)
+M.au('TextYankPost', {
+  group = utils,
+  callback = function ()
+    vim.highlight.on_yank({
+      higroup = 'IncSearch',
+      timeout = 150,
+    })
+  end
 })
 --}}}
 
