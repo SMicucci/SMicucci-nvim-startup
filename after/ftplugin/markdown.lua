@@ -23,9 +23,13 @@ md_aucmd(
   { 'BufWritePost', 'BufAdd' },
   function()
     if vim.fn.executable('pandoc') then
+      local cmd = "pandoc";
+      if vim.g.is_win then
+        cmd = cmd .. '.exe'
+      end
       local name = string.gsub(vim.fn.bufname(), '%.md$', '')
       local css = vim.fs.joinpath(vim.fn.stdpath('config')--[[@as string]], 'gfm.css')
-      local cmd = string.format('!pandoc --from=gfm --to=html -o %s.html %s.md --css=%s --standalone', name, name, css)
+      local cmd = string.format('!%s --from=gfm --to=html -o %s.html %s.md --css=%s --standalone', cmd, name, name, css)
       vim.fn.execute(cmd)
       -- vim.notify('updated '..name..'.hmtl with pandoc!',vim.log.levels.INFO)
       return
