@@ -95,8 +95,15 @@ return {
         jump = function (direction) require'luasnip'.jump(direction) end,
       },
       sources = {
-        default = { 'lsp', 'path', 'snippets', 'buffer' },
+        default = { 'lsp', 'path', 'snippets', 'buffer', 'markdown' },
         cmdline = {},
+        providers = {
+          markdown = {
+            name = 'RenderMarkdown',
+            module = 'render-markdown.integ.blink',
+            fallback = { 'lsp' },
+          }
+        },
       },
     },
   },
