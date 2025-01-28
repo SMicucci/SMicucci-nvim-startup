@@ -6,6 +6,7 @@ M.cmd = vim.api.nvim_create_user_command
 -- autogroups
 local terminal = M.aug('terminal',{clear = true, })
 local utils = M.aug('utils',{clear = true, })
+local files = M.aug('files',{clear = true, })
 
 --{{{Terminal congifuration (autocmd)
 M.au('termopen', {
@@ -50,5 +51,7 @@ end, {
   }
 )
 --}}}
+
+-- M.au()
 
 return M

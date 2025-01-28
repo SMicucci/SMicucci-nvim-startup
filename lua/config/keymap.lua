@@ -93,6 +93,10 @@ M.nmap('<leader>bd','<C-W>s<cmd>bp<CR><C-W>w<cmd>bd<CR>','[b]uffer [d]elete')
 M.nmap('<leader>w','<C-W>', 'shortcut to [w]indow managment')
 M.nmap('<leader>we','<C-W>=', '[w]indow [e]qualize')
 M.nmap('<leader>wt','<C-W>T', '[w]indow in new [T]ab')
+M.nmap('<leader>w-','<C-W>5-', '[w]indow resize custom')
+M.nmap('<leader>w+','<C-W>5+', '[w]indow resize custom')
+M.nmap('<leader>w<','<C-W>5<', '[w]indow resize custom')
+M.nmap('<leader>w>','<C-W>5>', '[w]indow resize custom')
 --}}}
 
 --{{{ # tabs mapping

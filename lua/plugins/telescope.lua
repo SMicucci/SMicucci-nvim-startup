@@ -129,7 +129,7 @@ return {
     k.nmap('<leader>fm',builtin.marks, '[f]ind [m]arks')
     k.nmap('<leader>fh',builtin.help_tags, '[f]ind [h]elp')
     k.nmap('<leader>fc',builtin.quickfix, '[f]ind qui[c]kfix')
-    k.nmap('gd',builtin.lsp_definitions,'[g]oto [d]efinition')
+    k.nmap('gd',function() builtin.lsp_definitions({ jump_type = 'tab' }) end,'[g]oto [d]efinition')
     k.nmap('gr',builtin.lsp_references,'[g]oto [R]eference')
     --}}}
 
