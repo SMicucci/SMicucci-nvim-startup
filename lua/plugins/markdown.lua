@@ -1,11 +1,13 @@
 return {
+-- For `plugins/markview.lua` users.
   {
-    "MeanderingProgrammer/render-markdown.nvim",
-    fd = 'markdown',
-    dependencies = {
-      'nvim-treesitter/nvim-treesitter',
-      'nvim-tree/nvim-web-devicons',
-    },
-    opts = {}
-  }
+    "OXY2DEV/markview.nvim",
+    lazy = false,
+    opts = {
+        preview = {
+          filetypes = { 'markdown', 'codecompanion' },
+          ignore_buftypes = {},
+        },
+      },
+  };
 }
