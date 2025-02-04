@@ -17,6 +17,10 @@ set.relativenumber = true
 set.syntax = 'on'
 set.termguicolors = true
 
+--split
+set.splitbelow = true
+set.splitright = true
+
 --menu
 set.wildmenu = true
 set.wildoptions = 'pum'

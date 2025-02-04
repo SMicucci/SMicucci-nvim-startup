@@ -5,20 +5,21 @@ return {
     "neovim/nvim-lspconfig",
     lazy = true,
     event = 'VeryLazy',
-    --{{{dependencies
+    --{{{# dependencies
     dependencies = {
       -- "williamboman/mason-lspconfig.nvim",
+      --{{{## lua dep
       {
         "folke/lazydev.nvim",
         ft = {'lua'},
         opts = {
           library = {
-            -- See the configuration section for more details
-            -- Load luvit types when the `vim.uv` word is found
             { path = "${3rd}/luv/library", words = { "vim%.uv" } },
           },
         },
       },
+      --}}}
+      --{{{## mason
       {
         "williamboman/mason.nvim",
         opts = {
@@ -28,6 +29,8 @@ return {
           }
         }
       },
+      --}}}
+      --{{{## csharp stuff
       {
         "Hoffs/omnisharp-extended-lsp.nvim",
         ft = { 'cs', 'cshtml.html' , 'html.cshtml' },
@@ -40,7 +43,51 @@ return {
       {
         "tris203/rzls.nvim",
         enabled = not use_omnisharp,
+      },
+      --}}}
+      --{{{## utilities
+      {
+        "aznhe21/actions-preview.nvim",
+        config = function ()
+          local ap = require"actions-preview"
+          local aph = require"actions-preview.highlight"
+          local key = require "config.keymap"
+          ap.setup{
+            telescope = {
+              sorting_strategy = "ascending",
+              layout_strategy = "vertical",
+              layout_config = {
+                width = 0.8,
+                height = 0.9,
+                prompt_position = "top",
+                preview_cutoff = 20,
+                preview_height = function(_, _, max_lines)
+                  return max_lines - 15
+                end,
+              },
+            }
+          }
+          key.nmap("gh", ap.code_actions, "code action UI")
+          key.vmap("gh", ap.code_actions, "code action UI")
+        end
+      },
+      {
+        "VidocqH/lsp-lens.nvim",
+        config = function()
+          local lens = require "lsp-lens"
+          local key = require "config.keymap"
+          lens.setup{
+            sections = {
+              definition = function (c) return " Def: " .. c end,
+              references = function (c) return "󰅪 Ref: " .. c end,
+              implements = function (c) return "󰅩 Impl: " .. c end,
+            },
+          }
+          vim.api.nvim_set_hl(0, "LspLens", { link = "Visual", force = true })
+          key.nmap("gl", ":LspLensToggle<CR>", "code lens UI")
+        end
       }
+      --}}}
     },
     --}}}
     config = function()
@@ -74,7 +121,7 @@ return {
       lsp_manager.auto_update = true
       local default_setup = { capabilities = capabilities, }
       local setups = {}
-      --{{{ ## lua_ls setup
+      --{{{## lua_ls setup
       setups['lua_ls'] = {
         on_init = function(client)
           if client.workspace_folders then
@@ -106,15 +153,15 @@ return {
         },
       }
       --}}}
-      --{{{ ## omnisharp setup
+      --{{{## omnisharp setup
       setups["omnisharp"] = {
         cmd = { vim.fs.joinpath( vim.fn.stdpath('data') --[[@as string]],
-          'mason/bin/omnisharp'
+          'mason', 'bin', 'omnisharp'
         )},
         capabilities = capabilities,
       }
       --}}}
-      --{{{ ## roslyn setup
+      --{{{## roslyn setup
       setups["roslyn"] = function ()
         local lazy_roslyn = require 'lazy.core.config'.spec.plugins["roslyn.nvim"]
         local lazy_rzls = require 'lazy.core.config'.spec.plugins["rzls.nvim"]
@@ -164,59 +211,6 @@ return {
 
       -- start the setup
       lsp_manager.setup_lsp_server( default_setup, setups )
-      --}}}
-
-      --{{{ mason-lspconfig old setup_handlers
-      --[[
-      masonlsp.setup_handlers {
-        -- default lsp config
-        function(server_name)
-          lspconfig[server_name].setup {
-            capabilities = capabilities,
-          }
-        end,
-        -- lua_ls neovim config
-        ["lua_ls"] = function ()
-          lspconfig.lua_ls.setup {
-            on_init = function(client)
-              if client.workspace_folders then
-                local path = client.workspace_folders[1].name
-                if vim.loop.fs_stat(path..'/.luarc.json') or vim.loop.fs_stat(path..'/.luarc.jsonc') then
-                  return
-                end
-              end
-
-              client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
-                runtime = {
-                  version = 'LuaJIT'
-                },
-                -- Make the server aware of Neovim runtime files
-                workspace = {
-                  checkThirdParty = false,
-                  library = {
-                    vim.env.VIMRUNTIME,
-                    -- Depending on the usage, you might want to add additional paths here.
-                    "${3rd}/luv/library",
-                    "${3rd}/busted/library",
-                  }
-                }
-              })
-            end,
-            capabilities = capabilities,
-            settings = {
-              Lua = {}
-            },
-          }
-        end,
-        -- omnisharp neovim config
-        ["omnisharp"] = function ()
-          lspconfig.omnisharp.setup {
-            cmd = { vim.fs.joinpath(vim.fn.stdpath('data'), 'mason/bin/omnisharp') },
-            capabilities = capabilities,
-          }
-        end,
-      }
-      --]]
       --}}}
 
       --{{{ # omnisharp-extended-lsp implementation (autocmd)
