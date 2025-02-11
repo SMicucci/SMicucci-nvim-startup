@@ -17,7 +17,17 @@ return {
               position = "right",
               width = 0.35,
             }
-          }
+          },
+          action_palette = {
+            width = 95,
+            height = 10,
+            prompt = "Prompt ",
+            provider = "telescope", -- default|telescope
+            opts = {
+              show_default_actions = true,
+              show_default_prompt_library = true,
+            }
+          },
         },
         adapters = {
           deepseek = function()
