@@ -94,6 +94,7 @@ return {
         end,
         jump = function (direction) require'luasnip'.jump(direction) end,
       },
+      cmdline = {},
       sources = {
         default = {
           'lsp',
@@ -102,7 +103,6 @@ return {
           'buffer',
           -- 'markdown'
         },
-        cmdline = {},
         -- providers = {
         --   markdown = {
         --     name = 'RenderMarkdown',

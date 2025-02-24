@@ -16,7 +16,7 @@ return {
       local dap = require('dap')
       local dapui = require('dapui')
 
-      dap.set_log_level('DEBUG')
+      dap.set_log_level('TRACE')
 
       --{{{  dapui setup
       ---@diagnostic disable-next-line: missing-fields
@@ -101,11 +101,7 @@ return {
       --	####################
 
       --{{{# check on win32
-      local is_win = vim.fn.has('win32')
-      local mason_path = vim.fn.stdpath("data") .. '/mason/bin/'
-      if is_win ~= 0 then
-        mason_path = vim.fn.stdpath("data") .. '\\mason\\bin\\'
-      end
+      local mason_path = vim.fs.normalize(vim.fs.joinpath(vim.fn.stdpath('data'), "mason", "bin"))
       --}}}
 
       --{{{## Bash
@@ -165,8 +161,12 @@ return {
       --}}}
 
       --{{{##	C#, F#
-      local coreclr = mason_path .. 'netcoredbg'
-      if is_win then coreclr = coreclr .. '.cmd' end
+      local coreclr = vim.fs.normalize(vim.fs.joinpath( vim.fn.stdpath('data'),
+            "mason", "packages", "netcoredbg", "libexec", "netcoredbg", "netcoredbg" ))
+      if vim.g.is_win then
+        coreclr = vim.fs.normalize(vim.fs.joinpath( vim.fn.stdpath('data'),
+            "mason", "packages", "netcoredbg", "netcoredbg", "netcoredbg.exe" ))
+      end
       dap.adapters.coreclr = {
         type = 'executable',
         command = coreclr,
@@ -210,7 +210,7 @@ return {
               local p_name = string.match(proj, '([^\\/]+)%.csproj$')
 
               local bins = {}
-              local rg_str = vim.fn.system(string.format('rg -u --files | rg -e %s.bin.Debug.*%s.dll', p_name, p_name))
+              local rg_str = vim.fn.system(string.format('rg -u --files | rg -e %s.bin.Debug.*%s', p_name, p_name))
               for p in string.gmatch(rg_str, '([^\n]+)\n') do
                 table.insert(bins, p)
               end
@@ -231,7 +231,8 @@ return {
               end
               --}}}
 
-              return vim.fn.fnamemodify(bin, ':p')
+              print('\n return:\t' .. vim.fn.shellescape(vim.fn.fnamemodify(bin, ':p')) .. '\n')
+              return vim.fn.shellescape(vim.fn.fnamemodify(bin, ':p'))
             else
               local type = vim.fn.input('Path to dll', vim.fn.getcwd() .. '/bin/Debug/', 'file')
               return type

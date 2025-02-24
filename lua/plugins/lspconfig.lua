@@ -84,7 +84,7 @@ return {
             },
           }
           vim.api.nvim_set_hl(0, "LspLens", { link = "Visual", force = true })
-          key.nmap("gl", ":LspLensToggle<CR>", "code lens UI")
+      key.nmap("gl", ":LspLensToggle<CR>", "code lens UI")
         end
       }
       --}}}
@@ -179,8 +179,10 @@ return {
             },
             args = {
               '--logLevel=Information',
-              '--extensionLogDirectory=' .. vim.fs.dirname(vim.lsp.get_log_path())
-            }
+              '--extensionLogDirectory=' .. vim.fs.dirname(vim.lsp.get_log_path()),
+              '--stdio'
+            },
+            broad_search = true
           }
           opts = vim.tbl_deep_extend('keep', opts, { config = default_setup })
 
