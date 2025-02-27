@@ -68,6 +68,10 @@ return {
     ---@module 'blink.cmp'
     ---@type blink.cmp.Config
     opts = {
+      enabled = function ()
+        return not vim.tbl_contains({'markdown', 'codecompanion', 'TelescopePrompt'},
+          vim.bo.filetype) and vim.b.completion ~= false
+      end,
 
       enabled = function ()
         return not vim.tbl_contains({
@@ -81,16 +85,17 @@ return {
       keymap = {
         preset = 'default',
         ['<Enter>'] = { 'select_and_accept', 'fallback' },
-        -- ['<C-space>'] = { 'show', 'fallback' },
+        ['<C-space>'] = { 'show', 'fallback' },
         ['<M-Tab>'] = { 'snippet_backward', 'fallback' },
         ['<S-Tab>'] = {},
         ['<Tab>'] = {},
+        ['<C-n>'] = { 'select_next', 'fallback' },
+        ['<C-p>'] = { 'select_prev', 'fallback' },
         ['<C-j>'] = { 'scroll_documentation_down', 'fallback' },
         ['<C-k>'] = { 'scroll_documentation_up', 'fallback' },
-        -- ['<C-y>'] = { 'select_and_accept', 'fallback' },
+        ['<C-h>'] = { 'show_signature', 'hide_signature' },
+        ['<C-y>'] = { 'select_and_accept', 'fallback' },
       },
-
-      -- completion = {},
 
       appearance = {
         use_nvim_cmp_as_default = true,
@@ -116,9 +121,7 @@ return {
       },
 
       sources = {
-        default = { 'lsp', 'path', 'snippets', 'buffer',
-          -- 'markdown'
-        },
+        default = { 'lsp', 'path', 'snippets', 'buffer', },
       },
     },
   },
