@@ -25,26 +25,26 @@ return {
           {
             elements = {
               {
-                id = "breakpoint",
-                size = 0.15,
-              },
-              {
-                id = "repl",
-                size = 0.35,
-              },
-            },
-            position = "left",
-            size = 40,
-          },
-          {
-            elements = {
-              {
                 id = "scopes",
                 size = 1,
               },
             },
             position = "bottom",
             size = 12,
+          },
+          {
+            elements = {
+              {
+                id = "breakpoints",
+                size = 0.15,
+              },
+              {
+                id = "repl",
+                size = 0.85,
+              },
+            },
+            position = "left",
+            size = 40,
           },
         },
         ---@diagnostic disable-next-line: missing-fields
@@ -71,8 +71,7 @@ return {
 
       --	##	setup symbol and colors
       vim.fn.sign_define('DapBreakpoint', { text = '', texthl = 'DiffDelete', linehl = 'Visual', numhl = 'DiffDelete' })
-      vim.fn.sign_define('DapBreakpointCondition', { text = '', texthl = 'IncSearch', linehl = 'Visual', numhl =
-      'IncSearch' })
+      vim.fn.sign_define('DapBreakpointCondition', { text = '', texthl = 'IncSearch', linehl = 'Visual', numhl = 'IncSearch' })
       vim.fn.sign_define('DapStopped', { text = '', texthl = 'DiffText', linehl = 'DiffChange', numhl = 'DiffText' })
 
       --{{{ keymap setting
@@ -161,83 +160,64 @@ return {
       --}}}
 
       --{{{##	C#, F#
-      local coreclr = vim.fs.normalize(vim.fs.joinpath( vim.fn.stdpath('data'),
+      local cs_dbg = vim.fs.normalize(vim.fs.joinpath( vim.fn.stdpath('data'),
             "mason", "packages", "netcoredbg", "libexec", "netcoredbg", "netcoredbg" ))
       if vim.g.is_win then
-        coreclr = vim.fs.normalize(vim.fs.joinpath( vim.fn.stdpath('data'),
+        cs_dbg = vim.fs.normalize(vim.fs.joinpath( vim.fn.stdpath('data'),
             "mason", "packages", "netcoredbg", "netcoredbg", "netcoredbg.exe" ))
       end
       dap.adapters.coreclr = {
         type = 'executable',
-        command = coreclr,
-        args = { '--interpreter=vscode' }
+        command = cs_dbg,
+        args = { '--interpreter=vscode' },
+        console = "externalTerminal",
+        options = {
+          detached = false,
+          env = {
+            DOTNET_ROOT = vim.fn.exepath('dotnet'),
+          }
+        },
       }
       dap.configurations.cs = {
         {
           type = "coreclr",
-          name = "launch - netcoredbg",
           request = "launch",
-          program = function()
-            local lazy_roslyn = require 'lazy.core.config'.spec.plugins['roslyn.nvim']
-            if lazy_roslyn and lazy_roslyn._.loaded then
-            -- if false then
-              local sln_api = require 'roslyn.sln.api'
-              local sln_utils = require 'roslyn.sln.utils'
-              local _, sln = sln_utils.predict_target(sln_utils.root(0))
-
-              assert(type(sln) == 'string')
-              local projs = sln_api.projects(sln)
-              local proj
-
-              --{{{ ### select on multiproject
-              if #projs > 1 then
-                -- prompt create
-                local proj_prompt = ''
-                for i, val in ipairs(projs) do
-                  local p_name = string.match(val, '([^/\\]+)%.csproj$')
-                  proj_prompt = proj_prompt .. '[' .. i .. '] ' .. p_name .. '\n'
-                end
-                proj_prompt = proj_prompt .. '\nChose the project to run (1 to ' .. #projs .. '): '
-
-                -- project selection
-                local p_num = vim.fn.input(proj_prompt)
-                proj = projs[tonumber(p_num)]
-              else
-                proj = projs[1]
-              end
-              --}}}
-
-              local p_name = string.match(proj, '([^\\/]+)%.csproj$')
-
-              local bins = {}
-              local rg_str = vim.fn.system(string.format('rg -u --files | rg -e %s.bin.Debug.*%s', p_name, p_name))
-              for p in string.gmatch(rg_str, '([^\n]+)\n') do
-                table.insert(bins, p)
-              end
-
-              local bin
-
-              --{{{ ### select on multiversion
-              if #bins > 1 then
-                local bin_prompt = ''
-                for i, val in ipairs(bins) do
-                  bin_prompt = bin_prompt .. '[' .. i .. '] ' .. val .. '\n'
-                end
-                bin_prompt = bin_prompt .. '\nChose the library to run (1 to ' .. #bins .. '): '
-                local b_num = vim.fn.input(bin_prompt)
-                bin = bins[tonumber(b_num)]
-              else
-                bin = bins[1]
-              end
-              --}}}
-
-              print('\n return:\t' .. vim.fn.shellescape(vim.fn.fnamemodify(bin, ':p')) .. '\n')
-              return vim.fn.shellescape(vim.fn.fnamemodify(bin, ':p'))
-            else
-              local type = vim.fn.input('Path to dll', vim.fn.getcwd() .. '/bin/Debug/', 'file')
-              return type
+          name = "launch project (netcoredbg)",
+          stopAtEntry = false,
+          program = "dotnet",
+          args = function()
+            local csproj_files = vim.fn.globpath(vim.fn.getcwd(), '**/*.csproj', true, true)
+            if #csproj_files == 0 then
+              return dap.ABORT
             end
+            vim.cmd("silent make")
+            print("after make")
+            return coroutine.create(function (dap_run_co)
+              vim.ui.select(csproj_files, {
+                prompt = 'Seleziona progetto:',
+                format_item = function (path)
+                  return vim.fn.fnamemodify(path, ':t')
+                end
+              }, function (choice)
+                  coroutine.resume(dap_run_co, {'run', '--no-build', '--project', choice})
+                end)
+            end)
           end,
+          cwd = '${workspaceFolder}',
+          console = "externalTerminal",
+          requireExactSource = false,
+          enableStepFiltering = true,
+          env = {
+            DOTNET_ROOT = vim.fn.exepath('dotnet'),
+            ASPNETCORE_ENVIRONMENT = 'Development',
+            ASPNETCORE_URLS = 'https://localhost:5001',
+          },
+          -- metadata = {
+          --   ['Microsoft.DebuggerCore.ClrDbgTransportPipeName'] = '${pipe}',
+          -- },
+          -- pipeTransport = {
+          --   pipeProgram = vim.fs.normalize(vim.fs.joinpath(mason_path, 'netcoredbg'))
+          -- },
         },
       }
       --}}}

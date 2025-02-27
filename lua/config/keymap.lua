@@ -121,7 +121,7 @@ M.tmap('<Esc>','<C-\\><C-n>','exit from terminal')
 --}}}
 
 --{{{ # quickfix integrated
-M.nmap('<leader>c','<cmd>cwindow 12<CR>','open qflist')
+M.nmap('<leader>co','<cmd>cwindow 12<CR>','open qflist')
 M.nmap('<leader>cn','<cmd>cnext<CR>','qflist next entry')
 M.nmap('<leader>cj','<cmd>cnext<CR>','qflist next entry')
 M.nmap('<leader>cp','<cmd>cNext<CR>','qflist prev entry')

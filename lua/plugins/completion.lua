@@ -64,25 +64,41 @@ return {
     },
     version = "*",
     -- tag = 'v0.10.*',
+
+    ---@module 'blink.cmp'
+    ---@type blink.cmp.Config
     opts = {
+
+      enabled = function ()
+        return not vim.tbl_contains({
+          "markdown",
+          "TelescopePrompt",
+          "codecompanion",
+          "dap-repl",
+        }, vim.bo.filetype) and vim.b.completion ~= false
+      end,
 
       keymap = {
         preset = 'default',
         ['<Enter>'] = { 'select_and_accept', 'fallback' },
-        ['<Up>'] = { 'select_prev', 'fallback' },
-        ['<Down>'] = { 'select_next', 'fallback' },
-        ['<C-j>'] = { 'scroll_documentation_down', 'fallback' },
-        ['<C-k>'] = { 'scroll_documentation_up', 'fallback' },
+        -- ['<C-space>'] = { 'show', 'fallback' },
         ['<M-Tab>'] = { 'snippet_backward', 'fallback' },
         ['<S-Tab>'] = {},
         ['<Tab>'] = {},
-        -- ['<C-h>'] = { 'show_documentation', 'hide_documentation' },
+        ['<C-j>'] = { 'scroll_documentation_down', 'fallback' },
+        ['<C-k>'] = { 'scroll_documentation_up', 'fallback' },
+        -- ['<C-y>'] = { 'select_and_accept', 'fallback' },
       },
+
+      -- completion = {},
+
       appearance = {
         use_nvim_cmp_as_default = true,
         nerd_font_variant = 'mono',
       },
+
       signature = { enabled = true },
+
       snippets = {
         preset = 'luasnip',
         expand = function (snippet) require'luasnip'.lsp_expand(snippet) end,
@@ -94,22 +110,15 @@ return {
         end,
         jump = function (direction) require'luasnip'.jump(direction) end,
       },
-      cmdline = {},
+
+      cmdline = {
+        enabled = false,
+      },
+
       sources = {
-        default = {
-          'lsp',
-          'path',
-          'snippets',
-          'buffer',
+        default = { 'lsp', 'path', 'snippets', 'buffer',
           -- 'markdown'
         },
-        -- providers = {
-        --   markdown = {
-        --     name = 'RenderMarkdown',
-        --     module = 'render-markdown.integ.blink',
-        --     fallback = { 'lsp' },
-        --   }
-        -- },
       },
     },
   },
