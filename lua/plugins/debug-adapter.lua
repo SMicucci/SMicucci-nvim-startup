@@ -83,7 +83,7 @@ return {
       k.nmap('<space>e', dap.terminate, '[T]erminate debug')
       k.nmap('<space>b', dap.toggle_breakpoint, 'toggle [B]reakpoint (debug)')
       k.nmap('<space>B', dap.clear_breakpoints, 'clear [B]reakpoint (debug)')
-      k.nmap('<space>d', dapui.toggle, '[D]ap UI toggle')
+      -- k.nmap('<space>d', dapui.toggle, '[D]ap UI toggle') --[[remove to consent dotnet shortcut]]
       -- duplicate for <leader>d to avoid confusion
       k.nmap('<leader>dc', dap.continue, 'start or [C]ontinue debug')
       k.nmap('<leader>dn', dap.step_over, 'run [N]ext instruction')

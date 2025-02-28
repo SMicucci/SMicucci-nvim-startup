@@ -86,7 +86,8 @@ M.nmap('<leader>bb','<cmd>buffers<CR>','[b]uffers list')
 M.nmap('<leader>bn','<cmd>bn<CR>','[b]uffer [n]ext')
 M.nmap('<leader>bp','<cmd>bp<CR>','[b]uffer [p]revious')
 -- this is a bit sofisticated (split, prev buf, next win, del buf)
-M.nmap('<leader>bd','<C-W>s<cmd>bp<CR><C-W>w<cmd>bd<CR>','[b]uffer [d]elete')
+-- M.nmap('<leader>bd','<C-W>s<cmd>bp<CR><C-W>w<cmd>bd<CR>','[b]uffer [d]elete')
+M.nmap('<leader>bd','<cmd>db<CR>','[b]uffer [d]elete')
 --}}}
 
 --{{{ # window mapping
