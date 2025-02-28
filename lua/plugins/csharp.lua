@@ -11,13 +11,18 @@ return {
       'nvim-lua/plenary.nvim',
       'nvim-telescope/telescope.nvim',
       -- extra dependencies
-      'mfussenegger/nvim-dap'
+      'mfussenegger/nvim-dap',
+      'Saghen/blink.cmp',
     },
     config = function ()
       local dotnet = require 'easy-dotnet'
+      local  blink = require 'blink.cmp'
       dotnet.setup{
 
       }
+
+      -- import blink
+      -- blink.add_provider('easy-dotnet', dotnet.package_completion_source)
     end
   }
 }

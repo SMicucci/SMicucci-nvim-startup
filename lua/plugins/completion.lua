@@ -61,6 +61,16 @@ return {
         end
       },
       --}}}
+      --{{{## easy-dotnet
+      {
+        'GustavEikaas/easy-dotnet.nvim',
+        -- opts = function ()
+        --   local dotnet = require 'easy-dotnet'
+        --   local  blink = require 'blink.cmp'
+        --   blink.add_provider('easy-dotnet', dotnet.package_completion_source)
+        -- end
+      },
+      --}}}
     },
     version = "*",
     -- tag = 'v0.10.*',
@@ -116,12 +126,21 @@ return {
         jump = function (direction) require'luasnip'.jump(direction) end,
       },
 
-      cmdline = {
-        enabled = false,
-      },
+      cmdline = { enabled = false, },
 
       sources = {
-        default = { 'lsp', 'path', 'snippets', 'buffer', },
+        default = { 'lsp', 'path', 'snippets', 'buffer',
+          -- 'easy-dotnet',
+        },
+        -- providers = {
+        --   ['easy-dotnet'] = {
+        --     name = 'easy-dotnet',
+        --     module = 'blink.cmp.source',
+        --     enabled = function ()
+        --       return vim.tbl_contains({'xml'}, vim.bo.filetype)
+        --     end,
+        --   },
+        -- },
       },
     },
   },
