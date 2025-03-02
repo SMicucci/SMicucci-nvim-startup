@@ -64,18 +64,20 @@ return {
       local dotnet = require 'easy-dotnet'
       local dap = require 'dap'
       local tree = require 'neo-tree'
+      local k = require 'config.keymap'
       dotnet.setup{}
 
       -- neo tree
+      --{{{## neo-tree setup
       tree.setup{
         filesystem = {
           window = {
             mappings = {
-              ["R"] = 'easy-dotnet'
+              ["R"] = 'dotnet new:'
             }
           },
           commands = {
-            ["easy-dotnet"] = function (state)
+            ["dotnet new:"] = function (state)
               local node = state.tree:get_node()
               local path = node.type == 'directory' and node.path or vim.fs.dirname(node.path)
               dotnet.create_new_item(path, function ()
@@ -85,6 +87,8 @@ return {
           }
         }
       }
+      --}}}
+      k.nmap('<leader>ft',':Neotree toggle<CR>','trigger [F]ile [T]ree toggle',{silent = true})
 
       -- dap
       local debug_dll = nil
