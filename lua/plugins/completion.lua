@@ -3,6 +3,7 @@ return {
     "Saghen/blink.cmp",
     dependencies = {
       'rafamadriz/friendly-snippets',
+      'GustavEikaas/easy-dotnet.nvim',
       --{{{ ## luasnip
       {
         "l3mon4d3/luasnip",
@@ -61,35 +62,20 @@ return {
         end
       },
       --}}}
-      --{{{## easy-dotnet
-      {
-        'GustavEikaas/easy-dotnet.nvim',
-        -- opts = function ()
-        --   local dotnet = require 'easy-dotnet'
-        --   local  blink = require 'blink.cmp'
-        --   blink.add_provider('easy-dotnet', dotnet.package_completion_source)
-        -- end
-      },
-      --}}}
     },
     version = "*",
-    -- tag = 'v0.10.*',
+    -- tag = 'v0.13.*',
 
     ---@module 'blink.cmp'
     ---@type blink.cmp.Config
     opts = {
       enabled = function ()
-        return not vim.tbl_contains({'markdown', 'codecompanion', 'TelescopePrompt'},
-          vim.bo.filetype) and vim.b.completion ~= false
-      end,
-
-      enabled = function ()
         return not vim.tbl_contains({
           "markdown",
           "TelescopePrompt",
-          "codecompanion",
+          -- "codecompanion",
           "dap-repl",
-        }, vim.bo.filetype) and vim.b.completion ~= false
+        }, vim.bo.filetype)
       end,
 
       keymap = {
@@ -129,18 +115,16 @@ return {
       cmdline = { enabled = false, },
 
       sources = {
-        default = { 'lsp', 'path', 'snippets', 'buffer',
-          -- 'easy-dotnet',
-        },
-        -- providers = {
-        --   ['easy-dotnet'] = {
-        --     name = 'easy-dotnet',
-        --     module = 'blink.cmp.source',
-        --     enabled = function ()
-        --       return vim.tbl_contains({'xml'}, vim.bo.filetype)
-        --     end,
-        --   },
-        -- },
+        default = { 'lsp', 'path', 'snippets', 'buffer', 'easy-dotnet', },
+        providers = {
+          ['easy-dotnet'] = {
+            enabled = true,
+            name = 'easy-dotnet',
+            module = 'easy-dotnet.completion.blink',
+            score_offset = 10000,
+            async = true,
+          }
+        }
       },
     },
   },

@@ -6,7 +6,7 @@ return {
     build = ":TSUpdate",
     config = function()
       require "nvim-treesitter.configs".setup {
-        ensure_installed = { "c", "lua" },
+        ensure_installed = { 'c', 'lua', 'xml', 'json', 'sql', 'c_sharp' },
         auto_install = true,
         sync_install = false,
         ignore_install = {},

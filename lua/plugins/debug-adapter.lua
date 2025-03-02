@@ -43,8 +43,8 @@ return {
                 size = 0.85,
               },
             },
-            position = "left",
-            size = 40,
+            position = "right",
+            size = 60,
           },
         },
         ---@diagnostic disable-next-line: missing-fields
@@ -157,69 +157,6 @@ return {
       dap.configurations.cpp = dap.configurations.c
       dap.configurations.rust = dap.configurations.c
       dap.configurations.zig = dap.configurations.c
-      --}}}
-
-      --{{{##	C#, F#
-      local cs_dbg = vim.fs.normalize(vim.fs.joinpath( vim.fn.stdpath('data'),
-            "mason", "packages", "netcoredbg", "libexec", "netcoredbg", "netcoredbg" ))
-      if vim.g.is_win then
-        cs_dbg = vim.fs.normalize(vim.fs.joinpath( vim.fn.stdpath('data'),
-            "mason", "packages", "netcoredbg", "netcoredbg", "netcoredbg.exe" ))
-      end
-      dap.adapters.coreclr = {
-        type = 'executable',
-        command = cs_dbg,
-        args = { '--interpreter=vscode' },
-        console = "externalTerminal",
-        options = {
-          detached = false,
-          env = {
-            DOTNET_ROOT = vim.fn.exepath('dotnet'),
-          }
-        },
-      }
-      dap.configurations.cs = {
-        {
-          type = "coreclr",
-          request = "launch",
-          name = "launch project (netcoredbg)",
-          stopAtEntry = false,
-          program = "dotnet",
-          args = function()
-            local csproj_files = vim.fn.globpath(vim.fn.getcwd(), '**/*.csproj', true, true)
-            if #csproj_files == 0 then
-              return dap.ABORT
-            end
-            vim.cmd("silent make")
-            print("after make")
-            return coroutine.create(function (dap_run_co)
-              vim.ui.select(csproj_files, {
-                prompt = 'Seleziona progetto:',
-                format_item = function (path)
-                  return vim.fn.fnamemodify(path, ':t')
-                end
-              }, function (choice)
-                  coroutine.resume(dap_run_co, {'run', '--no-build', '--project', choice})
-                end)
-            end)
-          end,
-          cwd = '${workspaceFolder}',
-          console = "externalTerminal",
-          requireExactSource = false,
-          enableStepFiltering = true,
-          env = {
-            DOTNET_ROOT = vim.fn.exepath('dotnet'),
-            ASPNETCORE_ENVIRONMENT = 'Development',
-            ASPNETCORE_URLS = 'https://localhost:5001',
-          },
-          -- metadata = {
-          --   ['Microsoft.DebuggerCore.ClrDbgTransportPipeName'] = '${pipe}',
-          -- },
-          -- pipeTransport = {
-          --   pipeProgram = vim.fs.normalize(vim.fs.joinpath(mason_path, 'netcoredbg'))
-          -- },
-        },
-      }
       --}}}
 
       --{{{## Go
