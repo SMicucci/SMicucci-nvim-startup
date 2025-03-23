@@ -2,6 +2,11 @@
 
 local M = {}
 --{{{ # function definition
+---simple keymap normal mode (re)set
+---@param keys string lhs
+---@param command function|string rhs
+---@param desc string description
+---@param opts table|nil other option (like silent)
 M.nmap = function(keys, command, desc, opts)
   opts = opts or {}
   if vim.fn.maparg(keys,'n') ~= "" and not opts.buffer then
@@ -11,6 +16,11 @@ M.nmap = function(keys, command, desc, opts)
   opts.desc= desc
   vim.keymap.set('n', keys, command, opts)
 end
+---simple keymap visual mode (re)set
+---@param keys string lhs
+---@param command function|string rhs
+---@param desc string description
+---@param opts table|nil other option (like silent)
 M.vmap = function(keys, command, desc, opts)
   opts = opts or {}
   if vim.fn.maparg(keys,'v') ~= "" and not opts.buffer then
@@ -20,6 +30,11 @@ M.vmap = function(keys, command, desc, opts)
   opts.desc= desc
   vim.keymap.set('v', keys, command, opts)
 end
+---simple keymap insert mode (re)set
+---@param keys string lhs
+---@param command function|string rhs
+---@param desc string description
+---@param opts table|nil other option (like silent)
 M.imap = function(keys, command, desc, opts)
   opts = opts or {}
   if vim.fn.maparg(keys,'i') ~= "" and not opts.buffer then
@@ -29,6 +44,11 @@ M.imap = function(keys, command, desc, opts)
   opts.desc= desc
   vim.keymap.set('i', keys, command, opts)
 end
+---simple keymap select mode (re)set
+---@param keys string lhs
+---@param command function|string rhs
+---@param desc string description
+---@param opts table|nil other option (like silent)
 M.smap = function(keys, command, desc, opts)
   opts = opts or {}
   if vim.fn.maparg(keys,'s') ~= "" and not opts.buffer then
@@ -38,6 +58,11 @@ M.smap = function(keys, command, desc, opts)
   opts.desc= desc
   vim.keymap.set('s', keys, command, opts)
 end
+---simple keymap terminal mode (re)set
+---@param keys string lhs
+---@param command function|string rhs
+---@param desc string description
+---@param opts table|nil other option (like silent)
 M.tmap = function(keys, command, desc, opts)
   opts = opts or {}
   if vim.fn.maparg(keys,'t') ~= "" and not opts.buffer then
@@ -87,7 +112,7 @@ M.nmap('<leader>bn','<cmd>bn<CR>','[b]uffer [n]ext')
 M.nmap('<leader>bp','<cmd>bp<CR>','[b]uffer [p]revious')
 -- this is a bit sofisticated (split, prev buf, next win, del buf)
 -- M.nmap('<leader>bd','<C-W>s<cmd>bp<CR><C-W>w<cmd>bd<CR>','[b]uffer [d]elete')
-M.nmap('<leader>bd','<cmd>db<CR>','[b]uffer [d]elete')
+M.nmap('<leader>bd','<cmd>bd<CR>','[b]uffer [d]elete')
 --}}}
 
 --{{{ # window mapping
@@ -101,8 +126,8 @@ M.nmap('<leader>w>','<C-W>5>', '[w]indow resize custom')
 --}}}
 
 --{{{ # tabs mapping
-M.nmap('<leader>tl','<cmd>+tabn<CR>', 'remap \'gt\'')
-M.nmap('<leader>th','<cmd>-tabp<CR>', 'remap \'gT\'')
+-- M.nmap('<leader>tl','<cmd>+tabn<CR>', 'remap \'gt\'')
+-- M.nmap('<leader>th','<cmd>-tabp<CR>', 'remap \'gT\'')
 M.nmap('<leader>tn','<cmd>tabnew<CR>', 'create new [t]ab')
 --}}}
 
@@ -122,14 +147,14 @@ M.tmap('<Esc>','<C-\\><C-n>','exit from terminal')
 --}}}
 
 --{{{ # quickfix integrated
-M.nmap('<leader>co','<cmd>cwindow 12<CR>','open qflist')
+M.nmap('<leader>co','<cmd>cwindow 8<CR>','open qflist')
 M.nmap('<leader>cn','<cmd>cnext<CR>','qflist next entry')
 M.nmap('<leader>cj','<cmd>cnext<CR>','qflist next entry')
 M.nmap('<leader>cp','<cmd>cNext<CR>','qflist prev entry')
 M.nmap('<leader>ck','<cmd>cNext<CR>','qflist prev entry')
 M.nmap('<leader>cf','<cmd>cfirst<CR>','qflist first entry')
 M.nmap('<leader>cl','<cmd>clast<CR>','qflist last entry')
-M.nmap('<leader>cm','<cmd>make<CR><cmd>cwindow 12<CR>','open qflist')
+M.nmap('<leader>cm','<cmd>make<CR><cmd>cwindow 8<CR>','open qflist')
 --}}}
 
 --{{{ # fold custom integration

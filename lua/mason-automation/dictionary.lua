@@ -1,4 +1,6 @@
-local data = {
+-- this data came from "https://github.com/williamboman/mason-lspconfig.nvim"
+local dictionary = {
+  --{{{#lspconf -> mason
   lspconfig_to_mason = {
     angularls = "angular-language-server",
     ansiblels = "ansible-language-server",
@@ -220,6 +222,8 @@ local data = {
     zk = "zk",
     zls = "zls"
   },
+  --}}}
+  --{{{# mason -> lspconf
   mason_to_lspconfig = {
     ["angular-language-server"] = "angularls",
     ["ansible-language-server"] = "ansiblels",
@@ -441,14 +445,16 @@ local data = {
     zk = "zk",
     zls = "zls"
   }
+  --}}}
 }
 
-local M = {}
-M.m2l = function (mason_name)
-  return data.mason_to_lspconfig[mason_name]
-end
-M.l2m = function (lspconfig_name)
-  return data.lspconfig_to_mason[lspconfig_name]
-end
+local M = {
+  mason_name = function (lsp_name)
+    return dictionary.lspconfig_to_mason[lsp_name]
+  end,
+  lsp_name = function (mason_name)
+    return dictionary.mason_to_lspconfig[mason_name]
+  end
+}
 
 return M
