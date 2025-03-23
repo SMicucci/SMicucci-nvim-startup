@@ -12,7 +12,6 @@ return {
   },
   config = function()
     local dap = require('dap')
-    local dapui = require('dapui')
 
     dap.set_log_level('TRACE')
 
