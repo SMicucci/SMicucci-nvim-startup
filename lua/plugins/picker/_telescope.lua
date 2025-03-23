@@ -112,7 +112,7 @@ return {
     k.nmap('<leader>fb',builtin.buffers, 'find [b]uffer')
     k.nmap('<leader>fr',builtin.live_grep, '[f]ind g[r]ep')
     k.nmap('<leader>fz',builtin.resume, '[f]ind last action[z]')
-    k.nmap('<leader>fm',builtin.marks, '[f]ind [m]arks')
+    k.nmap('<leader>fm',builtin.man_pages, '[f]ind [m]an')
     k.nmap('<leader>fh',builtin.help_tags, '[f]ind [h]elp')
     k.nmap('<leader>fc',builtin.quickfix, '[f]ind qui[c]kfix')
     k.nmap('gd',function() builtin.lsp_definitions({ jump_type = 'tab' }) end,'[g]oto [d]efinition')
