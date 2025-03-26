@@ -16,17 +16,29 @@ return {
 
     --lspconfig name or mason name are equivalent here
     mauto.install {
-      'clangd',
       'codelldb', --dap can be installed here too
+      'delve',
+      'clangd',
       'cssls',
-      'html',
       'jsonls',
       'lua_ls',
-      'tailwindcss',
       'ts_ls',
-      'gopls',
-      'delve',
       'sqlls',
     }
+
+    --{{{# web setup
+---@diagnostic disable-next-line: missing-fields
+    mauto.lsp_set_custom('html',{
+      filetypes = { 'html', 'gotmpl', 'tmpl', 'razor', 'cshtml', 'ejs' }
+    })
+---@diagnostic disable-next-line: missing-fields
+    mauto.lsp_set_custom('tailwindcss',{
+      filetypes = { 'html', 'gotmpl', 'tmpl', 'razor', 'cshtml' }
+    })
+---@diagnostic disable-next-line: missing-fields
+    mauto.lsp_set_custom('ts_ls',{
+      filetypes = { 'javascript', 'typescript', 'ejs' }
+    })
+    --}}}
   end
 }

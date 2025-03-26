@@ -2,6 +2,7 @@ return {
   "mfussenegger/nvim-dap",
   dependencies = {
     "nvim-neotest/nvim-nio",
+    "rcarriga/nvim-dap-ui",
   },
   lazy = true,
   keys = {
@@ -44,14 +45,16 @@ return {
     --    language adapter
     --  ####################
 
-    --{{{# check on win32
-    local mason_path = vim.fs.normalize(vim.fs.joinpath(vim.fn.stdpath('data')--[[@as string]], "mason", "bin"))
+    --{{{# join mason path
+    local function mason_bin(bin_name)
+      return vim.fs.normalize(vim.fs.joinpath(vim.fn.stdpath('data') --[[@as string]], "mason", "bin", bin_name))
+    end
     --}}}
 
     --{{{## Bash
     dap.adapters.bashdb = {
       type = 'executable',
-      command = mason_path .. 'bash-debug-adapter',
+      command = mason_bin('bash-debug-adapter'),
       name = 'bashdb',
     }
     dap.configurations.sh = {
@@ -60,8 +63,8 @@ return {
         request = 'launch',
         name = "Launch file",
         showDebugOutput = true,
-        pathBashdb = mason_path .. 'bashdb',
-        pathBashdbLib = mason_path .. '..',
+        pathBashdb = mason_bin('bashdb'),
+        pathBashdbLib = mason_bin('..'),
         trace = true,
         file = "${file}",
         program = "${file}",
@@ -82,7 +85,7 @@ return {
       type = 'server',
       port = "${port}",
       executable = {
-        command = mason_path .. 'codelldb',
+        command = mason_bin('codelldb'),
         args = { "--port", "${port}" },
         --detached = false, -- On windows you may have to uncomment this
       }
@@ -104,57 +107,11 @@ return {
     dap.configurations.zig = dap.configurations.c
     --}}}
 
-    --{{{## Go
-    dap.adapters.delve = function(callback, config)
-      if config.mode == 'remote' and config.request == 'attach' then
-        callback({
-          type = 'server',
-          host = config.host or '127.0.0.1',
-          port = config.port or '38697'
-        })
-      else
-        callback({
-          type = 'server',
-          port = '${port}',
-          executable = {
-            command = 'dlv',
-            args = { 'dap', '-l', '127.0.0.1:${port}', '--log', '--log-output=dap' },
-            detached = vim.fn.has("win32") == 0,
-          }
-        })
-      end
-    end
-    -- https://github.com/go-delve/delve/blob/master/Documentation/usage/dlv_dap.md
-    dap.configurations.go = {
-      {
-        type = "delve",
-        name = "Debug",
-        request = "launch",
-        program = "${file}"
-      },
-      {
-        type = "delve",
-        name = "Debug test", -- configuration for debugging test files
-        request = "launch",
-        mode = "test",
-        program = "${file}"
-      },
-      -- works with go.mod packages and sub packages
-      {
-        type = "delve",
-        name = "Debug test (go.mod)",
-        request = "launch",
-        mode = "test",
-        program = "./${relativeFileDirname}"
-      }
-    }
-    --}}}
-
     --{{{## Typescript
     dap.adapters.node = {
       type = "executable",
       command = "bash",
-      args = { mason_path .. 'node-debug2-adapter' }
+      args = { mason_bin('node-debug2-adapter') }
     }
     dap.configurations.typescript = {
       {

@@ -1,5 +1,8 @@
 return {
   "l3mon4d3/luasnip",
+  dependencies = {
+    'rafamadriz/friendly-snippets',
+  },
   version = "v2.*",
   build = "make install_jsregexp",
   opts = function ()
@@ -7,13 +10,19 @@ return {
     require 'luasnip.loaders.from_snipmate'.lazy_load()
     require 'luasnip.loaders.from_lua'.lazy_load()
 
-    local fe = require('luasnip').filetype_extend
-    fe('c', { 'cdoc' })
-    fe('cs', { 'csharpdoc' })
-    fe('lua', { 'luadoc' })
-    fe('javascript', { 'jsdoc' })
-    fe('typescript', { 'tsdoc' })
+    local fte = require('luasnip').filetype_extend
+    local fts = require('luasnip').filetype_set
+    fte('c', { 'cdoc' })
+    fte('cs', { 'csharpdoc' })
+    fte('razor', { 'csharp', 'csharpdoc', 'html', 'javascript', 'jsdoc', })
+    fte('lua', { 'luadoc' })
+    fte('javascript', { 'jsdoc' })
+    fte('typescript', { 'tsdoc' })
+    fte('go', { 'go' })
+    fte('templ', { 'go', 'html', 'javascript', 'jsdoc', })
+    fte('gotmpl', { 'go', 'html', 'javascript', 'jsdoc', })
 
+    -- fts('cshtml', 'razor')
     -- require 'plugins.settings.luasnip'
 
     local keymap = require 'config.keymap'

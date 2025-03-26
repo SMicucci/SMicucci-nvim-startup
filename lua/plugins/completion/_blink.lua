@@ -1,7 +1,6 @@
 return {
   "Saghen/blink.cmp",
   dependencies = {
-    'rafamadriz/friendly-snippets',
     'GustavEikaas/easy-dotnet.nvim',
     'l3mon4d3/luasnip',
     'windwp/nvim-autopairs',

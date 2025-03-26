@@ -22,14 +22,17 @@ end
 md_aucmd(
   { 'BufWritePost', 'BufAdd' },
   function()
+    local name = string.gsub(vim.fn.bufname(), '%.md$', '')
+    if name:match(vim.fn.stdpath('data')--[[@as string]]) then
+      return
+    end
     if vim.fn.executable('pandoc') then
       local cmd = "pandoc";
       if vim.g.is_win then
         cmd = cmd .. '.exe'
       end
-      local name = string.gsub(vim.fn.bufname(), '%.md$', '')
       local css = vim.fs.joinpath(vim.fn.stdpath('config')--[[@as string]], 'gfm.css')
-      local cmd = string.format('!%s --from=gfm --to=html -o %s.html %s.md --css=%s --standalone', cmd, name, name, css)
+      cmd = string.format('!%s --from=gfm --to=html -o %s.html %s.md --css=%s --standalone', cmd, name, name, css)
       vim.fn.execute(cmd)
       -- vim.notify('updated '..name..'.hmtl with pandoc!',vim.log.levels.INFO)
       return
@@ -39,7 +42,6 @@ md_aucmd(
         vim.log.levels.WARN)
     end
     if vim.fn.executable('markdown') then
-      local name = string.gsub(vim.fn.bufname(), '%.md$', '')
       local cmd = string.format('!markdown %s.md > %s.html', name, name)
       vim.fn.execute(cmd)
       -- vim.notify('updated '..name..'.hmtl with markdown!',vim.log.levels.INFO)
@@ -59,9 +61,13 @@ md_aucmd(
 md_aucmd(
   { 'BufDelete', 'BufHidden' },
   function()
+    local md_name = string.gsub(vim.fn.bufname(), '%.md$', '')
+    if md_name:match(vim.fn.stdpath('data')--[[@as string]]) then
+      return
+    end
     local name = string.gsub(vim.fn.bufname(), '%.md$', '.html')
     if vim.fn.delete(name) == -1 then
-      vim.notify(string.format('temporary file \'%\' not deleted!\n', name), vim.log.levels.ERROR)
+      vim.notify(string.format('temporary file \'%s\' not deleted!\n', name), vim.log.levels.ERROR)
     end
   end,
   'Markdown delete temporary html render'

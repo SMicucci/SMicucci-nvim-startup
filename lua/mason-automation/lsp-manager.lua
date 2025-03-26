@@ -86,6 +86,9 @@ M.set_default = function (default)
   coroutine.resume(co_lsp, default)
 end
 
+---set lsp custom setup
+---@param name string lsp name (mason or lspconfig name are equivalent)
+---@param custom lspconfig.Config custom lsp configs
 M.set_custom = function (name, custom)
   assert(type(name) == 'string', string.format('expected string as first argument:\n', vim.inspect(name)))
   assert(type(custom) == 'table', string.format('expected table as second argument:\n%s',vim.inspect(custom)))
@@ -112,6 +115,7 @@ M.prepare_installed = function()
   for _, pkg in ipairs(installed) do
     local lsp_name = dict.lsp_name(pkg)
     if lsp_name and custom_setups[lsp_name] == nil then
+---@diagnostic disable-next-line: missing-fields
       M.set_custom(lsp_name, {}) --setup his space if nil
     end
   end

@@ -34,7 +34,7 @@ return {
     }
 
     mauto.install({'roslyn', 'rzls'})
-    vim.tbl_deep_extend('keep',opts, mauto.lsp_get_default())
+    vim.tbl_deep_extend('keep',opts.config, mauto.lsp_get_default())
     roslyn.setup(opts)
   end
 
