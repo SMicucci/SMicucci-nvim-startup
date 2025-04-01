@@ -6,7 +6,7 @@ return {
     "nvim-treesitter/nvim-treesitter",
   },
   event = {"CmdlineEnter"},
-  ft = {"go", 'gomod'},
+  ft = {"go", 'gomod', 'gohtmltmpl', 'templ' },
   build = ':lua require("go.install").update_all_sync()',
   config = function()
     require("go").setup()
@@ -31,7 +31,7 @@ return {
     mauto.install('templ')
 ---@diagnostic disable-next-line: missing-fields
     mauto.lsp_set_custom('gopls',{
-      filetypes = { 'go', 'gotmpl', 'templ' }
+      filetypes = { 'go', 'templ' }
     })
 
   end,

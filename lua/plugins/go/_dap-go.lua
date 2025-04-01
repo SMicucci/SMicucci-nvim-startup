@@ -5,7 +5,7 @@ return {
     "rcarriga/nvim-dap-ui",
   },
   event = {"CmdlineEnter"},
-  ft = {"go", 'gomod'},
+  ft = {"go", 'gomod', 'gohtmltmpl', 'templ' },
   config = function ()
     local dapgo = require 'dap-go'
     dapgo.setup()
