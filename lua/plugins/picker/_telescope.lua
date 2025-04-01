@@ -93,6 +93,7 @@ return {
       pickers = {
         git_files = { file_ignore_patterns = ignore_patterns },
         live_grep = { file_ignore_patterns = ignore_patterns },
+        man_pages = { sections = { "ALL" } },
       }
     }
     if vim.fn.executable('rg') then
