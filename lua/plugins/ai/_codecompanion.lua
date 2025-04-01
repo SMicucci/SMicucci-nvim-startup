@@ -15,13 +15,11 @@ return {
           window = {
             layout = "vertical",
             position = "right",
-            width = 0.40,
+            width = 0.30,
           },
-          show_settings = false,
-          start_in_insert_mode = true,
         },
         action_palette = {
-          width = 95,
+          width = 75,
           height = 10,
           prompt = "Prompt ",
           provider = "telescope", -- default|telescope
