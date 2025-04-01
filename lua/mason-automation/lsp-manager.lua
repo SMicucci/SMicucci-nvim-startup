@@ -15,6 +15,14 @@ local function lsp_init(lsp_name, default)
   lsp_name = dict.lsp_name(lsp_name) or lsp_name
   local ft_tbl = require('lspconfig.configs.'..lsp_name).default_config.filetypes
   local setup_ = vim.tbl_deep_extend('keep', custom_setups[lsp_name], default)
+  --added filetypes
+  if setup_.filetypes then
+    for _, ft in pairs(setup_.filetypes) do
+      if not vim.tbl_contains(ft_tbl, ft) then
+        table.insert(ft_tbl, ft)
+      end
+    end
+  end
   --autocmd for each lsp
   vim.api.nvim_create_autocmd('FileType',{
     group = lsp_augroup,
@@ -94,13 +102,16 @@ M.set_custom = function (name, custom)
   assert(type(custom) == 'table', string.format('expected table as second argument:\n%s',vim.inspect(custom)))
   local lsp_name = dict.lsp_name(name) or name
   local is_nil = custom_setups[lsp_name] == nil
-  local is_extend = custom_setups[lsp_name] == {} and #custom > 0
+  local is_extend = false
+  if not is_nil then
+    is_extend = vim.tbl_count(custom_setups[lsp_name]) == 0 and vim.tbl_count(custom) > 0
+  end
   if is_nil or is_extend then
     custom_setups[lsp_name] = custom
     require 'mason-automation.utils'.install(lsp_name)
   end
   if is_extend then
-    vim.notify('double declaration for '..lsp_name, vim.log.levels.ERROR)
+    -- vim.notify('double declaration for '..lsp_name, vim.log.levels.ERROR)
   end
   local ret, msg = coroutine.resume(co_lsp, lsp_name)
   assert(ret, msg)
