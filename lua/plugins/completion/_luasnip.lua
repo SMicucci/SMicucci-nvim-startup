@@ -19,8 +19,8 @@ return {
     fte('javascript', { 'jsdoc' })
     fte('typescript', { 'tsdoc' })
     fte('go', { 'go' })
-    fte('templ', { 'go', 'html', 'javascript', 'jsdoc', })
-    fte('gotmpl', { 'go', 'html', 'javascript', 'jsdoc', })
+    fte('templ', { 'go', 'html' })
+    fte('gohtmltmpl', { 'go', 'html' })
 
     -- fts('cshtml', 'razor')
     -- require 'plugins.settings.luasnip'
