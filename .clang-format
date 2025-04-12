@@ -1,0 +1,9 @@
+# mama said that it was quite all right
+# Language: C
+BasedOnStyle: LLVM
+IndentWidth: 8
+# UseTab: Always
+BreakBeforeBraces: Linux
+AllowShortIfStatementsOnASingleLine: false
+IndentCaseLabels: true
+ColumnLimit: 80

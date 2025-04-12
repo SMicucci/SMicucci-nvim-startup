@@ -7,4 +7,5 @@ return {
   require 'plugins.languages._action-preview',
   require 'plugins.languages._lsp-lens',
   require 'plugins.languages._lsplines',
+  require 'plugins.languages._formatter',
 }

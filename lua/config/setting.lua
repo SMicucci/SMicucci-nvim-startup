@@ -93,3 +93,13 @@ auto.au({'BufEnter', 'BufNewFile'}, {
 })
 --}}}
 
+--{{{ # hateful .h, just use other bruh
+auto.au({"BufNewFile", "BufRead"}, {
+  pattern = {"*.h"},
+  group = setting,
+  callback = function ()
+    vim.bo.filetype = "c"
+  end,
+  desc = "set header c lang, not cpp"
+})
+--}}}
