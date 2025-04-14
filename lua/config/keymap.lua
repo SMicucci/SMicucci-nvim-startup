@@ -154,7 +154,7 @@ M.nmap('<leader>cp','<cmd>cNext<CR>','qflist prev entry')
 M.nmap('<leader>ck','<cmd>cNext<CR>','qflist prev entry')
 M.nmap('<leader>cf','<cmd>cfirst<CR>','qflist first entry')
 M.nmap('<leader>cl','<cmd>clast<CR>','qflist last entry')
-M.nmap('<leader>cm','<cmd>make<CR><cmd>cwindow 8<CR>','open qflist')
+M.nmap('<leader>cm','<cmd>make!<CR><cmd>cwindow 8<CR>','open qflist')
 --}}}
 
 --{{{ # fold custom integration

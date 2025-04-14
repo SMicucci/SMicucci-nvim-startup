@@ -8,6 +8,18 @@ return {
     local cc = require "codecompanion"
     local key = require "config.keymap"
 
+    --{{{# read env
+    local function get_var(api_name)
+      if vim.g.is_win then
+        print( 'OPENAI_API_KEY => ' .. vim.fn.trim(vim.fn.system('powershell -Command "$env:'..api_name..'"')) )
+        return vim.fn.trim(vim.fn.system('powershell -Command "$env:'..api_name..'"'))
+      else
+        vim.cmd("cmd: echo $"..api_name)
+        return vim.fn.trim(vim.fn.system("cmd: echo $"..api_name))
+      end
+    end
+    --}}}
+
     cc.setup {
       --{{{# display
       display = {
@@ -42,9 +54,6 @@ return {
       --}}}
       --{{{# adapters
       adapters = {
-        opts = {
-          show_defaults = false,
-        },
         --{{{## ollama
         deepseek = function()
           return require("codecompanion.adapters").extend("ollama", {
@@ -59,20 +68,20 @@ return {
         --}}}
         --{{{## openai
         openai = function()
-          ---@type CodeCompanion.Adapter
-          ---@diagnostic disable-next-line: missing-fields
-          local openai_opts = {
+          return require("codecompanion.adapters").extend("openai", {
+            env = {
+              api_key = get_var("OPENAI_API_KEY")
+            },
             schema = {
               model = {
-                default = "o3-mini",
+                default = "gpt-4o-mini",
                 choices = {
                   ["o3-mini"] = { opts = { can_reason = true } },
                   "gpt-4o-mini",
                 },
               },
             },
-          }
-          return require("codecompanion.adapters").extend("openai", openai_opts)
+          })
         end
         --}}}
       },
