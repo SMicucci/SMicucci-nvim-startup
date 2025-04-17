@@ -16,7 +16,6 @@ return {
 
 		--lspconfig name or mason name are equivalent here
 		mauto.install({
-			"codelldb", --dap can be installed here too
 			"delve",
 			"clangd",
 			"cssls",
@@ -41,10 +40,14 @@ return {
 		})
 		--}}}
 
-		--{{{ # header file fix
+		-- # header file fix
+		local clangd_path =
+			vim.fs.normalize(vim.fs.joinpath(vim.fn.stdpath("data") --[[@as string]], "mason", "bin", "clangd"))
 		mauto.lsp_set_custom("clangd", {
-			cmd = { "clangd", "--fallbackFlags=-x", "c" },
-			filetypes = { "c", "cpp", "objc", "objcpp" },
+			cmd = {
+				clangd_path,
+				"--fallback-style=-xc",
+			},
 		})
 		--}}}
 
@@ -54,6 +57,7 @@ return {
 		vim.api.nvim_create_autocmd("LspAttach", {
 			callback = function(args)
 				local client = vim.lsp.get_client_by_id(args.data.client_id)
+				---@diagnostic disable-next-line: missing-parameter, param-type-mismatch
 				if client ~= nil and client.supports_method("textDocument/foldingRange") then
 					local win = vim.api.nvim_get_current_win()
 					vim.wo[win][0].foldexpr = "v:lua.vim.lsp.foldexpr()"

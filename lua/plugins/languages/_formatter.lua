@@ -6,15 +6,6 @@ return {
 		local auto = require("config.command")
 
 		local format_group = auto.aug("format", { clear = true })
-		local clang_format = {
-			exe = "clang-format",
-			args = {
-				"-assume-filename",
-				util.escape_path(util.get_current_buffer_file_name()),
-				"--style='file:" .. vim.fs.normalize(vim.fs.joinpath(vim.fn.stdpath("config"), ".clang-format")) .. "'",
-			},
-			stdin = true,
-		}
 
 		-- Provides the Format, FormatWrite, FormatLock, and FormatWriteLock commands
 		require("formatter").setup({
@@ -42,16 +33,40 @@ return {
 				},
 				cpp = {
 					function()
-						return clang_format
+						return {
+							exe = "clang-format",
+							args = {
+								"-assume-filename",
+								require("formatter.util").escape_path(
+									require("formatter.util").get_current_buffer_file_name()
+								),
+								"-style='{BasedOnStyle: llvm, IndentWidth: 8, BreakBeforeBraces: Linux, AllowShortIfStatementsOnASingleLine: false, IndentCaseLabels: true, ColumnLimit: 80}'",
+							},
+							stdin = true,
+						}
 					end,
 				},
 				c = {
 					function()
-						return clang_format
+						return {
+							exe = "clang-format",
+							args = {
+								"-assume-filename",
+								require("formatter.util").escape_path(
+									require("formatter.util").get_current_buffer_file_name()
+								),
+								"-style='{BasedOnStyle: llvm, IndentWidth: 8, BreakBeforeBraces: Linux, AllowShortIfStatementsOnASingleLine: false, IndentCaseLabels: true, ColumnLimit: 80}'",
+							},
+							stdin = true,
+						}
 					end,
 				},
 				["*"] = {
-					require("formatter.filetypes.any").remove_trailing_whitespace,
+					function()
+						if vim.bo.filetype ~= "markdown" then
+							require("formatter.filetypes.any").remove_trailing_whitespace()
+						end
+					end,
 				},
 			},
 		})
