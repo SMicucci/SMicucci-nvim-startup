@@ -11,13 +11,9 @@ return {
 		-- read env
 		local function get_var(api_name)
 			if vim.g.is_win then
-				print(
-					"OPENAI_API_KEY => " .. vim.fn.trim(vim.fn.system('powershell -Command "$env:' .. api_name .. '"'))
-				)
 				return vim.fn.trim(vim.fn.system('powershell -Command "$env:' .. api_name .. '"'))
 			else
-				vim.cmd("cmd: echo $" .. api_name)
-				return vim.fn.trim(vim.fn.system("cmd: echo $" .. api_name))
+				return vim.fn.trim(vim.fn.system("echo $" .. api_name))
 			end
 		end
 
