@@ -73,10 +73,11 @@ return {
 						},
 						schema = {
 							model = {
-								default = "o3-mini",
+								default = "gpt-4.1-mini",
 								choices = {
-									["o3-mini"] = { opts = { can_reason = true } },
-									"gpt-4o-mini",
+									["o4-mini"] = { opts = { can_reason = true } },
+									"gpt-4.1",
+									"gpt-4.1-mini",
 								},
 							},
 							reasoning_effort = {
