@@ -45,13 +45,13 @@ return {
 				theme = "doom",
 				config = {
 					header = dashboard_custom_header,
-					-- center = {
-					-- 	shortcut("ff", "Find Files", " ", "Telescope find_files"),
-					-- 	shortcut("fr", "Grep Files", "󰦨 ", "Telescope live_grep"),
-					-- 	shortcut("gf", "Git Fugitive", "󰊢 ", "tabnew | Git | only"),
-					-- 	shortcut("L", "Lazy config", "󰒲 ", "Lazy"),
-					-- },
-					-- footer = {},
+					center = {
+						shortcut("ff", "Find Files", " ", "Telescope find_files"),
+						shortcut("fr", "Grep Files", "󰦨 ", "Telescope live_grep"),
+						shortcut("gf", "Git Fugitive", "󰊢 ", "tabnew | Git | only"),
+						shortcut("L", "Lazy config", "󰒲 ", "Lazy"),
+					},
+					footer = {},
 					layout_config = {
 						width = 80,
 						padding = { 2, 2, 2, 2 },
