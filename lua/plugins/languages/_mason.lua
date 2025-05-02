@@ -21,7 +21,7 @@ return {
 			"cssls",
 			"jsonls",
 			"lua_ls",
-			"ts_ls",
+			-- "ts_ls",
 			"sqlls",
 		})
 

@@ -27,9 +27,9 @@ return {
         vim.fs.joinpath( roslyn_path, 'libexec', 'Microsoft.CodeAnalysis.LanguageServer.dll'),
       },
       args = {
+        '--stdio',
         '--logLevel=Information',
         '--extensionLogDirectory='..vim.fs.dirname(vim.lsp.get_log_path()),
-        '--stdio',
         '--razorSourceGenerator='..vim.fs.joinpath( roslyn_path, 'libexec', 'Microsoft.CodeAnalysis.Razor.Compiler.dll'),
         '--razorDesignTimePath='..vim.fs.joinpath( razor_path, 'libexec', 'Targets', 'Microsoft.NET.Sdk.Razor.DesignTime.targets')
       },
