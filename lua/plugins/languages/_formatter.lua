@@ -64,12 +64,18 @@ return {
 				javascript = {
 					function()
 						return {
-							exe = "standard",
+							exe = "prettier",
 							args = {
-								"--fix",
-								"--stdin",
 								"--stdin-filepath",
 								util.escape_path(util.get_current_buffer_file_path()),
+								"--tab-width",
+								"4",
+								"--semi",
+								"true",
+								"--single-quote",
+								"false",
+								"--print-width",
+								"100",
 							},
 							stdin = true,
 						}
@@ -78,12 +84,18 @@ return {
 				typescript = {
 					function()
 						return {
-							exe = " ts-standard",
+							exe = "prettier",
 							args = {
-								"--fix",
-								"--stdin",
 								"--stdin-filepath",
 								util.escape_path(util.get_current_buffer_file_path()),
+								"--tab-width",
+								"4",
+								"--semi",
+								"true",
+								"--single-quote",
+								"false",
+								"--print-width",
+								"100",
 							},
 							stdin = true,
 						}
