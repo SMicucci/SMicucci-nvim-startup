@@ -31,21 +31,21 @@ return {
 						}
 					end,
 				},
-				cpp = {
-					function()
-						return {
-							exe = "clang-format",
-							args = {
-								"-assume-filename",
-								require("formatter.util").escape_path(
-									require("formatter.util").get_current_buffer_file_name()
-								),
-								"-style='{BasedOnStyle: llvm, IndentWidth: 8, BreakBeforeBraces: Linux, AllowShortIfStatementsOnASingleLine: false, IndentCaseLabels: true, ColumnLimit: 80}'",
-							},
-							stdin = true,
-						}
-					end,
-				},
+				-- cpp = {
+				-- 	function()
+				-- 		return {
+				-- 			exe = "clang-format",
+				-- 			args = {
+				-- 				"-assume-filename",
+				-- 				require("formatter.util").escape_path(
+				-- 					require("formatter.util").get_current_buffer_file_name()
+				-- 				),
+				-- 				"-style='{BasedOnStyle: llvm, IndentWidth: 8, BreakBeforeBraces: Linux, AllowShortIfStatementsOnASingleLine: false, IndentCaseLabels: true, ColumnLimit: 80}'",
+				-- 			},
+				-- 			stdin = true,
+				-- 		}
+				-- 	end,
+				-- },
 				c = {
 					function()
 						return {
@@ -55,7 +55,35 @@ return {
 								require("formatter.util").escape_path(
 									require("formatter.util").get_current_buffer_file_name()
 								),
-								"-style='{BasedOnStyle: llvm, IndentWidth: 8, BreakBeforeBraces: Linux, AllowShortIfStatementsOnASingleLine: false, IndentCaseLabels: true, ColumnLimit: 80}'",
+								"-style='{BasedOnStyle: llvm, IndentWidth: 8, BreakBeforeBraces: Linux, AllowShortIfStatementsOnASingleLine: false, IndentCaseLabels: true, ColumnLimit: 100}'",
+							},
+							stdin = true,
+						}
+					end,
+				},
+				javascript = {
+					function()
+						return {
+							exe = "standard",
+							args = {
+								"--fix",
+								"--stdin",
+								"--stdin-filepath",
+								util.escape_path(util.get_current_buffer_file_path()),
+							},
+							stdin = true,
+						}
+					end,
+				},
+				typescript = {
+					function()
+						return {
+							exe = " ts-standard",
+							args = {
+								"--fix",
+								"--stdin",
+								"--stdin-filepath",
+								util.escape_path(util.get_current_buffer_file_path()),
 							},
 							stdin = true,
 						}
