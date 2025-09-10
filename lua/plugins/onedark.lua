@@ -7,4 +7,7 @@ return {
 			vim.cmd([[colorscheme onedark]])
 		end,
 	},
+	{
+		"endel/vim-github-colorscheme",
+	},
 }

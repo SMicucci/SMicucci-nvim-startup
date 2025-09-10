@@ -45,60 +45,64 @@ vim.g.is_win = vim.g.system == "Windows_NT"
 vim.g.is_linux = vim.g.system == "Linux"
 
 if vim.fn.executable("rg") then
-    local ignore_dir = {
-        "bin",
-        "build",
-        "dist",
-        ".git",
-        "node_modules",
-        "obj",
-        "vendor",
-        ".vs",
-    }
-    local gp = { "rg", "--vimgrep", "--smart-case", "--hidden" }
-    for _, dir in ipairs(ignore_dir) do
-        if vim.fn.has("win32") then
-            table.insert(gp, string.format("--glob=!**\\%s\\*", dir))
-        else
-            table.insert(gp, string.format("--glob=!**/%s/*", dir))
-        end
-    end
-    table.insert(gp, "--")
-    set.grepprg = table.concat(gp, " ")
+	local ignore_dir = {
+		"bin",
+		"build",
+		"dist",
+		".git",
+		"node_modules",
+		"obj",
+		"vendor",
+		".vs",
+	}
+	local gp = { "rg", "--vimgrep", "--smart-case", "--hidden" }
+	for _, dir in ipairs(ignore_dir) do
+		if vim.g.is_win then
+			table.insert(gp, string.format("--glob=!**\\%s\\*", dir))
+		else
+			if vim.fn.has("zsh") then
+				table.insert(gp, string.format("--glob '!**/%s/*'", dir))
+			else
+				table.insert(gp, string.format("--glob=!**/%s/*", dir))
+			end
+		end
+	end
+	table.insert(gp, "--")
+	set.grepprg = table.concat(gp, " ")
 else
-    vim.notify("󰀦 ripgrep not installed (recommended)\n", vim.log.levels.WARN)
-    set.grepprg = "internal"
+	vim.notify("󰀦 ripgrep not installed (recommended)\n", vim.log.levels.WARN)
+	set.grepprg = "internal"
 end
 
 -- # list settings
 auto.au({ "BufEnter", "BufNewFile" }, {
-    pattern = "*",
-    group = setting,
-    callback = function()
-        ---@diagnostic disable-next-line: undefined-field
-        if set.shiftwidth:get() == 2 then
-            set.listchars = "tab: ,multispace: ,extends:,precedes:,nbsp:"
-        ---@diagnostic disable-next-line: undefined-field
-        elseif set.shiftwidth:get() == 4 then
-            set.listchars = "tab: ,multispace:   ,extends:,precedes:,nbsp:"
-        ---@diagnostic disable-next-line: undefined-field
-        elseif set.shiftwidth:get() == 8 then
-            set.listchars = "tab: ,multispace:       ,extends:,precedes:,nbsp:"
-        end
-    end,
-    desc = "list settings autocmd",
+	pattern = "*",
+	group = setting,
+	callback = function()
+		---@diagnostic disable-next-line: undefined-field
+		if set.shiftwidth:get() == 2 then
+			set.listchars = "tab: ,multispace: ,extends:,precedes:,nbsp:"
+		---@diagnostic disable-next-line: undefined-field
+		elseif set.shiftwidth:get() == 4 then
+			set.listchars = "tab: ,multispace:   ,extends:,precedes:,nbsp:"
+		---@diagnostic disable-next-line: undefined-field
+		elseif set.shiftwidth:get() == 8 then
+			set.listchars = "tab: ,multispace:       ,extends:,precedes:,nbsp:"
+		end
+	end,
+	desc = "list settings autocmd",
 })
 
 -- # hateful .h, just use other bruh
 auto.au({ "BufNewFile", "BufRead" }, {
-    pattern = { "*.h" },
-    group = setting,
-    callback = function()
-        vim.bo.filetype = "c"
-    end,
-    desc = "set header c lang, not cpp",
+	pattern = { "*.h" },
+	group = setting,
+	callback = function()
+		vim.bo.filetype = "c"
+	end,
+	desc = "set header c lang, not cpp",
 })
 
 if vim.g.is_win then
-    set.shell = "powershell.exe"
+	set.shell = "powershell.exe"
 end

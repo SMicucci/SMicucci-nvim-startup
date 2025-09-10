@@ -31,8 +31,9 @@ md_aucmd(
       if vim.g.is_win then
         cmd = cmd .. '.exe'
       end
-      local css = vim.fs.joinpath(vim.fn.stdpath('config')--[[@as string]], 'gfm.css')
-      cmd = string.format('!%s --from=gfm --to=html -o %s.html %s.md --css=%s --standalone', cmd, name, name, css)
+      -- local css = vim.fs.joinpath(vim.fn.stdpath('config')--[[@as string]], 'gfm.css')
+      local css = 'https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.8.1/github-markdown-light.min.css'
+      cmd = string.format('!%s --from=gfm --to=html -o %s.html %s.md --css=%s', cmd, name, name, css)
       vim.fn.execute(cmd)
       -- vim.notify('updated '..name..'.hmtl with pandoc!',vim.log.levels.INFO)
       return
