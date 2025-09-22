@@ -47,6 +47,7 @@ return {
 			cmd = {
 				clangd_path,
 				"--fallback-style=-xc",
+				"--compile-args=-xc",
 			},
 		})
 		--}}}
