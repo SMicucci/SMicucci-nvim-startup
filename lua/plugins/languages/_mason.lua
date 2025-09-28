@@ -21,7 +21,6 @@ return {
 			"cssls",
 			"jsonls",
 			"lua_ls",
-			-- "ts_ls",
 			"sqlls",
 		})
 
@@ -40,14 +39,24 @@ return {
 		})
 		--}}}
 
+		-- # gui setup
+		local lspconfig = require("lspconfig")
+		if vim.fn.executable("sourcekit-lsp") == 1 then
+			lspconfig.sourcekit.setup({
+				cmd = { "sourcekit-lsp" },
+				filetypes = { "swift", "objective-c", "objective-cpp" },
+				root_dir = lspconfig.util.root_pattern("Package.swift", ".git"),
+			})
+		end
+
 		-- # header file fix
 		local clangd_path =
 			vim.fs.normalize(vim.fs.joinpath(vim.fn.stdpath("data") --[[@as string]], "mason", "bin", "clangd"))
 		mauto.lsp_set_custom("clangd", {
 			cmd = {
 				clangd_path,
-				"--fallback-style=-xc",
-				"--compile-args=-xc",
+				-- "--fallback-flags=-xc",
+				-- "--compile-args=-xc",
 			},
 		})
 		--}}}
