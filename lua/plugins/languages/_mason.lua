@@ -40,7 +40,8 @@ return {
 		--}}}
 
 		-- # gui setup
-		local lspconfig = require("lspconfig")
+		-- local lspconfig = require("lspconfig")
+		local lspconfig = vim.lsp.config
 		if vim.fn.executable("sourcekit-lsp") == 1 then
 			lspconfig.sourcekit.setup({
 				cmd = { "sourcekit-lsp" },
@@ -55,8 +56,7 @@ return {
 		mauto.lsp_set_custom("clangd", {
 			cmd = {
 				clangd_path,
-				-- "--fallback-flags=-xc",
-				-- "--compile-args=-xc",
+				"--log=error",
 			},
 		})
 		--}}}

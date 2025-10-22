@@ -1,135 +1,112 @@
 local M = {}
 
-local lsp = require 'lspconfig'
-local registry = require 'mason-registry'
-local dict = require 'mason-automation.dictionary'
+local lspconf = vim.lsp.config
+local registry = require("mason-registry")
+local dict = require("mason-automation.dictionary")
 
-local custom_setups = {}
+---@description default lsp config setup
 local default_setup = nil
-local prepare_called = false
+---@description table of custom lsp setup per each lsp name
+local custom_setups = {}
+---@description lsp custom autogroup to start lsp
+local lsp_augroup = vim.api.nvim_create_augroup("mason_automation_lsp", { clear = false })
 
-local lsp_augroup = vim.api.nvim_create_augroup('mason_automation_lsp', {clear = false})
+local warn_ = vim.log.levels.WARN
 
---{{{# initialize lsp
-local function lsp_init(lsp_name, default)
-  lsp_name = dict.lsp_name(lsp_name) or lsp_name
-  local ft_tbl = require('lspconfig.configs.'..lsp_name).default_config.filetypes
-  local setup_ = vim.tbl_deep_extend('keep', custom_setups[lsp_name], default)
-  --added filetypes
-  if setup_.filetypes then
-    for _, ft in pairs(setup_.filetypes) do
-      if not vim.tbl_contains(ft_tbl, ft) then
-        table.insert(ft_tbl, ft)
-      end
-    end
-  end
-  --autocmd for each lsp
-  vim.api.nvim_create_autocmd('FileType',{
-    group = lsp_augroup,
-    pattern = ft_tbl,
-    once = true,
-    callback = function ()
-      if vim.tbl_contains(ft_tbl, vim.bo.filetype) then
-        local lsp_clients = vim.lsp.get_clients() or {}
-        for _, attached in ipairs(lsp_clients) do
-          if attached.config.name == lsp_name then
-            return
-          end
-        end
-        lsp[lsp_name].setup(setup_)
-        lsp[lsp_name].launch()
-      end
-    end,
-    desc = 'mason-automation: init '..lsp_name,
-  })
-  -- print(string.format('"%s" => autocmd (Filetype: %s)', lsp_name, vim.inspect(ft_tbl)))
-end
---}}}
-
---{{{#lsp coroutine
-local function lsp_coroutine(arg)
-  local t = type(arg)
-  -- print('>> coroutine entered with ('..t..') as argument)')
-  assert(t == 'string' or t == 'table', 'bad usage of <co_lsp> coroutine ',vim.inspect(arg))
-  -- print('>> coroutine passed filter')
-  local customs = {}
-
-  while true do
-    if not default_setup then -- waiting for default table
-      if type(arg) == 'string' then
-        -- print('>> coroutine waiting for default setup')
-        table.insert(customs, dict.lsp_name(arg))
-      else
-        default_setup = arg
-        -- print('>> coroutine setting default setup')
-        for _, setup in ipairs(customs) do
-          -- print('>> coroutine loading pending "'..setup..'"')
-          lsp_init(setup, default_setup)
-        end
-      end
-    else --default behaviour
-      -- print('>> coroutine setting custom setup')
-      lsp_init(arg, default_setup)
-    end
-    -- print('>> coroutine yield')
-    arg = coroutine.yield()
-    t = type(arg)
-    assert(t == 'string' or t == 'table', 'bad usage of <co_lsp> coroutine ',vim.inspect(arg))
-    -- print('>> coroutine continue with ('..t..') as argument)')
-  end
+---init lsp: load configuration initialize filetypes, load autocmd to start lsp
+---@param lsp_name any
+local function init_lsp(lsp_name)
+	if default_setup == nil then
+		vim.notify("default_setup configuration missing...", warn_)
+		default_setup = {}
+	end
+	local cfg = lspconf[lsp_name]
+	if not cfg then
+		return
+	end
+	local lsp_setup = vim.tbl_deep_extend("force", default_setup, custom_setups[lsp_name] or {})
+	local ft_tbl = cfg.filetypes or {}
+	-- insert custom filetype in cfg
+	if lsp_setup.filetypes then
+		for _, ft in ipairs(lsp_setup.filetypes) do
+			if not vim.tbl_contains(ft_tbl, ft) then
+				table.insert(ft_tbl, ft)
+			end
+		end
+	end
+	-- insert name in the config
+	lsp_setup.name = lsp_name
+	-- launch lsp with autocmd
+	vim.api.nvim_create_autocmd("FileType", {
+		group = lsp_augroup,
+		pattern = ft_tbl,
+		once = true,
+		callback = function()
+			-- prevent duplicate
+			for _, client in ipairs(vim.lsp.get_clients() or {}) do
+				if client.name == lsp_name then
+					return
+				end
+			end
+			-- start lsp
+			vim.lsp.start(lsp_setup)
+		end,
+		desc = "mason-automation: init " .. lsp_name,
+	})
+	-- end)
 end
 
-local co_lsp = coroutine.create(lsp_coroutine)
---}}}
-
-M.get_default = function()
-  if not default_setup then
-    vim.wait(20)
-  end
-  return default_setup
+---set default LSP configuration
+---@param tbl table
+function M.set_default(tbl)
+	if default_setup == nil then
+		default_setup = tbl or {}
+	end
 end
 
-M.set_default = function (default)
-  assert(type(default) == 'table' or default == nil, 'expected table as argument')
-  coroutine.resume(co_lsp, default)
+---set custom LSP configuration, parameter will be overwritten to default
+---@param name string
+---@param tbl table
+function M.set_custom(name, tbl)
+	local lsp_name = dict.lsp_name(name) or name
+	custom_setups[lsp_name] = tbl or {}
+	-- async execution
+	vim.schedule(function()
+		local waited = 0
+		local max_wait = 2000
+		local slept = 50
+		if not lspconf[lsp_name] and waited < max_wait then
+			vim.wait(slept)
+			waited = waited + slept
+		end
+		if not lspconf[lsp_name] then
+			vim.notify(lsp_name .. " missing config")
+		else
+			init_lsp(lsp_name)
+		end
+	end)
 end
 
----set lsp custom setup
----@param name string lsp name (mason or lspconfig name are equivalent)
----@param custom lspconfig.Config custom lsp configs
-M.set_custom = function (name, custom)
-  assert(type(name) == 'string', string.format('expected string as first argument:\n', vim.inspect(name)))
-  assert(type(custom) == 'table', string.format('expected table as second argument:\n%s',vim.inspect(custom)))
-  local lsp_name = dict.lsp_name(name) or name
-  local is_nil = custom_setups[lsp_name] == nil
-  local is_extend = false
-  if not is_nil then
-    is_extend = vim.tbl_count(custom_setups[lsp_name]) == 0 and vim.tbl_count(custom) > 0
-  end
-  if is_nil or is_extend then
-    custom_setups[lsp_name] = custom
-    require 'mason-automation.utils'.install(lsp_name)
-  end
-  if is_extend then
-    -- vim.notify('double declaration for '..lsp_name, vim.log.levels.ERROR)
-  end
-  local ret, msg = coroutine.resume(co_lsp, lsp_name)
-  assert(ret, msg)
-end
-
-M.prepare_installed = function()
-  if prepare_called then
-    return
-  end
-  prepare_called = true
-  local installed = registry.get_installed_package_names()
-  for _, pkg in ipairs(installed) do
-    local lsp_name = dict.lsp_name(pkg)
-    if lsp_name and custom_setups[lsp_name] == nil then
----@diagnostic disable-next-line: missing-fields
-      M.set_custom(lsp_name, {}) --setup his space if nil
-    end
-  end
+function M.prepare_installed()
+	for _, pkg in ipairs(registry.get_installed_package_names()) do
+		local lsp_name = dict.lsp_name(pkg)
+		if lsp_name and not custom_setups[lsp_name] then
+			vim.schedule(function()
+				local waited = 0
+				local max_wait = 2000
+				local slept = 50
+				if not lspconf[lsp_name] and waited < max_wait then
+					vim.wait(slept)
+					waited = waited + slept
+				end
+				if not lspconf[lsp_name] then
+					vim.notify(lsp_name .. " missing config")
+				else
+					init_lsp(lsp_name)
+				end
+			end)
+		end
+	end
 end
 
 return M

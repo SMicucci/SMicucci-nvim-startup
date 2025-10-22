@@ -101,6 +101,13 @@ return {
 						}
 					end,
 				},
+        json = {
+          function()
+            return {
+              exe = "fixjson",
+            }
+          end,
+        },
 				["*"] = {
 					function()
 						if vim.bo.filetype ~= "markdown" then

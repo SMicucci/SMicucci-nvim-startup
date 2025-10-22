@@ -43,6 +43,22 @@ vim.cmd("%retab!")
 vim.g.system = vim.loop.os_uname().sysname
 vim.g.is_win = vim.g.system == "Windows_NT"
 vim.g.is_linux = vim.g.system == "Linux"
+vim.g.is_wsl = vim.g.is_linux and os.getenv("WSL_DISTRO_NAME") ~= nil
+
+if vim.g.is_wsl then
+	vim.g.clipboard = {
+		name = "win32yank-wsl",
+		copy = {
+			["+"] = "win32yank.exe -i --crlf",
+			["*"] = "win32yank.exe -i --crlf",
+		},
+		paste = {
+			["+"] = "win32yank.exe -o --lf",
+			["*"] = "win32yank.exe -o --lf",
+		},
+		cache_enabled = 0,
+	}
+end
 
 if vim.fn.executable("rg") then
 	local ignore_dir = {
