@@ -1,13 +1,14 @@
 -- lua/plugins/onedark.lua
 return {
 	{
-		"joshdick/onedark.vim",
+		"rakr/vim-one",
 		lazy = false,
 		config = function()
-			vim.cmd([[colorscheme onedark]])
+			vim.cmd([[colorscheme one]])
+			vim.o.background = "dark"
 		end,
 	},
 	{
-		"endel/vim-github-colorscheme",
+		"projekt0n/github-nvim-theme",
 	},
 }
