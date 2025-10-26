@@ -16,7 +16,7 @@ return {
 
 		dap.set_log_level("TRACE")
 
-		--  ##  setup symbol and colors
+		-- setup symbol and colors
 		vim.fn.sign_define(
 			"DapBreakpoint",
 			{ text = "", texthl = "DiffDelete", linehl = "Visual", numhl = "DiffDelete" }
@@ -30,7 +30,7 @@ return {
 			{ text = "", texthl = "DiffText", linehl = "DiffChange", numhl = "DiffText" }
 		)
 
-		--{{{ keymap setting
+		-- keymap setting
 		local k = require("config.keymap")
 		k.nmap("<space>c", dap.continue, "start or [C]ontinue debug")
 		k.nmap("<space>n", dap.step_over, "run [N]ext instruction")
@@ -48,19 +48,17 @@ return {
 		k.nmap("<leader>de", dap.terminate, "[T]erminate debug")
 		k.nmap("<leader>db", dap.toggle_breakpoint, "toggle [B]reakpoint (debug)")
 		k.nmap("<leader>dB", dap.clear_breakpoints, "clear [B]reakpoint (debug)")
-		--}}}
 
 		--  ####################
 		--    language adapter
 		--  ####################
 
-		--{{{# join mason path
+		-- join mason path
 		local function mason_bin(bin_name)
 			return vim.fs.normalize(vim.fs.joinpath(vim.fn.stdpath("data") --[[@as string]], "mason", "bin", bin_name))
 		end
-		--}}}
 
-		--{{{## Bash
+		-- Bash
 		dap.adapters.bashdb = {
 			type = "executable",
 			command = mason_bin("bash-debug-adapter"),
@@ -87,9 +85,8 @@ return {
 				terminalKind = "integrated",
 			},
 		}
-		--}}}
 
-		--{{{## C/C++/Rust/Zig
+		-- C/C++/Rust/Zig
 		dap.adapters.gdb = {
 			type = "executable",
 			command = "gdb",
@@ -137,9 +134,8 @@ return {
 		dap.configurations.cpp = dap.configurations.c
 		dap.configurations.rust = dap.configurations.c
 		dap.configurations.zig = dap.configurations.c
-		--}}}
 
-		--{{{## Typescript
+		-- Typescript
 		dap.adapters.node = {
 			type = "executable",
 			command = "bash",
@@ -159,6 +155,5 @@ return {
 				console = "integratedTerminal",
 			},
 		}
-		--}}}
 	end,
 }

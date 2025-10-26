@@ -13,7 +13,6 @@ return {
 
 		local k = require("config.keymap")
 		local auto = require("config.command")
-		local mauto = require("mason-automation")
 
 		k.nmap("<space>go", "<cmd>GoPkgOutline<cr>", "toggle project package and API", { silent = true })
 
@@ -28,9 +27,7 @@ return {
 			desc = "Go auto import and format before write",
 		})
 
-		mauto.install("templ")
-		---@diagnostic disable-next-line: missing-fields
-		mauto.lsp_set_custom("gopls", {
+		vim.lsp.config("gopls", {
 			filetypes = { "go" },
 		})
 	end,

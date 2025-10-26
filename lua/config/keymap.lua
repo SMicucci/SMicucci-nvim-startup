@@ -1,5 +1,3 @@
--- vim.g.mapleader = '`' --us-layout settings
-
 local M = {}
 -- # function definition
 ---simple keymap normal mode (re)set
@@ -106,16 +104,15 @@ M.nmap("<leader>z", function()
 	end
 end, "switch wrap setting")
 
---{{{ # buffer mapping
+-- buffer mapping
 M.nmap("<leader>bb", "<cmd>buffers<CR>", "[b]uffers list")
 M.nmap("<leader>bn", "<cmd>bn<CR>", "[b]uffer [n]ext")
 M.nmap("<leader>bp", "<cmd>bp<CR>", "[b]uffer [p]revious")
 -- this is a bit sofisticated (split, prev buf, next win, del buf)
 -- M.nmap('<leader>bd','<C-W>s<cmd>bp<CR><C-W>w<cmd>bd<CR>','[b]uffer [d]elete')
 M.nmap("<leader>bd", "<cmd>bd<CR>", "[b]uffer [d]elete")
---}}}
 
---{{{ # window mapping
+-- window mapping
 M.nmap("<leader>w", "<C-W>", "shortcut to [w]indow managment")
 M.nmap("<leader>we", "<C-W>=", "[w]indow [e]qualize")
 M.nmap("<leader>wt", "<C-W>T", "[w]indow in new [T]ab")
@@ -123,15 +120,11 @@ M.nmap("<leader>w-", "<C-W>5-", "[w]indow resize custom")
 M.nmap("<leader>w+", "<C-W>5+", "[w]indow resize custom")
 M.nmap("<leader>w<", "<C-W>5<", "[w]indow resize custom")
 M.nmap("<leader>w>", "<C-W>5>", "[w]indow resize custom")
---}}}
 
---{{{ # tabs mapping
--- M.nmap('<leader>tl','<cmd>+tabn<CR>', 'remap \'gt\'')
--- M.nmap('<leader>th','<cmd>-tabp<CR>', 'remap \'gT\'')
+-- tabs mapping
 M.nmap("<leader>tn", "<cmd>tabnew<CR>", "create new [t]ab")
---}}}
 
---{{{ # lsp integrated shortcut
+-- lsp integrated shortcut
 local lsp = vim.lsp.buf
 M.nmap("gh", lsp.code_action, "[g]et [h]elp")
 M.nmap("gd", lsp.definition, "[g]oto [d]efinition")
@@ -140,13 +133,11 @@ M.nmap("gr", lsp.references, "[g]oto [R]eference")
 M.nmap("gR", lsp.rename, "[g]oto [R]ename")
 M.imap("<C-g><C-r>", lsp.rename, "trigger [g]oto [R]ename")
 M.imap("<C-h>", lsp.hover, "trigger [H]over")
---}}}
 
---{{{ # terminal mapping
+-- terminal mapping
 M.tmap("<Esc>", "<C-\\><C-n>", "exit from terminal")
---}}}
 
---{{{ # quickfix integrated
+-- quickfix integrated
 M.nmap("<leader>co", "<cmd>cwindow 8<CR>", "open qflist")
 M.nmap("<leader>cn", "<cmd>cnext<CR>", "qflist next entry")
 M.nmap("<leader>cj", "<cmd>cnext<CR>", "qflist next entry")
@@ -155,12 +146,10 @@ M.nmap("<leader>ck", "<cmd>cNext<CR>", "qflist prev entry")
 M.nmap("<leader>cf", "<cmd>cfirst<CR>", "qflist first entry")
 M.nmap("<leader>cl", "<cmd>clast<CR>", "qflist last entry")
 M.nmap("<leader>cm", "<cmd>make!<CR><cmd>cwindow 8<CR>", "open qflist")
---}}}
 
---{{{ # fold custom integration
+-- fold custom integration
 -- M.nmap('<C-o>','<cmd>FoldToggle<CR>','trigger f[O]ldtoggle command')
 M.imap("<C-o>", "<cmd>FoldToggle<CR>", "trigger f[O]ldtoggle command")
---}}}
 
 -- # moving capabilities
 M.nmap("<M-k>", "<cmd>m .-2<CR>==", "move up row")

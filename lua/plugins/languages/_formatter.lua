@@ -31,21 +31,6 @@ return {
 						}
 					end,
 				},
-				-- cpp = {
-				-- 	function()
-				-- 		return {
-				-- 			exe = "clang-format",
-				-- 			args = {
-				-- 				"-assume-filename",
-				-- 				require("formatter.util").escape_path(
-				-- 					require("formatter.util").get_current_buffer_file_name()
-				-- 				),
-				-- 				"-style='{BasedOnStyle: llvm, IndentWidth: 8, BreakBeforeBraces: Linux, AllowShortIfStatementsOnASingleLine: false, IndentCaseLabels: true, ColumnLimit: 80}'",
-				-- 			},
-				-- 			stdin = true,
-				-- 		}
-				-- 	end,
-				-- },
 				c = {
 					function()
 						return {
@@ -101,13 +86,13 @@ return {
 						}
 					end,
 				},
-        json = {
-          function()
-            return {
-              exe = "fixjson",
-            }
-          end,
-        },
+				json = {
+					function()
+						return {
+							exe = "fixjson",
+						}
+					end,
+				},
 				["*"] = {
 					function()
 						if vim.bo.filetype ~= "markdown" then
