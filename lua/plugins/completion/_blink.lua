@@ -4,9 +4,16 @@ return {
 		"GustavEikaas/easy-dotnet.nvim",
 		"l3mon4d3/luasnip",
 		"windwp/nvim-autopairs",
+		-- lazydev for neovim lua configuration
+		{
+			"folke/lazydev.nvim",
+			ft = { "lua" },
+			opts = {
+				library = { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+			},
+		},
 	},
-	version = "*",
-	-- tag = 'v0.13.*',
+	version = "1.*",
 
 	---@module 'blink.cmp'
 	---@type blink.cmp.Config
@@ -53,7 +60,7 @@ return {
 				if filter and filter.direction then
 					return require("luasnip").jumpable(filter.direction)
 				end
-				return require("luasnip").in_snippet()
+				return require("luasnip").in_snippet() --[[@type boolean]]
 			end,
 			jump = function(direction)
 				require("luasnip").jump(direction)
@@ -63,7 +70,7 @@ return {
 		cmdline = { enabled = false },
 
 		sources = {
-			default = { "lsp", "path", "snippets", "buffer", "easy-dotnet" },
+			default = { "lazydev", "lsp", "path", "snippets", "buffer", "easy-dotnet" },
 			providers = {
 				["easy-dotnet"] = {
 					enabled = true,
@@ -72,7 +79,14 @@ return {
 					score_offset = 10000,
 					async = true,
 				},
+				lazydev = {
+					name = "LazyDev",
+					module = "lazydev.integrations.blink",
+					score_offset = 100,
+				},
 			},
 		},
+
+		fuzzy = { implementation = "prefer_rust_with_warning" },
 	},
 }

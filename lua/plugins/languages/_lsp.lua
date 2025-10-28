@@ -68,9 +68,8 @@ return {
 			"jsonls",
 			"lua_ls",
 			"sqlls",
-			"netcoredbg",
-			"delve",
 		}
+		---@type string[]
 		local other_req = {
 			"roslyn",
 			"rzls",
@@ -82,10 +81,16 @@ return {
 			-- "node-debug2-adapter",
 		}
 
-		require("mason-lspconfig").setup({
-			automatic_setup = true,
-			ensure_installed = lsp_req,
+		require("mason-lspconfig").setup({ automatic_setup = true, ensure_installed = lsp_req })
+
+		local clangd_cap = vim.tbl_deep_extend("force", require("blink.cmp").get_lsp_capabilities(), {
+			offsetEncoding = { "utf-8" },
+			general = { positionEncoding = { "utf-8" } },
 		})
+		vim.lsp.config("clangd", {
+			capabilities = clangd_cap,
+		})
+		vim.lsp.enable("clangd")
 
 		local m = require("mason-registry")
 		for _, pkg in ipairs(other_req) do
@@ -107,21 +112,11 @@ return {
 		vim.lsp.config("html", {
 			filetypes = { "html", "gohtmltmpl", "templ", "razor", "cshtml", "ejs" },
 		})
-		vim.lsp.config("tailwindcss", {
-			filetypes = { "html", "gohtmltmpl", "templ", "razor", "cshtml", "ejs" },
-		})
+		-- vim.lsp.config("tailwindcss", {
+		-- 	filetypes = { "html", "gohtmltmpl", "templ", "razor", "cshtml", "ejs" },
+		-- })
 		vim.lsp.config("ts_ls", {
 			filetypes = { "javascript", "typescript", "ejs" },
-		})
-
-		--header file fix
-		local clangd_path =
-			vim.fs.normalize(vim.fs.joinpath(vim.fn.stdpath("data") --[[@as string]], "mason", "bin", "clangd"))
-		vim.lsp.config("clangd", {
-			cmd = {
-				clangd_path,
-				"--log=error",
-			},
 		})
 
 		--lsp folding
@@ -137,6 +132,5 @@ return {
 				end
 			end,
 		})
-		::continue::
 	end,
 }
