@@ -60,7 +60,7 @@ return {
 		vim.lsp.config("*", default)
 
 		---@type string[]
-		local lsp_req = {
+		local other_req = {
 			"gopls",
 			"templ",
 			"clangd",
@@ -68,9 +68,6 @@ return {
 			"jsonls",
 			"lua_ls",
 			"sqlls",
-		}
-		---@type string[]
-		local other_req = {
 			"roslyn",
 			"rzls",
 			"netcoredbg",
@@ -81,7 +78,7 @@ return {
 			-- "node-debug2-adapter",
 		}
 
-		require("mason-lspconfig").setup({ automatic_setup = true, ensure_installed = lsp_req })
+		require("mason-lspconfig").setup()
 
 		local clangd_cap = vim.tbl_deep_extend("force", require("blink.cmp").get_lsp_capabilities(), {
 			offsetEncoding = { "utf-8" },
