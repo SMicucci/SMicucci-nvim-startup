@@ -12,24 +12,18 @@ return {
 			logging = true,
 			log_level = vim.log.levels.WARN,
 			filetype = {
+				["*"] = {
+					function()
+						if vim.bo.filetype ~= "markdown" then
+							require("formatter.filetypes.any").remove_trailing_whitespace()
+						end
+					end,
+				},
 				lua = {
 					require("formatter.filetypes.lua").stylua,
-					function()
-						if util.get_current_buffer_file_name() == "special.lua" then
-							return nil
-						end
-						return {
-							exe = "stylua",
-							args = {
-								"--search-parent-directories",
-								"--stdin-filepath",
-								util.escape_path(util.get_current_buffer_file_path()),
-								"--",
-								"-",
-							},
-							stdin = true,
-						}
-					end,
+				},
+				cs = {
+					require("formatter.filetypes.lua").dotnetformat,
 				},
 				c = {
 					function()
@@ -40,7 +34,7 @@ return {
 								require("formatter.util").escape_path(
 									require("formatter.util").get_current_buffer_file_name()
 								),
-								"-style='{BasedOnStyle: llvm, IndentWidth: 8, BreakBeforeBraces: Linux, AllowShortIfStatementsOnASingleLine: false, IndentCaseLabels: true, ColumnLimit: 100}'",
+								"-style='{BasedOnStyle: llvm, IndentWidth: 8, BreakBeforeBraces: Linux, AllowShortIfStatementsOnASingleLine: false, IndentCaseLabels: true, ColumnLimit: 80}'",
 							},
 							stdin = true,
 						}
@@ -80,7 +74,7 @@ return {
 								"--single-quote",
 								"false",
 								"--print-width",
-								"100",
+								"80",
 							},
 							stdin = true,
 						}
@@ -91,13 +85,6 @@ return {
 						return {
 							exe = "fixjson",
 						}
-					end,
-				},
-				["*"] = {
-					function()
-						if vim.bo.filetype ~= "markdown" then
-							require("formatter.filetypes.any").remove_trailing_whitespace()
-						end
 					end,
 				},
 			},

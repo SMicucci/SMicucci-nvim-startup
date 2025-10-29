@@ -1,4 +1,5 @@
 local set = vim.opt
+local loc = vim.opt_local
 local auto = require("config.command")
 local setting = auto.aug("settings", { clear = true })
 
@@ -119,6 +120,19 @@ auto.au({ "BufNewFile", "BufRead" }, {
 	desc = "set header c lang, not cpp",
 })
 
+-- # handle internally command with cmd but open terminal with powershell
 if vim.g.is_win then
-	set.shell = "powershell.exe"
+	set.shell = "cmd.exe"
+	set.shellcmdflag = "/c"
+	set.shellquote = ""
+	set.shellxquote = ""
+	vim.env.COMSPEC = "C:\\Windows\\System32\\cmd.exe"
+	auto.au("TermOpen", {
+		pattern = "*",
+		callback = function()
+			loc.shell = "powershell.exe"
+			loc.shellcmdflag = "-NoLogo"
+		end,
+		desc = "windows run powershell",
+	})
 end

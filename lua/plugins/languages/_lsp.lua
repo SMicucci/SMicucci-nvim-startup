@@ -15,7 +15,7 @@ return {
 				})
 			end,
 		},
-		"neovim/nvim-lspconfig",
+		{ "neovim/nvim-lspconfig", lazy = false },
 	},
 	config = function()
 		---root_dir factory for LSP configuration
@@ -89,18 +89,16 @@ return {
 		})
 		vim.lsp.enable("clangd")
 
+		-- install package with mason directly
 		local m = require("mason-registry")
 		for _, pkg in ipairs(other_req) do
-			-- exist?
 			if m.has_package(pkg) == false then
 				vim.notify(pkg .. " does not exist, check config", vim.log.levels.WARN)
 				goto continue
 			end
-			-- installed?
 			if m.is_installed(pkg) then
 				goto continue
 			end
-			-- install
 			m.get_package(pkg):install()
 			::continue::
 		end
@@ -109,9 +107,14 @@ return {
 		vim.lsp.config("html", {
 			filetypes = { "html", "gohtmltmpl", "templ", "razor", "cshtml", "ejs" },
 		})
-		-- vim.lsp.config("tailwindcss", {
-		-- 	filetypes = { "html", "gohtmltmpl", "templ", "razor", "cshtml", "ejs" },
-		-- })
+		vim.lsp.config(
+			"cssls",
+			vim.tbl_deep_extend(
+				"force",
+				vim.lsp.config["cssls"] or {},
+				{ filetypes = { "html", "gohtmltmpl", "templ", "razor", "cshtml", "ejs" } }
+			)
+		)
 		vim.lsp.config("ts_ls", {
 			filetypes = { "javascript", "typescript", "ejs" },
 		})

@@ -56,6 +56,9 @@ return {
 				end
 			end
 
+      --easy-dotnet indicator
+      local job_indicator = { require("easy-dotnet.ui-modules.jobs"). lualine }
+
 			-- setup
 			local opts = {
 				options = {
@@ -78,7 +81,7 @@ return {
 					},
 				},
 				sections = {
-					lualine_a = { "mode" },
+					lualine_a = { "mode", job_indicator },
 					lualine_b = { "branch", "diff", "diagnostics" },
 					lualine_c = { "filename" },
 					lualine_x = { ai_spinner },
