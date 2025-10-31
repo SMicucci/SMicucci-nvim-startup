@@ -12,19 +12,6 @@ return {
 			logging = true,
 			log_level = vim.log.levels.WARN,
 			filetype = {
-				["*"] = {
-					function()
-						if vim.bo.filetype ~= "markdown" then
-							require("formatter.filetypes.any").remove_trailing_whitespace()
-						end
-					end,
-				},
-				lua = {
-					require("formatter.filetypes.lua").stylua,
-				},
-				cs = {
-					require("formatter.filetypes.lua").dotnetformat,
-				},
 				c = {
 					function()
 						return {
@@ -80,11 +67,25 @@ return {
 						}
 					end,
 				},
-				json = {
+				json = require("formatter.filetypes.json").fixjson,
+				lua = require("formatter.filetypes.lua").stylua,
+				templ = require("formatter.filetypes.templ").templfmt,
+				cs = function()
+					local res = {
+						exe = vim.fn.expand("$MASON/bin/csharpier"),
+						args = { "format" },
+						stdin = true,
+					}
+					if vim.g.is_win then
+						res.exe = vim.fn.expand("$MASON/bin/csharpier.cmd")
+					end
+					return res
+				end,
+				["*"] = {
 					function()
-						return {
-							exe = "fixjson",
-						}
+						if vim.bo.filetype ~= "markdown" then
+							require("formatter.filetypes.any").remove_trailing_whitespace()
+						end
 					end,
 				},
 			},
