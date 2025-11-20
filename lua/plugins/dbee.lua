@@ -5,7 +5,7 @@ return {
 			"MunifTanjim/nui.nvim",
 		},
 		build = function()
-			require("dbee").install()
+			require("dbee").install("go")
 		end,
 		config = function()
 			local db = require("dbee")
