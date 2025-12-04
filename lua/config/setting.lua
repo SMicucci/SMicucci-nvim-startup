@@ -31,6 +31,7 @@ set.wildmode = "full"
 set.foldmethod = "marker"
 set.foldmarker = "{{{,}}}" -- default
 set.foldclose = "all"
+set.foldlevelstart = 99
 set.foldenable = true
 
 -- tabs in vim => #3
