@@ -21,7 +21,7 @@ return {
 								require("formatter.util").escape_path(
 									require("formatter.util").get_current_buffer_file_name()
 								),
-								"-style='{BasedOnStyle: llvm, IndentWidth: 8, BreakBeforeBraces: Linux, AllowShortIfStatementsOnASingleLine: false, IndentCaseLabels: true, ColumnLimit: 80}'",
+								"-style='{BasedOnStyle: llvm, IndentWidth: 8, BreakBeforeBraces: Linux, AllowShortIfStatementsOnASingleLine: false, IndentCaseLabels: false, ColumnLimit: 80}'",
 							},
 							stdin = true,
 						}
