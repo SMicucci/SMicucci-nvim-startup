@@ -1,4 +1,5 @@
---@type LazySource
+--@type LazyPlugin
+--@diagnostic disable-next-line: missing-fields
 return {
 	"williamboman/mason-lspconfig.nvim",
 	dependencies = {
@@ -69,7 +70,6 @@ return {
 			"lua_ls",
 			"sqlls",
 			"roslyn",
-			"rzls",
 			"netcoredbg",
 			"delve",
 			"clang-format",
