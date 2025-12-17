@@ -137,3 +137,10 @@ if vim.g.is_win then
 		desc = "windows run powershell",
 	})
 end
+
+-- opencl config
+vim.filetype.add({
+	extension = {
+		cl = "opencl",
+	},
+})

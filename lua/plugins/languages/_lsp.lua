@@ -86,6 +86,7 @@ return {
 		})
 		vim.lsp.config("clangd", {
 			capabilities = clangd_cap,
+			filetypes = { "c", "cpp", "objc", "objcpp", "cuda", "opencl" },
 		})
 		vim.lsp.enable("clangd")
 
