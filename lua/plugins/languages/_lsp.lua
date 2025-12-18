@@ -108,14 +108,6 @@ return {
 		vim.lsp.config("html", {
 			filetypes = { "html", "gohtmltmpl", "templ", "razor", "cshtml", "ejs" },
 		})
-		vim.lsp.config(
-			"cssls",
-			vim.tbl_deep_extend(
-				"force",
-				vim.lsp.config["cssls"] or {},
-				{ filetypes = { "html", "gohtmltmpl", "templ", "razor", "cshtml", "ejs" } }
-			)
-		)
 		vim.lsp.config("ts_ls", {
 			filetypes = { "javascript", "typescript", "ejs" },
 		})

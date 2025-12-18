@@ -138,9 +138,16 @@ if vim.g.is_win then
 	})
 end
 
--- opencl config
+-- opencl filetype
 vim.filetype.add({
 	extension = {
 		cl = "opencl",
+	},
+})
+-- razor filetype
+vim.filetype.add({
+	extension = {
+		razor = "razor",
+		cshtml = "razor",
 	},
 })

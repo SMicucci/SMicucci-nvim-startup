@@ -1,5 +1,3 @@
----@type LazyPlugin
----@diagnostic disable-next-line: missing-fields
 return {
 	"seblyng/roslyn.nvim",
 	ft = { "cs", "razor", "vb", "cshtml" },
@@ -46,8 +44,4 @@ return {
 			},
 		},
 	},
-	config = function(_, opts)
-		local roslyn_path = vim.fs.joinpath(vim.fn.stdpath("data"), "mason", "packages", "roslyn")
-		local rz_path = vim.fs.joinpath(roslyn_path, "libexec", "RazorExtension")
-	end,
 }

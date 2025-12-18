@@ -1,5 +1,3 @@
----@type LazyPlugin
----@diagnostic disable-next-line: missing-fields
 return {
 	"GustavEikaas/easy-dotnet.nvim",
 	dependencies = {
@@ -58,14 +56,6 @@ return {
 						end)
 					end,
 				},
-			},
-		})
-	end,
-	init = function()
-		vim.filetype.add({
-			extension = {
-				razor = "razor",
-				cshtml = "razor",
 			},
 		})
 	end,
