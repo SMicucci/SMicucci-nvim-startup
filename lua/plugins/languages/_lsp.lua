@@ -5,6 +5,7 @@ return {
 	dependencies = {
 		{
 			"williamboman/mason.nvim",
+			lazy = false,
 			config = function()
 				local mason = require("mason")
 				---@diagnostic disable-next-line: missing-fields

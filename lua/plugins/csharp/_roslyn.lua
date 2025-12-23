@@ -1,11 +1,12 @@
 return {
 	"seblyng/roslyn.nvim",
+	dependencies = {
+		"williamboman/mason.nvim",
+	},
 	ft = { "cs", "razor", "vb", "cshtml" },
 	---@module 'roslyn.config'
 	---@type RoslynNvimConfig
 	opts = {
-		filewatching = "auto",
-		capabilities = require("blink.cmp").get_lsp_capabilities(),
 		config = {
 			settings = {
 				["csharp|background_analysis"] = {
