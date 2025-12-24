@@ -36,7 +36,7 @@ M.au("termopen", {
 M.au("TextYankPost", {
 	group = utils,
 	callback = function()
-		vim.highlight.on_yank({
+		vim.hl.on_yank({
 			higroup = "IncSearch",
 			timeout = 150,
 		})
