@@ -67,6 +67,8 @@ return {
 						}
 					end,
 				},
+				html = require("formatter.filetypes.html").prettier,
+				razor = require("formatter.filetypes.html").prettier,
 				json = require("formatter.filetypes.json").fixjson,
 				lua = require("formatter.filetypes.lua").stylua,
 				templ = require("formatter.filetypes.templ").templfmt,

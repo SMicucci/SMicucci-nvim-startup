@@ -14,17 +14,9 @@ return {
 		local tree = require("neo-tree")
 
 		local function get_debugger_path()
-			local path = vim.fs.joinpath(
-				vim.fn.stdpath("data"),
-				"mason",
-				"packages",
-				"netcoredbg",
-				"libexec",
-				"netcoredbg",
-				"netcoredbg"
-			)
+			local path = vim.fs.joinpath(vim.fn.stdpath("data"), "mason", "bin", "netcoredbg")
 			if vim.g.is_win then
-				path = path .. ".exe"
+				path = path .. ".cmd"
 			end
 			return path
 		end
