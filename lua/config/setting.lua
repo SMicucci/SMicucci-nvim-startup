@@ -35,7 +35,7 @@ set.foldlevelstart = 99
 set.foldenable = true
 
 -- tabs in vim => #3
-set.list = true
+set.list = false
 set.expandtab = true
 set.shiftwidth = 4
 set.tabstop = 4
