@@ -8,6 +8,7 @@ return {
 			{ "folke/snacks.nvim", opts = { input = {}, picker = {}, terminal = {} } },
 		},
 		config = function()
+			local k = require("config.keymap")
 			---@type opencode.Opts
 			vim.g.opencode_opts = {
 				-- Your configuration, if any — see `lua/opencode/config.lua`, or "goto definition".
@@ -23,34 +24,32 @@ return {
 				},
 			}
 
-			-- Recommended/example keymaps.
-			vim.keymap.set({ "n", "x" }, "<C-a>", function()
-				require("opencode").ask("@this: ", { submit = true })
-			end, { desc = "Ask opencode" })
-			vim.keymap.set({ "n", "x" }, "<C-x>", function()
-				require("opencode").select()
-			end, { desc = "Execute opencode action…" })
-			vim.keymap.set({ "n", "t" }, "<C-.>", function()
+			k.nmap("<leader>cc", function()
 				require("opencode").toggle()
-			end, { desc = "Toggle opencode" })
+			end, "opencode toggle")
+			k.tmap("<C-t>", function()
+				require("opencode").toggle()
+			end, "opencode toggle")
 
-			vim.keymap.set({ "n", "x" }, "go", function()
+			k.nmap("<leader>ca", function()
+				require("opencode").toggle()
+			end, "opencode action")
+			k.vmap("<leader>ce", function()
 				return require("opencode").operator("@this ")
-			end, { expr = true, desc = "Add range to opencode" })
-			vim.keymap.set("n", "goo", function()
-				return require("opencode").operator("@this ") .. "_"
-			end, { expr = true, desc = "Add line to opencode" })
+			end, "opencode add range")
 
-			vim.keymap.set("n", "<S-C-u>", function()
+			k.nmap("<leader>cu", function()
 				require("opencode").command("session.half.page.up")
-			end, { desc = "opencode half page up" })
-			vim.keymap.set("n", "<S-C-d>", function()
+			end, "opencode half page up")
+			k.nmap("<leader>cd", function()
 				require("opencode").command("session.half.page.down")
-			end, { desc = "opencode half page down" })
-
-			-- You may want these if you stick with the opinionated "<C-a>" and "<C-x>" above — otherwise consider "<leader>o".
-			vim.keymap.set("n", "+", "<C-a>", { desc = "Increment", noremap = true })
-			vim.keymap.set("n", "-", "<C-x>", { desc = "Decrement", noremap = true })
+			end, "opencode half page down")
+			-- k.tmap("<C-d>", function()
+			-- 	require("opencode").command("session.half.page.down")
+			-- end, "opencode half page down")
+			-- k.tmap("<C-u>", function()
+			-- 	require("opencode").command("session.half.page.up")
+			-- end, "opencode half page up")
 		end,
 	},
 }

@@ -21,12 +21,12 @@ end
 ---@param opts table|nil other option (like silent)
 M.vmap = function(keys, command, desc, opts)
 	opts = opts or {}
-	if vim.fn.maparg(keys, "v") ~= "" and not opts.buffer then
-		vim.keymap.del("v", keys)
+	if vim.fn.maparg(keys, "x") ~= "" and not opts.buffer then
+		vim.keymap.del("x", keys)
 	end
 	assert(not opts.desc, "keymap desc must be assigned on argument")
 	opts.desc = desc
-	vim.keymap.set("v", keys, command, opts)
+	vim.keymap.set("x", keys, command, opts)
 end
 ---simple keymap insert mode (re)set
 ---@param keys string lhs
