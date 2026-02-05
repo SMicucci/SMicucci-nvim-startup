@@ -94,7 +94,7 @@ return {
 			},
 		})
 
-		k.nmap("<leader>fw", ":FormatWriteLock", "format file explicitly")
+		k.nmap("<leader>fw", ":FormatWriteLock<CR>", "format file explicitly")
 		-- auto.au("BufWritePost", {
 		-- 	pattern = "*",
 		-- 	group = format_group,
