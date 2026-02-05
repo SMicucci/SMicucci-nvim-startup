@@ -4,6 +4,7 @@ return {
 		-- Utilities for creating configurations
 		local util = require("formatter.util")
 		local auto = require("config.command")
+		local k = require("config.keymap")
 
 		local format_group = auto.aug("format", { clear = true })
 
@@ -93,11 +94,12 @@ return {
 			},
 		})
 
-		auto.au("BufWritePost", {
-			pattern = "*",
-			group = format_group,
-			command = "FormatWriteLock",
-			desc = "default auto format by default",
-		})
+		k.nmap("<leader>fw", ":FormatWriteLock", "format file explicitly")
+		-- auto.au("BufWritePost", {
+		-- 	pattern = "*",
+		-- 	group = format_group,
+		-- 	command = "FormatWriteLock",
+		-- 	desc = "default auto format by default",
+		-- })
 	end,
 }
