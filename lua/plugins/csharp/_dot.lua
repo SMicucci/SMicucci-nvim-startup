@@ -30,6 +30,11 @@ return {
 				enabled = true,
 				bin_path = get_debugger_path(),
 			},
+			diagnostics = {
+				default_severity = "warning",
+				setqflist = true,
+				auto_open = true,
+			},
 		})
 
 		tree.setup({
