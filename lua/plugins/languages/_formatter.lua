@@ -1,11 +1,11 @@
 return {
 	"stevearc/conform.nvim",
-	cmd = { "ConfortInfo", "Minify" },
+	cmd = { "ConformInfo", "Minify" },
 	keys = {
 		{
 			"<leader>fw",
 			function()
-				require("conform").format({ async = true, lsp_fallback = true })
+				require("conform").format({ bufnr = 0 })
 			end,
 			mode = "n",
 			desc = "Format file explicitly",
@@ -13,14 +13,7 @@ return {
 	},
 	config = function()
 		-- Utilities for creating configurations
-		local auto = require("config.command")
-		local k = require("config.keymap")
-		local confort = require("conform")
-
-		local format_group = auto.aug("format", { clear = true })
-
-		-- Provides the Format, FormatWrite, FormatLock, and FormatWriteLock commands
-		confort.setup({
+		require("conform").setup({
 			formatters_by_ft = {
 				c = { "clang_format_custom" },
 				javascript = { "prettier_js" },
