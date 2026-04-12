@@ -36,7 +36,7 @@ return {
 					args = {
 						"-assume-filename",
 						"$FILENAME",
-						"-style='{BasedOnStyle: llvm, IndentWidth: 8, BreakBeforeBraces: Linux, AllowShortIfStatementsOnASingleLine: false, IndentCaseLabels: false, ColumnLimit: 80}'",
+						"--style={BasedOnStyle: llvm, IndentWidth: 8, BreakBeforeBraces: Linux, AllowShortIfStatementsOnASingleLine: false, IndentCaseLabels: false, ColumnLimit: 80}",
 					},
 				},
 				prettier_js = {

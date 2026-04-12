@@ -57,7 +57,7 @@ return {
 			end
 
 			--easy-dotnet indicator
-			local job_indicator = { require("easy-dotnet.ui-modules.jobs").lualine, require("opencode").statusline }
+			local job_indicator = { require("easy-dotnet.ui-modules.jobs").lualine--[[, require("opencode").statusline]] }
 
 			-- setup
 			local opts = {
