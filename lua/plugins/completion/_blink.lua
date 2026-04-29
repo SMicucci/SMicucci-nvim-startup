@@ -1,6 +1,7 @@
 return {
 	"Saghen/blink.cmp",
 	dependencies = {
+    "Saghen/blink.lib",
 		"GustavEikaas/easy-dotnet.nvim",
 		"l3mon4d3/luasnip",
 		"windwp/nvim-autopairs",
@@ -13,8 +14,10 @@ return {
 			},
 		},
 	},
-  build = "cargo build --release",
-
+  build = function ()
+    vim.env.PATH = vim.env.PATH .. ";" .. vim.env.HOME .. "\\.cargo\\bin"
+    require('blink.cmp').build():wait(60000)
+  end,
 	---@module 'blink.cmp'
 	---@type blink.cmp.Config
 	opts = {

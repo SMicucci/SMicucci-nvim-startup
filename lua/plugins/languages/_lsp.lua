@@ -95,7 +95,7 @@ return {
 		local m = require("mason-registry")
 		for _, pkg in ipairs(other_req) do
 			if m.has_package(pkg) == false then
-				vim.notify(pkg .. " does not exist, check config", vim.log.levels.WARN)
+				-- vim.notify(pkg .. " does not exist, check config", vim.log.levels.WARN)
 				goto continue
 			end
 			if m.is_installed(pkg) then
