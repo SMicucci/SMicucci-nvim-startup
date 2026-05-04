@@ -1,10 +1,9 @@
 return {
 	"nvim-treesitter/nvim-treesitter",
-	lazy = true,
-	event = "VeryLazy",
+	lazy = false,
 	build = ":TSUpdate",
 	opts = {
-		ensure_installed = { "c", "c_sharp", "css", "json", "lua", "razor", "sql", "xml" },
+		ensure_installed = { "c", "c_sharp", "css", "json", "lua", "markdown", "markdown_inline", "razor", "sql", "xml" },
 		auto_install = true,
 		sync_install = false,
 		ignore_install = {},
