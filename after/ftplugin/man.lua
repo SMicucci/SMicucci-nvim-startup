@@ -1,15 +1,8 @@
-local set = vim.opt_local
+local k = vim.keymap
 
-local nmap = function(lhs, rhs, description)
-	---@type vim.api.keyset.keymap
-	local opts = { desc = description, noremap = true, silent = true }
-	pcall(vim.api.nvim_buf_del_keymap, 0, "n", lhs)
-	vim.api.nvim_buf_set_keymap(0, "n", lhs, rhs, opts)
-end
-
-nmap("d", "<C-d>", "man page navigation")
-nmap("u", "<C-u>", "man page navigation")
-nmap("j", "<C-e>", "man page navigation")
-nmap("k", "<C-y>", "man page navigation")
-nmap("<C-j>", "j", "man page navigation")
-nmap("<C-k>", "k", "man page navigation")
+k.set("n", "d", "<C-d>", { desc = "man page navigation" })
+k.set("n", "u", "<C-u>", { desc = "man page navigation" })
+k.set("n", "j", "<C-e>", { desc = "man page navigation" })
+k.set("n", "k", "<C-y>", { desc = "man page navigation" })
+k.set("n", "<C-j>", "j", { desc = "man page navigation" })
+k.set("n", "<C-k>", "k", { desc = "man page navigation" })

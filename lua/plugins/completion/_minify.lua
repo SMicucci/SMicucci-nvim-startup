@@ -1,3 +1,0 @@
-return {
-  'Shadowsith/vim-minify',
-}

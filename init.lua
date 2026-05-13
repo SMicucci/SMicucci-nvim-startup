@@ -1,20 +1,5 @@
-require("config.setting")
-require("config.command")
-require("config.keymap")
-require("config.lazy")
-
---[[
-
-⤹ ⤿ ⭯ ⥀ ⤺
-
-⠁ ⠃ ⠇
-
-⠇
-⠦
-⠴
-⠸
-⠙
-⠋
-⠇
-
---]]
+require("config")
+require("command")
+require("keymap")
+require("pack")
+require("plugin")

@@ -1,0 +1,11 @@
+require("plugin.snacks")
+require("plugin.lsp")
+require("plugin.formatter")
+require("plugin.completion")
+require("plugin.whichkey")
+
+require("plugin.dap")
+require("plugin.csharp")
+require("plugin.git")
+require("plugin.markdown")
+require("plugin.claude")
