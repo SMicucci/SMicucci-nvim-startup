@@ -13,7 +13,10 @@ require("nvim-treesitter").install({ "c", "lua", "html", "css", "javascript", "m
 
 -- lazydev
 require("lazydev").setup({
-	library = { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+	library = {
+		{ path = "${3rd}/luv/library", words = { "vim%.uv" } },
+		{ path = "/usr/share/hypr/stubs" },
+	},
 })
 
 -- diagnostic
@@ -23,8 +26,8 @@ vim.diagnostic.config({
 		current_line = true,
 	},
 	severity_sort = true,
-    underline = false,
-    float = { border = "rounded", source = true }
+	underline = false,
+	float = { border = "rounded", source = true },
 })
 
 -- codelens
@@ -37,8 +40,8 @@ vim.diagnostic.config({
 -- 	end,
 -- })
 k.set("n", "gl", function()
-			vim.lsp.codelens.enable(not vim.lsp.codelens.is_enabled())
-		end, {desc = "lsp toggle codelens"})
+	vim.lsp.codelens.enable(not vim.lsp.codelens.is_enabled())
+end, { desc = "lsp toggle codelens" })
 
 vim.lsp.config("*", {
 	capabilities = require("blink.cmp").get_lsp_capabilities(),
@@ -78,22 +81,22 @@ vim.lsp.config("clangd", {
 
 -- gopls
 vim.lsp.config("gopls", {
-    settings = {
-        gopls = {
-            codelenses = {
-                gc_details = true,
-                generate = true,
-                tidy = true,
-            },
-            analyses = {
-                unusedparams = true,
-                shadow = true,
-            },
-            staticcheck = true,
-            gofumpt = true,
-            usePlaceholders = true,
-        }
-    }
+	settings = {
+		gopls = {
+			codelenses = {
+				gc_details = true,
+				generate = true,
+				tidy = true,
+			},
+			analyses = {
+				unusedparams = true,
+				shadow = true,
+			},
+			staticcheck = true,
+			gofumpt = true,
+			usePlaceholders = true,
+		},
+	},
 })
 
 -- install package with mason directly

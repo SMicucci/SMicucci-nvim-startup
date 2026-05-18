@@ -39,4 +39,8 @@ vim.pack.add({
 	{ src = "https://codeberg.org/mfussenegger/nvim-dap-python" },
 	-- claude
 	{ src = "https://github.com/coder/claudecode.nvim" },
-}, { confirm = true })
+  -- colorscheme
+	{ src = "https://github.com/projekt0n/github-nvim-theme" },
+	{ src = "https://github.com/andresmichel/one-dark-theme" },
+	{ src = "https://github.com/tiagovla/tokyodark.nvim" },
+}, { confirm = false })

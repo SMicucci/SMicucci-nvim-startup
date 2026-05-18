@@ -28,6 +28,10 @@
       "rev": "c67f4812a45880f5ba08c44cafb49d3247e6c55d",
       "src": "https://github.com/GustavEikaas/easy-dotnet.nvim"
     },
+    "github-nvim-theme": {
+      "rev": "c106c9472154d6b2c74b74565616b877ae8ed31d",
+      "src": "https://github.com/projekt0n/github-nvim-theme"
+    },
     "gitsigns.nvim": {
       "rev": "dd3f588bacbeb041be6facf1742e42097f62165d",
       "src": "https://github.com/lewis6991/gitsigns.nvim"
@@ -100,6 +104,14 @@
       "rev": "2795c26c916bb3c57dde308b82be51971fa92747",
       "src": "https://github.com/nvim-tree/nvim-web-devicons"
     },
+    "one-dark-theme": {
+      "rev": "9ecab1531c983680897b9a77190262561ce4fe0e",
+      "src": "https://github.com/andresmichel/one-dark-theme"
+    },
+    "onedark.nvim": {
+      "rev": "df4792accde9db0043121f32628bcf8e645d9aea",
+      "src": "https://github.com/navarasu/onedark.nvim"
+    },
     "plenary.nvim": {
       "rev": "74b06c6c75e4eeb3108ec01852001636d85a932b",
       "src": "https://github.com/nvim-lua/plenary.nvim"
@@ -111,6 +123,18 @@
     "snacks.nvim": {
       "rev": "ad9ede6a9cddf16cedbd31b8932d6dcdee9b716e",
       "src": "https://github.com/folke/snacks.nvim"
+    },
+    "tokionight.nvim": {
+      "rev": "cb030a8c136dc48384566700c326d0894b895cd0",
+      "src": "https://github.com/eddique/tokionight.nvim"
+    },
+    "tokyodark.nvim": {
+      "rev": "659aff3c73dc2e0159314050a81671f0b2eaad01",
+      "src": "https://github.com/tiagovla/tokyodark.nvim"
+    },
+    "tokyonight-vim": {
+      "rev": "4e82e0f0452a6ce8f387828ec71013015515035a",
+      "src": "https://github.com/ghifarit53/tokyonight-vim"
     },
     "vim-fugitive": {
       "rev": "3b753cf8c6a4dcde6edee8827d464ba9b8c4a6f0",

@@ -1,3 +1,5 @@
+require("plugin.color")
+
 require("plugin.snacks")
 require("plugin.lsp")
 require("plugin.formatter")
