@@ -32,46 +32,6 @@ local function setup_csharp()
 			auto_open = true,
 		},
 	})
-
-	require("roslyn").setup({
-		config = {
-			settings = {
-				["csharp|background_analysis"] = {
-					dotnet_analyzer_diagnostics_scope = "fullSolution",
-					dotnet_compiler_diagnostics_scope = "fullSolution",
-				},
-				["csharp|code_lens"] = {
-					dotnet_enable_references_code_lens = true,
-					dotnet_enable_test_code_lens = false,
-				},
-				["csharp|completion"] = {
-					dotnet_provide_regex_completions = true,
-					dotnet_show_completion_items_from_unimported_namespaces = true,
-					dotnet_show_name_completion_suggestions = true,
-				},
-				["csharp|inlay_hints"] = {
-					csharp_enable_inlay_hints_for_implicit_object_creation = true,
-					csharp_enable_inlay_hints_for_implicit_variable_types = true,
-					csharp_enable_inlay_hints_for_lambda_parameter_types = true,
-					csharp_enable_inlay_hints_for_types = true,
-					dotnet_enable_inlay_hints_for_indexer_parameters = true,
-					dotnet_enable_inlay_hints_for_literal_parameters = true,
-					dotnet_enable_inlay_hints_for_object_creation_parameters = true,
-					dotnet_enable_inlay_hints_for_other_parameters = true,
-					dotnet_enable_inlay_hints_for_parameters = true,
-					dotnet_suppress_inlay_hints_for_parameters_that_differ_only_by_suffix = true,
-					dotnet_suppress_inlay_hints_for_parameters_that_match_argument_name = true,
-					dotnet_suppress_inlay_hints_for_parameters_that_match_method_intent = true,
-				},
-				["csharp|symbol_search"] = {
-					dotnet_search_reference_assemblies = true,
-				},
-				["csharp|formatting"] = {
-					dotnet_organize_imports_on_format = true,
-				},
-			},
-		},
-	})
 end
 
 -- initialize if filetype is correct
@@ -94,6 +54,41 @@ vim.api.nvim_create_autocmd("BufEnter", {
 		end, { upward = true, type = "file" })
 		if #sln > 0 then
 			setup_csharp()
+      local config = vim.deepcopy(vim.lsp.config["roslyn_ls"])
+      config.root_dir = vim.fs.dirname(sln[1])
+      if config ~= nil then
+        vim.lsp.start(config)
+      end
 		end
+	end,
+})
+
+-- intercept virtual buffer
+vim.api.nvim_create_autocmd("BufAdd", {
+	group = csharp_group,
+	pattern = "*__virtual.html",
+	callback = function(args)
+		local bufnr = args.buf
+    local bo = vim.bo[bufnr]
+		vim.notify("virtual buffer '" .. args.file .. "' detached", vim.log.levels.INFO)
+		bo.buflisted = false
+		bo.buftype = "nofile"
+		bo.swapfile = false
+		bo.modified = false
+		vim.b[bufnr].no_lsp = true
+		vim.schedule(function()
+			for _, client in ipairs(vim.lsp.get_clients({ bufnr = bufnr })) do
+				vim.lsp.buf_detach_client(bufnr, client.id)
+			end
+		end)
+	end,
+})
+vim.api.nvim_create_autocmd({ "BufModifiedSet", "TextChanged" }, {
+	group = csharp_group,
+	pattern = "*__virtual.html",
+	callback = function(args)
+		if vim.bo[args.buf].modified then
+      vim.bo[args.buf].modified = false
+    end
 	end,
 })
