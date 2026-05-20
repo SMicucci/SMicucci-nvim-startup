@@ -31,6 +31,9 @@ vim.pack.add({
 	-- C#
 	{ src = "https://github.com/seblyng/roslyn.nvim" },
 	{ src = "https://github.com/GustavEikaas/easy-dotnet.nvim" },
+	-- go
+  { src = "https://github.com/ray-x/guihua.lua" },
+	{ src = "https://github.com/ray-x/go.nvim" },
 	-- DAP
 	{ src = "https://github.com/mfussenegger/nvim-dap" },
 	{ src = "https://github.com/rcarriga/nvim-dap-ui" },

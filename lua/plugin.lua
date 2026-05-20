@@ -8,6 +8,7 @@ require("plugin.whichkey")
 
 require("plugin.dap")
 require("plugin.csharp")
+require("plugin.go")
 require("plugin.git")
 require("plugin.markdown")
 require("plugin.claude")

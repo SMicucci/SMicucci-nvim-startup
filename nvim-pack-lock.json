@@ -36,6 +36,14 @@
       "rev": "dd3f588bacbeb041be6facf1742e42097f62165d",
       "src": "https://github.com/lewis6991/gitsigns.nvim"
     },
+    "go.nvim": {
+      "rev": "5c741a26f5df77c95d42d8f48e7008aea10e5f4f",
+      "src": "https://github.com/ray-x/go.nvim"
+    },
+    "guihua.lua": {
+      "rev": "26e2e557f5b1a0c5cb25cab41d71ddba61523cba",
+      "src": "https://github.com/ray-x/guihua.lua"
+    },
     "lazydev.nvim": {
       "rev": "ff2cbcba459b637ec3fd165a2be59b7bbaeedf0d",
       "src": "https://github.com/folke/lazydev.nvim.git"
