@@ -13,6 +13,7 @@ vim.pack.add({
 	{ src = "https://github.com/folke/lazydev.nvim.git" },
 	{ src = "https://github.com/aznhe21/actions-preview.nvim" },
 	-- completion
+	{ src = "https://github.com/rafamadriz/friendly-snippets" },
 	{ src = "https://github.com/l3mon4d3/luasnip" },
 	{ src = "https://github.com/saghen/blink.lib" },
 	{ src = "https://github.com/saghen/blink.cmp" },

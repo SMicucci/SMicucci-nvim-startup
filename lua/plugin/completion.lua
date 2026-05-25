@@ -1,6 +1,10 @@
 local cmp = require("blink.cmp")
 
+---@diagnostic disable-next-line: undefined-field
 cmp.build():wait(60000)
+
+require("luasnip.loaders.from_vscode").lazy_load()
+
 cmp.setup({
 	enabled = function()
 		return not vim.tbl_contains({

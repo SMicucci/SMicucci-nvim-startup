@@ -139,3 +139,23 @@
            (#lua-match? @_comment "language=html")
            (#set! injection.language "html")
            (#set! injection.combined))
+
+; tcl
+((comment) @_comment .
+           (declaration declarator: (init_declarator value: (string_literal (string_content)@injection.content)))
+           (#lua-match? @_comment "language=tcl")
+           (#set! injection.language "tcl"))
+((comment) @_comment .
+           (expression_statement (assignment_expression right: (string_literal (string_content) @injection.content)))
+           (#lua-match? @_comment "language=tcl")
+           (#set! injection.language "tcl"))
+((comment) @_comment .
+           (declaration declarator: (init_declarator value: (concatenated_string (string_literal (string_content)@injection.content))))
+           (#lua-match? @_comment "language=tcl")
+           (#set! injection.language "tcl")
+           (#set! injection.combined))
+((comment) @_comment .
+           (expression_statement (assignment_expression right: (concatenated_string (string_literal (string_content) @injection.content))))
+           (#lua-match? @_comment "language=tcl")
+           (#set! injection.language "tcl")
+           (#set! injection.combined))

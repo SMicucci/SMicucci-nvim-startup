@@ -28,6 +28,10 @@
       "rev": "c67f4812a45880f5ba08c44cafb49d3247e6c55d",
       "src": "https://github.com/GustavEikaas/easy-dotnet.nvim"
     },
+    "friendly-snippets": {
+      "rev": "6cd7280adead7f586db6fccbd15d2cac7e2188b9",
+      "src": "https://github.com/rafamadriz/friendly-snippets"
+    },
     "github-nvim-theme": {
       "rev": "c106c9472154d6b2c74b74565616b877ae8ed31d",
       "src": "https://github.com/projekt0n/github-nvim-theme"
