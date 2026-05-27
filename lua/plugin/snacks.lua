@@ -59,7 +59,9 @@ snacks.setup({
 			input = {
 				keys = {
 					["<m-v>"] = { "vsplit", mode = { "i", "n" } },
+					["<c-v>"] = { "vsplit", mode = { "i", "n" } },
 					["<m-s>"] = { "hsplit", mode = { "i", "n" } },
+					["<c-s>"] = { "hsplit", mode = { "i", "n" } },
 				},
 			},
 		},
@@ -70,6 +72,10 @@ snacks.setup({
 					list = {
 						keys = {
 							["<c-r>"] = "explorer_add_dotnet",
+              ["<m-v>"] = { "vsplit", mode = { "i", "n" } },
+              ["<c-v>"] = { "vsplit", mode = { "i", "n" } },
+              ["<m-s>"] = { "hsplit", mode = { "i", "n" } },
+              ["<c-s>"] = { "hsplit", mode = { "i", "n" } },
 						},
 					},
 				},
