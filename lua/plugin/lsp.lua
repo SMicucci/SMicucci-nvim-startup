@@ -59,7 +59,7 @@ local mason_paq = {
 	"lua-language-server",
 	"sqlls",
 	-- "roslyn",
-	"pyrigth",
+	"pyright",
 	"netcoredbg",
 	"delve",
 	"debugpy",
@@ -109,6 +109,7 @@ vim.lsp.config("gopls", {
 -- roslyn
 vim.lsp.config("roslyn_ls", {
 	filetypes = { "cs", "razor" },
+  --[[
 	handlers = {
 		["textDocument/semanticTokens/full"] = function(err, result, ctx, config)
 			if err and err.code == -32000 then
@@ -128,11 +129,11 @@ vim.lsp.config("roslyn_ls", {
 			end
 			return vim.lsp.handlers["textDocument/diagnostic"](err, result, ctx, config)
 		end,
-	},
+	}, --]]
 	settings = {
 		["csharp|background_analysis"] = {
-			dotnet_analyzer_diagnostics_scope = "openFiles",
-			dotnet_compiler_diagnostics_scope = "openFiles",
+			-- dotnet_analyzer_diagnostics_scope = "openFiles",
+			-- dotnet_compiler_diagnostics_scope = "openFiles",
 		},
 		["csharp|code_lens"] = {
 			-- dotnet_enable_references_code_lens = true,

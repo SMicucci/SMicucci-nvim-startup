@@ -9,23 +9,23 @@ local function setup_dap()
 
 	local dap = require("dap")
 	local ui = require("dapui")
-    require("nvim-dap-virtual-text").setup({})
+	require("nvim-dap-virtual-text").setup({})
 
 	---@diagnostic disable-next-line: missing-fields
 	ui.setup({
 		layouts = {
 			{
-                elements = {
-                    { id = "scopes", size = 1, }
-                },
+				elements = {
+					{ id = "scopes", size = 1 },
+				},
 				position = "bottom",
 				size = 12,
 			},
 			{
 				elements = {
-					{ id = "breakpoints", size = 0.15, },
-					{ id = "stacks", size = 0.20, },
-					{ id = "repl", size = 0.75, },
+					{ id = "breakpoints", size = 0.15 },
+					{ id = "stacks", size = 0.20 },
+					{ id = "repl", size = 0.75 },
 				},
 				position = "right",
 				size = 60,
@@ -105,6 +105,43 @@ local function setup_dap()
 	dap.configurations.rust = dap.configurations.c
 	dap.configurations.zig = dap.configurations.c
 
+	-- C#
+	dap.adapters.coreclr = {
+		type = "executable",
+		command = vim.g.is_win and vim.fs.normalize(
+			vim.fs.joinpath(vim.fn.stdpath("data"), "mason", "packages", "netcoredbg", "netcoredbg", "netcoredbg.exe")
+		) or vim.fs.normalize(
+			vim.fs.joinpath(
+				vim.fn.stdpath("data"),
+				"mason",
+				"packages",
+				"netcoredbg",
+				"libexec",
+				"netcoredbg",
+				"netcoredbg"
+			)
+		),
+		args = { "--interpreter=vscode" },
+	}
+	dap.configurations.cs = {
+		{
+			type = "coreclr",
+			name = "Launch - easy-dotnet",
+			request = "launch",
+			env = function()
+				local spec = require("easy-dotnet").get_debug_dll()
+				require("easy-dotnet").build_default_quickfix()
+				return spec.environment_variables
+			end,
+			program = function()
+				return require("easy-dotnet").get_debug_dll().dll
+			end,
+			cwd = function()
+				return require("easy-dotnet").get_debug_dll().relative_dll.path
+			end,
+		},
+	}
+
 	-- Typescript
 	dap.adapters.node = {
 		type = "executable",
@@ -151,35 +188,55 @@ local function setup_dap()
 end
 
 -- dap commands
-k.set("n", "<leader>d<space>", function()
+k.set("n", "<leader>dc", function()
+	setup_dap()
+	require("dap").continue()
+end, { desc = "[d]ap continue" })
+k.set("n", "<space>c", function()
 	setup_dap()
 	require("dap").continue()
 end, { desc = "[d]ap continue" })
 k.set("n", "<leader>dn", function()
 	require("dap").step_over()
 end, { desc = "[d]ap step next" })
+k.set("n", "<space>n", function()
+	require("dap").step_over()
+end, { desc = "[d]ap step next" })
 k.set("n", "<leader>di", function()
+	require("dap").step_into()
+end, { desc = "[d]ap step into" })
+k.set("n", "<space>i", function()
 	require("dap").step_into()
 end, { desc = "[d]ap step into" })
 k.set("n", "<leader>do", function()
 	require("dap").step_out()
 end, { desc = "[d]ap step over" })
+k.set("n", "<space>o", function()
+	require("dap").step_out()
+end, { desc = "[d]ap step over" })
 
 -- breakpoints
-k.set("n", "<leader>b", function()
+k.set("n", "<leader>db", function()
 	setup_dap()
 	require("dap").toggle_breakpoint()
 end, { desc = "[d]ap toggle breakpoint" })
-k.set("n", "<leader>B", function()
+k.set("n", "<space>b", function()
+	setup_dap()
+	require("dap").toggle_breakpoint()
+end, { desc = "[d]ap toggle breakpoint" })
+k.set("n", "<leader>dB", function()
+	require("dap").set_breakpoint()
+end, { desc = "[d]ap toggle breakpoint" })
+k.set("n", "<space>B", function()
 	require("dap").set_breakpoint()
 end, { desc = "[d]ap toggle breakpoint" })
 
 -- setup symbols
 local signs = {
-    DapBreakpoint = { text = "", texthl = "DiffDelete", linehl = "Visual", numhl = "DiffDelete" },
-    DapBreakpointCondition = { text = "", texthl = "IncSearch", linehl = "Visual", numhl = "IncSearch" },
-    DapStopped = { text = "", texthl = "DiffText", linehl = "DiffChange", numhl = "DiffText" }
+	DapBreakpoint = { text = "", texthl = "DiffDelete", linehl = "Visual", numhl = "DiffDelete" },
+	DapBreakpointCondition = { text = "", texthl = "IncSearch", linehl = "Visual", numhl = "IncSearch" },
+	DapStopped = { text = "", texthl = "DiffText", linehl = "DiffChange", numhl = "DiffText" },
 }
 for name, opts in pairs(signs) do
-    vim.fn.sign_define(name, opts)
+	vim.fn.sign_define(name, opts)
 end
