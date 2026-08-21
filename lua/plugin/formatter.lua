@@ -20,6 +20,7 @@ local function setup_conform()
 			json = { "fixjson" },
 			lua = { "stylua" },
 			templ = { "templ" },
+			rust = { "rustfmt" },
 			cs = { "csharpier_custom" },
 			["*"] = function(bufnr)
 				if vim.bo[bufnr].filetype ~= "markdown" then

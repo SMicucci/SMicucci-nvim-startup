@@ -109,7 +109,7 @@ vim.lsp.config("gopls", {
 -- roslyn
 vim.lsp.config("roslyn_ls", {
 	filetypes = { "cs", "razor" },
-  --[[
+	--[[
 	handlers = {
 		["textDocument/semanticTokens/full"] = function(err, result, ctx, config)
 			if err and err.code == -32000 then
@@ -166,6 +166,13 @@ vim.lsp.config("html", {
 vim.lsp.config("ts_ls", {
 	filetypes = { "javascript", "typescript", "ejs" },
 })
+
+-- esp rust
+vim.lsp.config("rust_analyzer", {
+	cmd = { "rustup", "run", "stable", "rust-analyzer" },
+	capabilities = require("blink.cmp").get_lsp_capabilities(),
+})
+vim.lsp.enable("rust_analyzer")
 
 -- lsp folding
 vim.o.foldmethod = "expr"
