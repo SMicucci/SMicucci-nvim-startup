@@ -10,7 +10,6 @@ cmp.setup({
 		return not vim.tbl_contains({
 			"markdown",
 			"dap-repl",
-			"AgenticInput",
 		}, vim.bo.filetype)
 	end,
 	signature = { enabled = true },
@@ -21,6 +20,7 @@ cmp.setup({
 			cs = { inherit_defaults = true, "easy-dotnet" },
 			razor = { inherit_defaults = true, "easy-dotnet" },
 			vb = { inherit_defaults = true, "easy-dotnet" },
+			AgenticInput = { "agentic_slash", "agentic_at" },
 		},
 		providers = {
 			lazydev = {
@@ -34,6 +34,24 @@ cmp.setup({
 				module = "easy-dotnet.completion.blink",
 				score_offset = 10000,
 				async = true,
+			},
+			agentic_slash = {
+				module = "blink.cmp.sources.complete_func",
+				name = "AgenticSlash",
+				opts = {
+					complete_func = function()
+						return "v:lua.require('agentic.acp.slash_commands').complete_func"
+					end,
+				},
+			},
+			agentic_at = {
+				module = "blink.cmp.sources.complete_func",
+				name = "AgenticAt",
+				opts = {
+					complete_func = function()
+						return "v:lua.require('agentic.ui.file_picker').complete_func"
+					end,
+				},
 			},
 		},
 	},

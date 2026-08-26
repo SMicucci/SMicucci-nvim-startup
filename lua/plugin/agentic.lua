@@ -23,6 +23,8 @@ ag.setup({
 	provider_switcher = {
 		hide_unhealthy_providers = true,
 	},
+	slash_commands = { auto_trigger = false },
+	file_picker = { auto_trigger = false },
 	windows = {
 		position = "right",
 		width = "30%",
