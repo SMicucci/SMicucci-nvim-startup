@@ -33,7 +33,7 @@ vim.pack.add({
 	-- { src = "https://github.com/seblyng/roslyn.nvim" },
 	{ src = "https://github.com/GustavEikaas/easy-dotnet.nvim" },
 	-- go
-  { src = "https://github.com/ray-x/guihua.lua" },
+	{ src = "https://github.com/ray-x/guihua.lua" },
 	{ src = "https://github.com/ray-x/go.nvim" },
 	-- DAP
 	{ src = "https://github.com/mfussenegger/nvim-dap" },
@@ -43,7 +43,8 @@ vim.pack.add({
 	{ src = "https://codeberg.org/mfussenegger/nvim-dap-python" },
 	-- claude
 	{ src = "https://github.com/coder/claudecode.nvim" },
-  -- colorscheme
+	{ src = "https://github.com/carlos-algms/agentic.nvim" },
+	-- colorscheme
 	{ src = "https://github.com/projekt0n/github-nvim-theme" },
 	{ src = "https://github.com/andresmichel/one-dark-theme" },
 	{ src = "https://github.com/tiagovla/tokyodark.nvim" },

@@ -10,6 +10,7 @@ cmp.setup({
 		return not vim.tbl_contains({
 			"markdown",
 			"dap-repl",
+			"AgenticInput",
 		}, vim.bo.filetype)
 	end,
 	signature = { enabled = true },

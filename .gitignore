@@ -1,3 +1,4 @@
 Session.*.vim
 Session.vim
 lazy-lock.json
+nvim-pack-lock.json
