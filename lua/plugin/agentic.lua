@@ -67,7 +67,19 @@ ag.setup({
 	},
 })
 
+--- COMPLETION
+
+function _G.adjust_slash_complete(findstart, base)
+	if findstart ~= 1 then
+		return require("agentic.acp.slash_commands").complete_func(0, base)
+	end
+	local prefix = vim.api.nvim_get_current_line():sub(1, vim.api.nvim_win_get_cursor(0)[2])
+	-- 1-based index of `/` is the 0-based col after it, slash items carry no `/`
+	return prefix:match("^()/%S*$") or prefix:match("%s()/%S*$") or -3
+end
+
 --- KEYMAP
+
 k.set("n", "<C-\\>", function()
 	ag.toggle({ auto_add_to_context = false })
 end, { desc = "Toggle Agent" })

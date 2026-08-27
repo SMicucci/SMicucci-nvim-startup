@@ -40,13 +40,18 @@ cmp.setup({
 				name = "AgenticSlash",
 				opts = {
 					complete_func = function()
-						return "v:lua.require('agentic.acp.slash_commands').complete_func"
+						return "v:lua.adjust_slash_complete"
 					end,
 				},
 			},
 			agentic_at = {
 				module = "blink.cmp.sources.complete_func",
 				name = "AgenticAt",
+				-- `@` at line start or after whitespace, skips emails and a@b paths
+				enabled = function()
+					local prefix = vim.api.nvim_get_current_line():sub(1, vim.api.nvim_win_get_cursor(0)[2])
+					return prefix:match("^@%S*$") ~= nil or prefix:match("%s@%S*$") ~= nil
+				end,
 				opts = {
 					complete_func = function()
 						return "v:lua.require('agentic.ui.file_picker').complete_func"
