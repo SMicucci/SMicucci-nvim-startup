@@ -30,7 +30,7 @@ vim.pack.add({
 	{ src = "https://github.com/stevearc/conform.nvim" },
 	{ src = "https://github.com/OXY2DEV/markview.nvim" },
 	-- C#
-	-- { src = "https://github.com/seblyng/roslyn.nvim" },
+	{ src = "https://github.com/seblyng/roslyn.nvim" },
 	{ src = "https://github.com/GustavEikaas/easy-dotnet.nvim" },
 	-- go
 	{ src = "https://github.com/ray-x/guihua.lua" },
@@ -48,4 +48,5 @@ vim.pack.add({
 	{ src = "https://github.com/projekt0n/github-nvim-theme" },
 	{ src = "https://github.com/andresmichel/one-dark-theme" },
 	{ src = "https://github.com/tiagovla/tokyodark.nvim" },
+	{ src = "https://github.com/harshrajsachan/omni.nvim" },
 }, { confirm = false })

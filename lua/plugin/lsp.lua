@@ -58,7 +58,8 @@ local mason_paq = {
 	"json-lsp",
 	"lua-language-server",
 	"sqlls",
-	-- "roslyn",
+	"roslyn",
+	"html-lsp",
 	"pyright",
 	"netcoredbg",
 	"delve",
@@ -107,36 +108,9 @@ vim.lsp.config("gopls", {
 })
 
 -- roslyn
-vim.lsp.config("roslyn_ls", {
-	filetypes = { "cs", "razor" },
-	--[[
-	handlers = {
-		["textDocument/semanticTokens/full"] = function(err, result, ctx, config)
-			if err and err.code == -32000 then
-				return
-			end
-			return vim.lsp.handlers["textDocument/semanticTokens/full"](err, result, ctx, config)
-		end,
-		["textDocument/semanticTokens/range"] = function(err, result, ctx, config)
-			if err and err.code == -32000 then
-				return
-			end
-			return vim.lsp.handlers["textDocument/semanticTokens/range"](err, result, ctx, config)
-		end,
-		["textDocument/diagnostic"] = function(err, result, ctx, config)
-			if err and err.code == -30099 then
-				return
-			end
-			return vim.lsp.handlers["textDocument/diagnostic"](err, result, ctx, config)
-		end,
-	}, --]]
+vim.lsp.config("roslyn", {
 	settings = {
-		["csharp|background_analysis"] = {
-			-- dotnet_analyzer_diagnostics_scope = "openFiles",
-			-- dotnet_compiler_diagnostics_scope = "openFiles",
-		},
 		["csharp|code_lens"] = {
-			-- dotnet_enable_references_code_lens = true,
 			dotnet_enable_test_code_lens = false,
 		},
 		["csharp|formatting"] = {
@@ -161,7 +135,7 @@ end
 
 -- web setup
 vim.lsp.config("html", {
-	filetypes = { "html", "gohtmltmpl", "templ", "razor", "cshtml", "ejs" },
+	filetypes = { "html", "gohtmltmpl", "templ", "ejs" },
 })
 vim.lsp.config("ts_ls", {
 	filetypes = { "javascript", "typescript", "ejs" },

@@ -4,4 +4,5 @@
 -- })
 -- tokyo.colorscheme()
 
-require("github-theme").load({ theme = "github_dark_default"})
+-- require("github-theme").load({ theme = "github_dark_default"})
+vim.cmd.colorscheme("frost")

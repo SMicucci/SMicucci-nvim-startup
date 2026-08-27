@@ -2,7 +2,11 @@ local csharp_group = vim.api.nvim_create_augroup("c_sharp_plugs", { clear = true
 
 local initialized = false
 
--- function to setup roslyn and easy-dotnet (dap included)
+-- roslyn.nvim enables the `roslyn` client itself and owns the razor virtual
+-- buffers. Plugin options only, server settings live in plugin/lsp.lua.
+require("roslyn").setup()
+
+-- function to setup easy-dotnet (dap included)
 local function setup_csharp()
 	if initialized then
 		return
@@ -34,11 +38,11 @@ local function setup_csharp()
 	})
 end
 
--- initialize if filetype is correct
+-- initialize if filetype is correct (*.cshtml maps to the `razor` filetype)
 vim.api.nvim_create_autocmd("FileType", {
 	group = csharp_group,
 	once = true,
-	pattern = { "cs", "vb", "razor", "cshtml" },
+	pattern = { "cs", "vb", "razor" },
 	callback = function()
 		setup_csharp()
 	end,
@@ -54,41 +58,6 @@ vim.api.nvim_create_autocmd("BufEnter", {
 		end, { upward = true, type = "file" })
 		if #sln > 0 then
 			setup_csharp()
-      local config = vim.deepcopy(vim.lsp.config["roslyn_ls"])
-      config.root_dir = vim.fs.dirname(sln[1])
-      if config ~= nil then
-        vim.lsp.start(config)
-      end
 		end
-	end,
-})
-
--- intercept virtual buffer
-vim.api.nvim_create_autocmd("BufAdd", {
-	group = csharp_group,
-	pattern = "*__virtual.html",
-	callback = function(args)
-		local bufnr = args.buf
-    local bo = vim.bo[bufnr]
-		vim.notify("virtual buffer '" .. args.file .. "' detached", vim.log.levels.INFO)
-		bo.buflisted = false
-		bo.buftype = "nofile"
-		bo.swapfile = false
-		bo.modified = false
-		vim.b[bufnr].no_lsp = true
-		vim.schedule(function()
-			for _, client in ipairs(vim.lsp.get_clients({ bufnr = bufnr })) do
-				vim.lsp.buf_detach_client(bufnr, client.id)
-			end
-		end)
-	end,
-})
-vim.api.nvim_create_autocmd({ "BufModifiedSet", "TextChanged" }, {
-	group = csharp_group,
-	pattern = "*__virtual.html",
-	callback = function(args)
-		if vim.bo[args.buf].modified then
-      vim.bo[args.buf].modified = false
-    end
 	end,
 })
